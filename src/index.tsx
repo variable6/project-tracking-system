@@ -1,12 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ThemeProvider, CssBaseline } from '@material-ui/core'
+import theme from './constants/theme'
+import ACProvider from './context/AuthContext'
+import { BrowserRouter } from 'react-router-dom'
+
+const Index = () => (
+  <ACProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
+  </ACProvider>
+)
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Index />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

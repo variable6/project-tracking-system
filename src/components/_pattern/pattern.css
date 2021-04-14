@@ -1,0 +1,452 @@
+      .pattern .cls-1 {
+        fill: #fff;
+      }
+
+      .pattern .cls-2 {
+        fill: #323232;
+        animation: anime linear 2.5s forwards;
+      }
+
+      .pattern .cls-3 {
+        fill: #f8d987;
+        animation: anime linear 1.5s 0.9s forwards;
+      }
+
+      .pattern .cls-4 {
+        fill: #acacac;
+        animation: anime 2s 0.2s  forwards;
+      }
+
+      .pattern .cls-5 {
+        fill: #f6f6f6;
+        animation: anime1 4s .2s  forwards;
+      }
+
+      .pattern .cls-6 {
+        fill: #f9e1a0;
+        animation: anime 2.3s 0.32s  forwards;
+      }
+
+      .pattern .cls-7 {
+        fill: #494949;
+        animation: scale linear 4.5s forwards;
+      }
+
+      .pattern .cls-8 {
+        fill: #fcf0cf;
+      }
+
+      .pattern .cls-9 {
+        fill: #2f2f2f;
+        animation: anime2 2s 0.2s  forwards;
+      }
+
+      .pattern .cls-10 {
+        fill: #f9e2a4;
+      }
+
+      .pattern .cls-11 {
+        fill: #fffcf7;
+      }
+
+      .pattern .cls-12 {
+        fill: #fbe8b7;
+      }
+
+      .pattern .cls-13 {
+        fill: #f6d273;
+        animation: anime1 3s 2s  forwards;
+      }
+
+      .pattern .cls-14 {
+        fill: #f8f8f8;
+      }
+
+      .pattern .cls-15 {
+        fill: #f9e2a3;
+        animation: anime1 1.5s 0.2s  forwards;
+      }
+
+      .pattern .cls-16 {
+        fill: #fdf2d7;
+        animation: anime2 2s 2.2s  forwards;
+      }
+
+      .pattern .cls-17 {
+        fill: #606060;
+      }
+
+      .pattern .cls-18 {
+        fill: #c8c8c8;
+        animation: anime2 3s 2s  forwards;
+      }
+
+      .pattern .cls-19 {
+        fill: #f9df9a;
+      }
+
+      .pattern .cls-20 {
+        fill: #f5cc5e;
+        animation: anime1 2.5s 2.2s  forwards;
+      }
+
+      .pattern .cls-21 {
+        fill: #686868;
+      }
+
+      .pattern .cls-22 {
+        fill: #fdf4dd;
+      }
+
+      .pattern .cls-23 {
+        fill: #f8db8f;
+        animation: anime2 3s 1.2s  forwards;
+      }
+
+      .pattern .cls-24 {
+        fill: #e6e6e6;
+
+      }
+
+      .pattern .cls-25 {
+        fill: #fae5ae;
+      }
+
+      .pattern .cls-26 {
+        fill: #898989;
+        animation: anime 0.3s 0.8s  forwards;
+      }
+
+      .pattern .cls-27 {
+        fill: #f9de99;
+      }
+
+      .pattern .cls-28 {
+        fill: #f6ce66;
+        animation: anime2 1.8s 0.12s  forwards;
+      }
+
+      .pattern .cls-29 {
+        fill: #fdfdfd;
+      }
+
+      .pattern .cls-30 {
+        fill: #2b2b2b;
+        animation: anime1 4s 0.9s  forwards;
+      }
+
+      .pattern .cls-31 {
+        fill: #9e9e9e;
+      }
+
+      .pattern .cls-32 {
+        fill: #f8dd94;
+        animation: scale linear 5s forwards;
+      }
+
+      .pattern .cls-33 {
+        fill: #fffdf9;
+      }
+
+      .pattern .cls-34 {
+        fill: #e3e3e3;
+      }
+
+      .pattern .cls-35 {
+        fill: #fae7b4;
+        animation: anime 0.8s 32s  forwards;
+      }
+
+      .pattern .cls-36 {
+        fill: #767676;
+      }
+
+      .pattern .cls-37 {
+        fill: #fefcf5;
+        animation: anime1 3s 1s  forwards;
+      }
+
+      .pattern .cls-38 {
+        fill: #4f4f4f;
+      }
+
+      .pattern .cls-39 {
+        fill: #fcf1d4;
+      }
+
+      .pattern .cls-40 {
+        fill: #8a8a8a;
+      }
+
+      .pattern .cls-41 {
+        fill: #252525;
+        animation: anime2 2.1s 1.32s  forwards;
+      }
+
+      .pattern .cls-42 {
+        fill: #fdf3da;
+      }
+
+      .pattern .cls-43 {
+        fill: #505050;
+      }
+
+      .pattern .cls-44 {
+        fill: #fbecc4;
+        animation: anime1 3s 0.92s  forwards;
+      }
+
+      .pattern .cls-45 {
+        fill: #fcfcfc;
+      }
+
+      .pattern .cls-46 {
+        fill: #f8dc93;
+      }
+
+      .pattern .cls-47 {
+        fill: #f8dc92;
+        animation: anime 2.3s 2.2s  forwards;
+      }
+
+      .pattern .cls-48 {
+        fill: #b3b3b3;
+      }
+
+      .pattern .cls-49 {
+        fill: #ccc;
+        animation: anime 1s 0.3s  forwards;
+      }
+
+      .pattern .cls-50 {
+        fill: #fdf6e2;
+      }
+
+      .pattern .cls-51 {
+        fill: #fef8ea;
+        animation: anime1 2s 0.2s  forwards;
+      }
+
+      .pattern .cls-52 {
+        fill: #f6cf69;
+        animation: anime2 2s 2s  forwards;
+      }
+
+      .pattern .cls-53 {
+        fill: #737373;
+        animation: scale linear 2.5s forwards;
+      }
+
+      .pattern .cls-54 {
+        fill: #757575;
+      }
+
+      .pattern .cls-55 {
+        fill: #f9de98;
+        animation: anime1 3s 0.12s  forwards;
+      }
+
+      .pattern .cls-56 {
+        fill: #eee;
+        animation: anime2 2s 2s  forwards;
+      }
+
+      .pattern .cls-57 {
+        fill: #fae3a7;
+      }
+
+      .pattern .cls-58 {
+        fill: #fefcf4;
+        animation: anime 2.3s 0.82s  forwards;
+      }
+
+      .pattern .cls-59 {
+        fill: #f7d67e;
+      }
+
+      .pattern .cls-60 {
+        fill: #2c2c2c;
+        animation: anime1 2.7s 0.7s  forwards;
+      }
+
+      .pattern .cls-61 {
+        fill: #fdf4dc;
+      }
+
+      .pattern .cls-62 {
+        fill: #f7d67f;
+        animation: anime2 1.2s 1.9s  forwards;
+      }
+
+      .pattern .cls-63 {
+        fill: #5a5a5a;
+        animation: scale linear 1.5s forwards;
+      }
+
+      .pattern .cls-64 {
+        fill: #d7d7d7;
+      }
+
+      .pattern .cls-65 {
+        fill: #fae6b2;
+        animation: anime 2s 2s  forwards;
+      }
+
+      .pattern .cls-66 {
+        fill: #f9e09f;
+      }
+
+      .pattern .cls-67 {
+        fill: #f8d885;
+      }
+
+      .pattern .cls-68 {
+        fill: #242424;
+        animation: anime2 2.5s 2s  forwards;
+      }
+
+      .pattern .cls-69 {
+        fill: #fcefcc;
+      }
+
+      .pattern .cls-70 {
+        fill: #2e2e2e;
+        animation: anime 2.5s 0.42s  forwards;
+      }
+
+      .pattern .cls-71 {
+        fill: #8d8d8d;
+      }
+
+      .pattern .cls-72 {
+        fill: #3b3b3b;
+        animation: anime1 2.9s 1.2s  forwards;
+      }
+
+      .pattern .cls-73 {
+        fill: #f7d782;
+      }
+
+      .pattern .cls-74 {
+        fill: #fdf3db;
+        animation: anime1 2.9s .72s  forwards;
+      }
+
+      .pattern .cls-75 {
+        fill: #313131;
+      }
+
+      .pattern .cls-76 {
+        fill: #fae4ab;
+      }
+
+      .pattern .cls-77 {
+        animation: anime2 2.1s 1.2s  forwards;
+        fill: #e8e8e8;
+      }
+
+      .pattern .cls-78 {
+        fill: #717171;
+      }
+
+      .pattern .cls-79 {
+        fill: #bcbcbc;
+        animation: anime 2s 0.2s  forwards;
+      }
+
+      .pattern .cls-80 {
+        fill: #d9d9d9;
+      }
+
+      .pattern .cls-81 {
+        fill: #676767;
+        animation: anime1 1.2s 2.2s  forwards;
+      }
+
+      .pattern .cls-82 {
+        fill: #575757;
+      }
+
+      .pattern .cls-83 {
+        fill: #848484;
+        animation: anime 1s 3.2s  forwards;
+      }
+
+      .pattern .cls-84 {
+        fill: #f6d16e;
+        animation: anime2 2s 0.2s  forwards;
+      }
+
+      .pattern .cls-85 {
+        fill: #9b9b9b;
+        animation: anime2 2s 0.2s  forwards;
+      }
+
+      .pattern .cls-86 {
+        fill: #f5cd61;
+        animation: anime1 1.5s 1s  forwards;
+      }
+
+      .pattern .cls-87 {
+        fill: #8f8f8f;
+      }
+
+      .pattern .cls-88 {
+        fill: #7b7b7b;
+        animation: anime2 2s 2s  forwards;
+      }
+
+      .pattern .cls-89 {
+        fill: #f7d479;
+        animation: anime1 2.8s 0.52s  forwards;
+      }
+
+      .pattern .cls-90 {
+        fill: #bababa;
+      }
+
+      .pattern .cls-91 {
+        fill: #fcefce;
+        animation: anime2 2s 0.2s  forwards;
+      }
+
+      .pattern .cls-92 {
+        fill: #919191;
+      }
+
+      @keyframes anime {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      @keyframes anime1 {
+        0% {
+          opacity: 0;
+        }
+        40% {
+          opacity: 0.9;
+        }
+        70% {
+          opacity: 0.25;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      @keyframes anime2 {
+        0% {
+          opacity: 1;
+        }
+        30% {
+          opacity: 0.4;
+        }
+        40% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }        
+      }
