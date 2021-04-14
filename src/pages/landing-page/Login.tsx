@@ -36,8 +36,10 @@ const useCSS = makeStyles(({ palette, spacing, breakpoints }) => ({
     overflow: 'hidden'
   },
   root: {
-    backdropFilter: 'blur(7px)',
-    backgroundColor: 'rgba(0,0,0,0.0)'
+    backgroundColor: 'rgba(0,0,0,0.10)',
+    [breakpoints.up('sm')]: {
+      backdropFilter: 'blur(7px)'
+    }
   },
   docked: {
     babackgroundColor: 'rgba(0,0,0,0.0)'

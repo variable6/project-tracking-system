@@ -75,7 +75,7 @@ const Appbar = React.memo(function Appbar(props: { setMobileOpen: () => void }) 
             <Moment format="ddd DD, hh:mm a" date={dateTime} />
           </div>
           <div className={css.displayNameContainer}>
-            <Button onClick={isSM ? handleClick : () => history.push('/profile')}>
+            <Button aria-label="profile" onClick={isSM ? handleClick : () => history.push('/profile')}>
               <Avatar children={user.name[0].toUpperCase()} />
               <Typography className={css.displayName} color="secondary" variant="h6">
                 {user.name}

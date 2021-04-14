@@ -129,7 +129,6 @@ const useCSS = makeStyles(theme => ({
   },
   loaderContainer: {
     backgroundColor: theme.palette.background.paper,
-    backdropFilter: 'blur(7px)',
     borderRadius: theme.shape.borderRadius,
     position: 'absolute',
     top: 0,
@@ -145,8 +144,10 @@ const Popover = withStyles(theme => ({
     zIndex: 99999999
   },
   scrollPaper: {
-    backdropFilter: `blur(${theme.spacing(0.5)}px)`,
-    backgroundColor: fade(theme.palette.background.paper, 0.1)
+    backgroundColor: fade(theme.palette.background.paper, 0.1),
+    [theme.breakpoints.up('sm')]: {
+      backdropFilter: `blur(${theme.spacing(0.5)}px)`,
+    }
   }
 }))(Dialog)
 

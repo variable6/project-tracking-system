@@ -7,3 +7,14 @@ export interface EmployeeType {
   status: "ACTIVE" | 'IN-ACTIVE'
   _id: string
 }
+
+export interface ProjectType {
+  _id: string
+  projectId: string
+  startDate: Date
+  endDate: Date
+  manager: {
+    _id: string,
+    name: string
+  }
+}

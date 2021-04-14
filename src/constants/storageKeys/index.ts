@@ -5,7 +5,7 @@ import inActiveEmp from './InActiveEmp'
 
 
 const employeeBDM = 'bdm-employee'
-
+const projectsBDM = 'bdm-projects'
 
 
 
@@ -14,7 +14,8 @@ const keys = {
   user,
   employees,
   inActiveEmp,
-  employeeBDM
+  employeeBDM,
+  projectsBDM
 }
 
 export default keys

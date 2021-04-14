@@ -75,6 +75,7 @@ const Sidebar = ({ mobileOpen, setMobileOpen, children, mobileSidebar }: Props) 
         >
           <Button onClick={() => { history.replace('/'); setMobileOpen() }}
             className={classes.logoContainer}
+            aria-label="WorkSpace"
           >
             <WorkspaceLogo />
           </Button>
@@ -90,7 +91,7 @@ const Sidebar = ({ mobileOpen, setMobileOpen, children, mobileSidebar }: Props) 
           variant="permanent"
           open
         >
-          <Button onClick={() => history.replace('/')}
+          <Button aria-label="WorkSpace" onClick={() => history.replace('/')}
             className={classes.logoContainer}>
             <WorkspaceLogo />
           </Button>

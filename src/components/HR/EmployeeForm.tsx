@@ -41,7 +41,9 @@ import {
 //styles
 const Form = withStyles(({ spacing, breakpoints, palette }) => ({
   root: {
-    backdropFilter: `blur(${spacing(0.5)}px)`
+    [breakpoints.up('sm')]: {
+      backdropFilter: `blur(${spacing(0.5)}px)`,
+    }
   },
   paper: {
     width: 'max(30vw,540px)',

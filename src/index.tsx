@@ -7,6 +7,12 @@ import theme from './constants/theme'
 import ACProvider from './context/AuthContext'
 import { BrowserRouter } from 'react-router-dom'
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register(`${process.env.PUBLIC_URL}/sw.js`)
+    .then(() => console.log('service Worker registered'))
+    .catch(() => console.warn('Service worker not registered'))
+}
+
 const Index = () => (
   <ACProvider>
     <ThemeProvider theme={theme}>
