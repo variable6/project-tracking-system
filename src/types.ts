@@ -11,6 +11,8 @@ export interface EmployeeType {
 export interface ProjectType {
   _id: string
   projectId: string
+  projectTitle: string
+  projectDesc: string
   startDate: Date
   endDate: Date
   manager: {

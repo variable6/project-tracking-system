@@ -7,6 +7,7 @@ import {
   FiGrid as DashboardIcon,
   FiUsers as EmployeesIcon
 } from 'react-icons/fi'
+import { v4 as key } from 'uuid'
 
 // importing components
 import Sidebar from '../Sidebar'
@@ -35,7 +36,14 @@ const SidebarHR = ({ mobileOpen, setMobileOpen }: Props) => {
 
   const mobileSidebar = (
     <div className={css.root}>
-      Hello
+      {
+        navLinks.map(link => (
+          <NavLink key={key()} to={link.path} exact className={css.link} activeClassName={css.active}>
+            {link.icon}
+            {link.label}
+          </NavLink>
+        ))
+      }
     </div>
   )
 
@@ -44,7 +52,7 @@ const SidebarHR = ({ mobileOpen, setMobileOpen }: Props) => {
       mobileOpen={mobileOpen} setMobileOpen={setMobileOpen}>
       <div className={css.root}>{
         navLinks.map(link => (
-          <NavLink to={link.path} exact className={css.link} activeClassName={css.active}>
+          <NavLink key={key()} to={link.path} exact className={css.link} activeClassName={css.active}>
             {link.icon}
             {link.label}
           </NavLink>
