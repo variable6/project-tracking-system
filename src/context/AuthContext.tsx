@@ -2,7 +2,7 @@ import { createContext, useState, ReactNode } from 'react'
 import storage from '../config/localStorageConfig'
 import keys from '../constants/storageKeys'
 import {
-  EmployeeType as UserType
+  UserType
 } from '../types'
 
 interface ContextType {
@@ -14,6 +14,7 @@ interface ContextType {
   quitLogout: () => void
 }
 
+
 const AuthContext = createContext<ContextType>({
   user: {
     date: '',
@@ -22,7 +23,10 @@ const AuthContext = createContext<ContextType>({
     employeeId: "",
     name: "",
     status: "IN-ACTIVE",
-    _id: ''
+    _id: '',
+    projects: [],
+    tasks: [],
+    __v: 0,
   },
   addUser: () => null,
   clearUser: function () { },
@@ -35,7 +39,7 @@ const ACProvider = (props: { children: ReactNode }) => {
 
   const userLS = storage.get(keys.user)
 
-  const [user, setUser] = useState(userLS ? userLS : {
+  const [user, setUser] = useState<UserType>(userLS ? userLS : {
     date: '',
     designation: "DEV",
     email: "",
@@ -54,7 +58,10 @@ const ACProvider = (props: { children: ReactNode }) => {
       employeeId: "",
       name: "",
       status: "IN-ACTIVE",
-      _id: ''
+      _id: '',
+      __v: 0,
+      projects: [],
+      tasks: []
     })
   }
 
@@ -71,6 +78,8 @@ const ACProvider = (props: { children: ReactNode }) => {
   const quitLogout = () => {
     setOpen(false)
   }
+
+  console.log(user)
 
   return (
     <AuthContext.Provider value={{ user, addUser, clearUser, logout, openPopup: open, quitLogout }}>

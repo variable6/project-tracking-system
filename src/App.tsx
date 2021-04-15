@@ -4,13 +4,15 @@ import DEV from './pages/DEV'
 import BDM from './pages/BDM'
 import TokenContext from './context/TokenContext'
 import { AuthContext } from './context/AuthContext'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import AlertContext from './context/AlertContext'
 import stroage from './config/localStorageConfig'
+import fetchMethod from './config/axiosConfig'
 import {
   Dialog, Button, DialogActions, DialogContent, withStyles, fade, DialogTitle, Typography
 } from '@material-ui/core'
+import Loader from "./components/Loader";
 
 
 const Popup = withStyles(theme => ({
@@ -37,7 +39,24 @@ const dashboard = {
 
 const App = () => {
 
+  const cls = { width: '100vw', height: '100vh', display: 'grid', placeItems: 'center' }
+
   const { user, clearUser, openPopup, quitLogout } = useContext(AuthContext)
+
+  const [state, setState] = useState({
+    isLoading: true,
+    isLogin: false
+  })
+
+  useEffect(() => {
+    fetchMethod()
+      .get('')
+      .then(({ data }) => setState({
+        isLoading: false,
+        isLogin: data.isLogin
+      }))
+      .catch(e => console.log(e))
+  }, [])
 
   const history = useHistory()
 
@@ -72,7 +91,9 @@ const App = () => {
           </DialogActions>
         </Popup>
         {
-          user.employeeId ? dashboard[user.designation] : <LandingPage />
+          state.isLoading ? <div style={cls}><Loader /></div> : (
+            user.employeeId && state.isLogin ? dashboard[user.designation] : <LandingPage />
+          )
         }
       </AlertContext>
     </TokenContext>

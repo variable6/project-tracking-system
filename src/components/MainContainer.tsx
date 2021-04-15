@@ -14,7 +14,8 @@ const useCSS = makeStyles(theme => ({
     width: '100%',
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(3)
-    }
+    },
+    position: 'relative'
   }
 }))
 
@@ -26,7 +27,7 @@ interface Props {
 // component
 const MainContainer = React.memo(function MainContainer({ children, setMobileOpen }: Props) {
   return (
-    <div style={{ flexGrow: 1, position: 'relative', maxWidth: '100vw' }}>
+    <div style={{ flexGrow: 1, maxWidth: '100vw' }}>
       <Appbar setMobileOpen={setMobileOpen} />
       <main className={useCSS().container}>
         {children}

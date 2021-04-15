@@ -20,3 +20,16 @@ export interface ProjectType {
     name: string
   }
 }
+
+export interface UserType {
+  date: string | Date
+  designation: "HR" | 'DEV' | 'BDM'
+  email: string
+  employeeId: string
+  name: string
+  projects: any[]
+  status: "ACTIVE" | "IN-ACTIVE"
+  tasks: any[]
+  __v: number
+  _id: string
+}

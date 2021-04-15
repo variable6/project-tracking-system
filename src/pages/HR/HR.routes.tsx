@@ -5,16 +5,19 @@ import ErrorPage from '../PageNotFound'
 
 //importing screens 
 import Employee from './screens/Empolyee'
+import Profile from './screens/Profile'
 
 
 const routeList: { path: string, component: React.ReactNode }[] = [
   {
     path: '/',
     component: <Dashboard />
-  },
-  {
+  }, {
     path: '/employees',
     component: <Employee />
+  }, {
+    path: '/profile',
+    component: <Profile />
   }
 ]
 

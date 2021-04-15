@@ -1,6 +1,6 @@
 //  ---->>>>>>>>>>>>> static keys
 const version = 1.1
-const CACHE_NAME = `site-static-${version}`
+const CACHE_NAME = `site-assets-${version}`
 
 const dbURL = 'https://pts-001.herokuapp.com/api/'
 
@@ -41,13 +41,17 @@ this.addEventListener('activate', evt => {
 })
 
 // =====> fetch event
-this.addEventListener('fetch', evt => {
-  evt.respondWith(
-    caches.match(evt.request)
-      .then(res => res ? res : fetch(evt.request))
-  )
-})
-
-if (navigator.onLine) {
-  console.log('ok')
-}
+this.addEventListener('fetch', event => {
+  // event.respondWith(
+  //   caches.open(CACHE_NAME).then(cache => {
+  //     return cache.match(event.request).then((response) => {
+  //       return response || fetch(event.request).then((response) => {
+  //         const res = response.clone()
+  //         if (!res.url.includes(dbURL))
+  //           cache.put(event.request, res);
+  //         return response;
+  //       });
+  //     });
+  //   })
+  // );
+});
