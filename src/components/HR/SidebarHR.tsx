@@ -38,7 +38,10 @@ const SidebarHR = ({ mobileOpen, setMobileOpen }: Props) => {
     <div className={css.root}>
       {
         navLinks.map(link => (
-          <NavLink key={key()} to={link.path} exact className={css.link} activeClassName={css.active}>
+          <NavLink onClick={e => {
+            setMobileOpen()
+          }} key={key()} to={link.path} exact
+            className={css.link} activeClassName={css.active}>
             {link.icon}
             {link.label}
           </NavLink>
@@ -84,7 +87,7 @@ const useCSS = makeStyles(({ spacing, palette, shape }) => ({
     fontSize: spacing(1.75),
     letterSpacing: 0.35,
     textTransform: 'uppercase',
-    fontWeight: 600,
+    fontWeight: 500,
     textDecoration: 'none',
     borderRadius: shape.borderRadius,
     color: palette.primary.contrastText,

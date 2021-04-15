@@ -80,6 +80,7 @@ const Sidebar = ({ mobileOpen, setMobileOpen, children, mobileSidebar }: Props) 
             <WorkspaceLogo />
           </Button>
           {mobileSidebar}
+          <span style={{ marginBottom: 'auto', marginTop: 'auto' }} />
         </Drawer>
       </Hidden>
       <Hidden smDown implementation="css">

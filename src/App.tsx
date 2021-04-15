@@ -44,17 +44,19 @@ const App = () => {
   const { user, clearUser, openPopup, quitLogout } = useContext(AuthContext)
 
   const [state, setState] = useState({
-    isLoading: true,
-    isLogin: false
+    isLoading: true
   })
 
   useEffect(() => {
     fetchMethod()
       .get('')
-      .then(({ data }) => setState({
-        isLoading: false,
-        isLogin: data.isLogin
-      }))
+      .then(({ data }) => {
+        if (!data.isLogin)
+          removeUser()
+        setState({
+          isLoading: false
+        })
+      })
       .catch(e => console.log(e))
   }, [])
 
@@ -92,7 +94,7 @@ const App = () => {
         </Popup>
         {
           state.isLoading ? <div style={cls}><Loader /></div> : (
-            user.employeeId && state.isLogin ? dashboard[user.designation] : <LandingPage />
+            user.employeeId ? dashboard[user.designation] : <LandingPage />
           )
         }
       </AlertContext>

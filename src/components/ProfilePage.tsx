@@ -1,6 +1,7 @@
 import {
   makeStyles,
-  Drawer, Typography, IconButton, Avatar, AppBar, Tab, Paper
+  Drawer, Typography, IconButton,
+  Avatar, AppBar, Tab, withStyles
 } from '@material-ui/core'
 import {
   useState,
@@ -16,6 +17,15 @@ import Card from './Card'
 import { ProfileContext } from '../context/ProfilePageContext'
 import { AuthContext } from '../context/AuthContext'
 
+
+const Profile = withStyles(({ breakpoints, spacing }) => ({
+  root: {
+    [breakpoints.up('sm')]: {
+      backdropFilter: `blur(${spacing(0.5)}px)`,
+    }
+  }
+}))(Drawer)
+
 const ProfilePage = () => {
 
   const { isProfileOpen, closeProfile } = useContext(ProfileContext)
@@ -30,7 +40,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <Drawer
+    <Profile
       variant="temporary"
       anchor="right"
       open={isProfileOpen}
@@ -74,7 +84,7 @@ const ProfilePage = () => {
           </TabContext>
         </div>
       </div>
-    </Drawer>
+    </Profile>
   );
 }
 
