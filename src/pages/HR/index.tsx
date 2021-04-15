@@ -3,10 +3,12 @@ import * as React from 'react'
 import Root from '../../components/RootContainer'
 import Main from '../../components/MainContainer'
 import Sidebar from '../../components/HR/SidebarHR'
+import Profile from './screens/Profile'
 //importing HR Routes
 import Routers from './HR.routes'
 // import ing Route Context
 import RouteContextProvider from '../../context/RouteContext'
+import ProfilePageContext from '../../context/ProfilePageContext'
 
 const HR = () => {
 
@@ -19,12 +21,15 @@ const HR = () => {
 
   return (
     <Root>
-      <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
-      <RouteContextProvider>
-        <Main setMobileOpen={setMobileOpen}>
-          <Routers />
-        </Main>
-      </RouteContextProvider>
+      <ProfilePageContext>
+        <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+        <RouteContextProvider>
+          <Main setMobileOpen={setMobileOpen}>
+            <Routers />
+            <Profile />
+          </Main>
+        </RouteContextProvider>
+      </ProfilePageContext>
     </Root>
   )
 }

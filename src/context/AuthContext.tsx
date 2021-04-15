@@ -79,8 +79,6 @@ const ACProvider = (props: { children: ReactNode }) => {
     setOpen(false)
   }
 
-  console.log(user)
-
   return (
     <AuthContext.Provider value={{ user, addUser, clearUser, logout, openPopup: open, quitLogout }}>
       {props.children}

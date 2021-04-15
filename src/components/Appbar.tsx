@@ -12,11 +12,9 @@ import {
   useMediaQuery
 } from '@material-ui/core'
 import {
-  useHistory
-} from 'react-router-dom'
-import {
   FiPower,
-  FiAlignLeft as MenuIcon
+  FiAlignLeft as MenuIcon,
+  FiMoreHorizontal as MoreIcon
 } from 'react-icons/fi'
 import Moment from 'react-moment'
 //import constants
@@ -25,17 +23,18 @@ import sibebarWidth from '../constants/sibebarWidth'
 //importing Context
 import { RouteContext } from '../context/RouteContext'
 import { AuthContext } from '../context/AuthContext'
+import { ProfileContext } from '../context/ProfilePageContext'
 
 // component
 const Appbar = React.memo(function Appbar(props: { setMobileOpen: () => void }) {
 
   const css = useCSS()
-  const history = useHistory()
   const isSM = useMediaQuery(useTheme().breakpoints.down('sm'))
 
   const [dateTime, setDateTime] = React.useState(new Date())
   const route = React.useContext(RouteContext)
   const { user, logout } = React.useContext(AuthContext)
+  const { openProfile } = React.useContext(ProfileContext)
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -74,14 +73,22 @@ const Appbar = React.memo(function Appbar(props: { setMobileOpen: () => void }) 
           <div className={css.time}>
             <Moment format="ddd DD, hh:mm a" date={dateTime} />
           </div>
-          <div className={css.displayNameContainer}>
-            <Button aria-label="profile" onClick={isSM ? handleClick : () => history.push('/profile')}>
-              <Avatar children={user.name[0].toUpperCase()} />
-              <Typography className={css.displayName} color="secondary" variant="h6">
-                {user.name}
-              </Typography>
-            </Button>
-          </div>
+          {
+            isSM ? (
+              <IconButton onClick={handleClick} aria-label="more" edge="end">
+                <MoreIcon />
+              </IconButton>
+            ) : (
+              <div className={css.displayNameContainer}>
+                  <Button aria-label="profile" onClick={openProfile}>
+                    <Avatar children={user.name[0].toUpperCase()} className={css.avatar} />
+                  <Typography className={css.displayName} color="secondary" variant="h6">
+                    {user.name}
+                  </Typography>
+                </Button>
+              </div>
+            )
+          }
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
@@ -90,7 +97,7 @@ const Appbar = React.memo(function Appbar(props: { setMobileOpen: () => void }) 
             onClose={handleClose}
           >
             <MenuItem
-              onClick={() => { history.push('/profile') }}
+              onClick={() => { openProfile(); handleClose() }}
             >
               Profile
             </MenuItem>
@@ -195,11 +202,17 @@ const useCSS = makeStyles(theme => ({
     textTransform: 'capitalize',
     [theme.breakpoints.down('sm')]: {
       display: 'none'
-    }
+    },
+    fontSize: theme.spacing(2.25)
   },
   logoutContainer: {
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
+  },
+  avatar: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    fontWeight: 600
   }
 }))

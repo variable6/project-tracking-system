@@ -4,7 +4,8 @@ import {
 } from '@material-ui/core'
 import {
   useState,
-  ChangeEvent
+  ChangeEvent,
+  useContext
 } from 'react'
 import { TabContext, TabList, TabPanel } from '@material-ui/lab'
 import {
@@ -12,8 +13,13 @@ import {
   FiUser as UserIcon
 } from 'react-icons/fi'
 import Card from './Card'
+import { ProfileContext } from '../context/ProfilePageContext'
+import { AuthContext } from '../context/AuthContext'
 
 const ProfilePage = () => {
+
+  const { isProfileOpen, closeProfile } = useContext(ProfileContext)
+  const { user } = useContext(AuthContext)
 
   const css = useCSS()
 
@@ -27,22 +33,23 @@ const ProfilePage = () => {
     <Drawer
       variant="temporary"
       anchor="right"
-      open={true}
-      onClose={() => null}
+      open={isProfileOpen}
+      onClose={closeProfile}
+
     >
       <div className={css.root} >
         <span className={css.bg} />
         <div className={css.container}>
-          <IconButton edge="start" aria-label="close-profile" onClick={() => null}>
+          <IconButton edge="start" aria-label="close-profile" onClick={closeProfile}>
             <CloseIcon />
           </IconButton>
           <div className={css.profileCont}>
             <div>
-              <Typography variant="h4" component="h4" color="secondary">
-                Pranay kumar
+              <Typography variant="h6" component="h4" color="secondary">
+                {user.name}
               </Typography>
               <Typography variant="body1" color="textPrimary">
-                210574
+                {user.employeeId}
               </Typography>
             </div>
             <Avatar className={css.profilAvatar}>
@@ -55,6 +62,7 @@ const ProfilePage = () => {
             <AppBar position="static" color="transparent" className={css.appBar}>
               <TabList onChange={handleChange} aria-label="simple tabs example">
                 <Tab label="Personal" value="1" />
+                <Tab label="" disabled className={css.fix} />
                 <Tab label="Person" value="2" />
               </TabList>
             </AppBar>
@@ -72,9 +80,12 @@ const ProfilePage = () => {
 
 export default ProfilePage;
 
-const useCSS = makeStyles(({ shape, palette, spacing }) => ({
+const useCSS = makeStyles(({ breakpoints, palette, spacing }) => ({
   root: {
-    width: 450,
+    width: '100vw',
+    [breakpoints.up('sm')]: {
+      width: 510
+    }
   },
   bg: {
     position: 'absolute',
@@ -91,7 +102,7 @@ const useCSS = makeStyles(({ shape, palette, spacing }) => ({
     marginTop: spacing(1.5),
     marginBottom: spacing(5),
     '& h4': {
-      fontSize: spacing(3.55)
+      fontSize: spacing(3.5)
     },
     display: 'flex',
     flexDirection: 'row',
@@ -107,5 +118,10 @@ const useCSS = makeStyles(({ shape, palette, spacing }) => ({
       fontSize: spacing(5)
     }
   },
-  appBar: { alignItems: 'center', boxShadow: 'none', marginBottom: spacing(2.5) }
+  appBar: { alignItems: 'center', boxShadow: 'none', marginBottom: spacing(2.5) },
+  fix: {
+    [breakpoints.up('sm')]: {
+      display: 'none'
+    }
+  }
 }))
