@@ -10,7 +10,7 @@ import {
 import { v4 as key } from 'uuid'
 
 // importing components
-import Sidebar from '../Sidebar'
+import Sidebar, { useStyles as useCSS } from '../Sidebar'
 
 // Props types
 interface Props {
@@ -66,39 +66,3 @@ const SidebarHR = ({ mobileOpen, setMobileOpen }: Props) => {
 }
 
 export default SidebarHR;
-
-
-
-const useCSS = makeStyles(({ spacing, palette, shape }) => ({
-  root: {
-    marginTop: 'auto',
-    marginBottom: 'auto',
-    marginLeft: spacing(2),
-    marginRight: spacing(2),
-    padding: spacing(1.25),
-    backgroundColor: palette.background.default,
-    borderRadius: shape.borderRadius
-  },
-  link: {
-    display: 'flex',
-    padding: `${spacing(1)}px ${spacing(1.75)}px`,
-    marginTop: spacing(1.25),
-    marginBottom: spacing(1.25),
-    fontSize: spacing(1.75),
-    letterSpacing: 0.35,
-    textTransform: 'uppercase',
-    fontWeight: 500,
-    textDecoration: 'none',
-    borderRadius: shape.borderRadius,
-    color: palette.primary.contrastText,
-    alignItems: 'center',
-    '& > svg': {
-      fontSize: spacing(2.75),
-      marginRight: spacing(1.25)
-    }
-  },
-  active: {
-    color: palette.primary.contrastText,
-    backgroundColor: palette.primary.main
-  }
-}))

@@ -204,7 +204,7 @@ const Login = () => {
     e.preventDefault()
     setState(c => ({ ...c, isSubmitting: true }))
     setActiveState(c => c + 1)
-    axios().post('/user/login', state.form)
+    axios().post('/login', state.form)
       .then(({ data }) => {
         setToken(data.token)
         addUser(data.user)

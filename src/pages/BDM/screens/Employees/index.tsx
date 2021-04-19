@@ -9,6 +9,8 @@ import setTitle from '../../../../constants/pageTitle'
 import storageKeys from '../../../../constants/storageKeys'
 import storage from '../../../../config/localStorageConfig'
 
+import Breadcrumbs from '../../../../components/Breadcrumbs'
+
 import Table from './EmpTable'
 
 import {
@@ -17,6 +19,8 @@ import {
 
 
 const pageName = 'Employees'
+
+// const 
 
 const Employees = () => {
 
@@ -44,7 +48,10 @@ const Employees = () => {
 
 
   return (
-    <Table employees={employees} />
+    <>
+      <Breadcrumbs links={[{ path: '/', label: 'Dashboard' }]} currentPage={pageName} />
+      <Table employees={employees} />
+    </>
   );
 }
 

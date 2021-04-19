@@ -59,13 +59,13 @@ const Empolyee = () => {
 
   // fetching data
   const fetchEmployees = () => {
-    axios.get('hr/emp/inactive')
+    navigator.onLine && axios.get('hr/emp/inactive')
       .then(({ data }) => {
         storage.add(keys.inActiveEmp, data)
         setInActiveEmps(data)
       })
       .catch(err => console.warn(err))
-    axios
+    navigator.onLine && axios
       .get('hr/emp')
       .then(({ data }) => {
         data = data.filter((emp: EmployeeType) => emp.employeeId !== user.employeeId)

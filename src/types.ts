@@ -21,6 +21,17 @@ export interface ProjectType {
   }
 }
 
+export interface ProjectType2 {
+  _id: string
+  projectId: string
+  projectTitle: string
+  projectDesc: string
+  startDate: Date
+  endDate: Date
+  manager_id: string,
+  managerName: string
+}
+
 export interface UserType {
   date: string | Date
   designation: "HR" | 'DEV' | 'BDM'

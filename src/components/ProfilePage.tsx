@@ -1,13 +1,15 @@
 import {
   makeStyles,
   Drawer, Typography, IconButton,
-  Avatar, AppBar, Tab, withStyles
+  Avatar, AppBar, Tab, withStyles, Button
 } from '@material-ui/core'
 import {
   useState,
   ChangeEvent,
-  useContext
+  useContext,
+  useEffect
 } from 'react'
+import { useHistory } from 'react-router-dom'
 import { TabContext, TabList, TabPanel } from '@material-ui/lab'
 import {
   FiChevronRight as CloseIcon,
@@ -16,7 +18,7 @@ import {
 import Card from './Card'
 import { ProfileContext } from '../context/ProfilePageContext'
 import { AuthContext } from '../context/AuthContext'
-
+import desigantion from '../constants/designation'
 
 const Profile = withStyles(({ breakpoints, spacing }) => ({
   root: {
@@ -26,6 +28,10 @@ const Profile = withStyles(({ breakpoints, spacing }) => ({
   }
 }))(Drawer)
 
+interface StateTypes {
+  options: '' | 'PWD' | 'EDIT'
+}
+
 const ProfilePage = () => {
 
   const { isProfileOpen, closeProfile } = useContext(ProfileContext)
@@ -33,11 +39,79 @@ const ProfilePage = () => {
 
   const css = useCSS()
 
+  const history = useHistory()
+
+  useEffect(() => {
+    const current = history.location.pathname
+    window.onpopstate = () => {
+      if (isProfileOpen) {
+        closeProfile()
+        history.replace(current)
+      }
+    }
+  }, [isProfileOpen])
+
   const [value, setValue] = useState('1');
+  const [state, setState] = useState<StateTypes>({
+    options: ''
+  })
 
   const handleChange = (event: ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
   };
+
+  const options = (
+    <Card title="Options">
+      <div style={{ display: 'flex', gap: 20 }}>
+        <Button style={{ fontWeight: 600 }} onClick={() => null} >
+          change password
+        </Button>
+        <Button style={{ fontWeight: 600 }} onClick={() => null}>
+          edit
+        </Button>
+      </div>
+
+    </Card>
+  )
+
+  const tabOne = (
+    <Card title="Profile">
+      <div className={css.detailsContainer}>
+        <div>
+          <Typography variant="body2" color="textSecondary">
+            Name
+          </Typography>
+          <Typography variant="h6" color="secondary">
+            {user.name}
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="body2" color="textSecondary">
+            Employee ID
+          </Typography>
+          <Typography variant="h6" color="secondary">
+            {user.employeeId}
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="body2" color="textSecondary">
+            Designation
+          </Typography>
+          <Typography variant="h6" color="secondary">
+            {desigantion[user.designation]}
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="body2" color="textSecondary">
+            Email
+          </Typography>
+          <Typography variant="h6" color="secondary">
+            {user.email}
+          </Typography>
+        </div>
+      </div>
+    </Card>
+  )
 
   return (
     <Profile
@@ -77,8 +151,8 @@ const ProfilePage = () => {
               </TabList>
             </AppBar>
             <TabPanel value="1" style={{ padding: 0 }}>
-              <Card title="Profile">
-              </Card>
+              {tabOne}
+              {options}
             </TabPanel>
             <TabPanel value="2">qwertwy</TabPanel>
           </TabContext>
@@ -132,6 +206,12 @@ const useCSS = makeStyles(({ breakpoints, palette, spacing }) => ({
   fix: {
     [breakpoints.up('sm')]: {
       display: 'none'
+    }
+  },
+  detailsContainer: {
+    paddingLeft: 7,
+    '& > div': {
+      marginTop: spacing(1.5)
     }
   }
 }))

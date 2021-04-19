@@ -48,7 +48,8 @@ const App = () => {
   })
 
   useEffect(() => {
-    fetchMethod()
+    if (navigator.onLine) {
+      fetchMethod()
       .get('')
       .then(({ data }) => {
         if (!data.isLogin)
@@ -57,7 +58,15 @@ const App = () => {
           isLoading: false
         })
       })
-      .catch(e => console.log(e))
+        .catch(e => {
+          console.log(e)
+          setState({
+            isLoading: false
+          })
+        })
+    } else {
+      setState({ isLoading: false })
+    }
   }, [])
 
   const history = useHistory()

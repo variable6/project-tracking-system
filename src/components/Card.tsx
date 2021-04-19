@@ -34,14 +34,18 @@ const useCSS = makeStyles(theme => ({
 interface PropTypes {
   children: ReactNode,
   title?: string
+  marginTop?: number | string,
+  noshadow?: boolean
 }
 
-const Card = ({ children, title }: PropTypes) => {
+const Card = ({ children, title, marginTop, noshadow }: PropTypes) => {
 
   const css = useCSS()
 
+  const filter = noshadow ? 'none' : ''
+
   return (
-    <Paper elevation={0} className={css.paper}>
+    <Paper elevation={0} className={css.paper} style={marginTop ? { marginTop, filter } : {}}>
       {
         title ? (
           <div className={css.titleContainer}>

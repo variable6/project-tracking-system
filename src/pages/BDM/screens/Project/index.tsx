@@ -3,20 +3,22 @@ import {
   useEffect,
   useState
 } from 'react'
-import { Typography, makeStyles } from '@material-ui/core'
+import { Typography, Button, makeStyles } from '@material-ui/core'
 import {
   ToggleButtonGroup,
   ToggleButton
 } from '@material-ui/lab'
 import {
   FiLayout as TableIcon,
-  FiList as ListIcon
+  FiList as ListIcon,
+  FiPlus as AddIcon
 } from 'react-icons/fi'
 
 import { RouteContext } from '../../../../context/RouteContext'
 
 import ProjectCard from './ProjectAccordion'
 import Card from '../../../../components/Card'
+import Breadcrumbs from '../../../../components/Breadcrumbs'
 
 import axiosFetch from '../../../../config/axiosConfig'
 import storage from '../../../../config/localStorageConfig'
@@ -25,8 +27,10 @@ import setTitle from '../../../../constants/pageTitle'
 import storageKeys from '../../../../constants/storageKeys'
 
 import {
-  ProjectType
+  ProjectType, ProjectType2
 } from '../../../../types'
+import ProjectTable from './ProjectTable'
+import ProjectDelete from './ProjectDelete'
 
 
 
@@ -57,6 +61,13 @@ const creatProjectList = (val: ProjectTypeParams[]) => val.map(project => ({
     name: project.managerId.name
   }
 }))
+interface DeleteType {
+  open: boolean
+  data: {
+    projectId: string,
+    projectTitle: string
+  }
+}
 
 const Project = () => {
 
@@ -65,6 +76,48 @@ const Project = () => {
 
   const projectLS = storage.get(storageKeys.projectsBDM)
   const [projects, setProjects] = useState<ProjectType[]>(projectLS ? projectLS : [])
+
+  const [deleteProject, setDeleteProject] = useState<DeleteType>({
+    open: false,
+    data: {
+      projectTitle: '',
+      projectId: ''
+    }
+  })
+
+  const setDelete = (id: string, title: string) => {
+    setDeleteProject(c => ({
+      open: true,
+      data: {
+        projectTitle: title,
+        projectId: id
+      }
+    }))
+  }
+  const closeDelete = () => {
+    setDeleteProject({
+      open: false,
+      data: {
+        projectTitle: '',
+        projectId: ''
+      }
+    })
+  }
+
+  let records: ProjectType2[] = []
+
+  if (projects.length !== 0)
+    records = projects.map(project => ({
+      projectDesc: project.projectDesc,
+      projectId: project.projectId,
+      projectTitle: project.projectTitle,
+      _id: project._id,
+      startDate: project.startDate,
+      endDate: project.endDate,
+      managerName: project.manager.name,
+      manager_id: project.manager._id
+    }))
+
 
   const [layout, setLayout] = useState<'LIST' | 'TABLE'>('LIST')
 
@@ -88,22 +141,33 @@ const Project = () => {
   }, [])
 
   return (
-    <Card title="All Projects" >
-      <div className={css.toolBar}>
-        <Typography variant="h5" color="textPrimary">
-          Filters
-        </Typography>
-        <ToggleButtonGroup exclusive value={layout} onChange={(e, newLayout) => { setLayout(newLayout) }}>
-          <ToggleButton value="LIST" aria-label="List Layout">
-            <ListIcon className={css.icon} />
-          </ToggleButton>
-          <ToggleButton value="TABLE" aria-label="Table Layout">
-            <TableIcon className={css.icon} />
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </div>
-      <ProjectCard projects={projects} />
-    </Card>
+    <>
+      <Breadcrumbs currentPage={pageName} links={[{ label: 'Dashboard', path: '/' }]} />
+      <Card title="All Projects" >
+        <div className={css.toolBar}>
+          <Typography variant="h6" color="textPrimary">
+            Filters
+          </Typography>
+          <div className={css.cont}>
+            <Button disableElevation variant="contained" className={css.addBtn}>
+              <AddIcon />&nbsp;&nbsp;Add Project
+            </Button>
+            <ToggleButtonGroup exclusive value={layout}
+              onChange={(e, newLayout) => { setLayout(newLayout) }}>
+              <ToggleButton value="LIST" aria-label="List Layout">
+                <ListIcon className={css.icon} />
+              </ToggleButton>
+              <ToggleButton value="TABLE" aria-label="Table Layout">
+                <TableIcon className={css.icon} />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </div>
+        </div>
+        {layout === 'LIST' && <ProjectCard projects={records} setDelete={setDelete} />}
+        {layout === 'TABLE' && <ProjectTable projects={records} />}
+        <ProjectDelete projectDetails={deleteProject.data} isOpen={deleteProject.open} closeDelete={closeDelete} />
+      </Card>
+    </>
   );
 }
 
@@ -120,5 +184,21 @@ const useCSS = makeStyles(({ palette, spacing }) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: spacing(1.5)
+  },
+  cont: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: spacing(2)
+  },
+  addBtn: {
+    height: '100%',
+    backgroundColor: palette.common.white,
+    color: palette.secondary.main,
+    fontWeight: 600,
+    paddingTop: spacing(1.25),
+    paddingBottom: spacing(1.25),
+    '&:hover': {
+      backgroundColor: palette.common.white
+    }
   }
 }))
