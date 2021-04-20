@@ -15,6 +15,9 @@ const useCSS = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(3)
     },
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: theme.mixins.toolbar.minHeight
+    },
     position: 'relative'
   }
 }))
@@ -22,13 +25,12 @@ const useCSS = makeStyles(theme => ({
 // Props Type
 interface Props {
   children: React.ReactNode
-  setMobileOpen: () => void
 }
 // component
-const MainContainer = React.memo(function MainContainer({ children, setMobileOpen }: Props) {
+const MainContainer = React.memo(function MainContainer({ children }: Props) {
   return (
     <div style={{ flexGrow: 1, maxWidth: '100vw' }}>
-      <Appbar setMobileOpen={setMobileOpen} />
+      <Appbar />
       <main className={useCSS().container}>
         {children}
       </main>

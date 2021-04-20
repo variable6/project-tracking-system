@@ -3,7 +3,7 @@ import { Button as Btn } from '@material-ui/core'
 //type
 interface Props {
   label: string
-  onClick: (...args: any) => any
+  onClick?: (...args: any) => any
   type?: "button" | "submit" | "reset"
 }
 

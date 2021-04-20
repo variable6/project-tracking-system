@@ -12,19 +12,13 @@ import ProfilePageContext from '../../context/ProfilePageContext'
 
 const HR = () => {
 
-  const [mobileOpen, setMobileOpen1] = React.useState(false)
-
-  const setMobileOpen = () => {
-    setMobileOpen1(c => !c)
-  }
-
 
   return (
     <Root>
       <ProfilePageContext>
-        <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+        <Sidebar />
         <RouteContextProvider>
-          <Main setMobileOpen={setMobileOpen}>
+          <Main>
             <Routers />
             <Profile />
           </Main>

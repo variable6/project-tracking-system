@@ -7,17 +7,13 @@ import Routes from './DEV.routes'
 
 const ProjectManager = () => {
 
-  const [sidebar, setSidebar] = useState(false)
 
-  const setMobileOpen = () => {
-    setSidebar(!sidebar)
-  }
 
   return (
     <Root>
-      <Sidebar mobileOpen={sidebar} setMobileOpen={setMobileOpen} />
+      <Sidebar />
       <RouteContextProvider>
-        <MainContainer setMobileOpen={setMobileOpen}>
+        <MainContainer >
           <Routes />
         </MainContainer>
       </RouteContextProvider>

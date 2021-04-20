@@ -1,6 +1,7 @@
 import React, {
   useState,
-  useContext
+  useContext,
+  useEffect
 } from 'react'
 import clsx from 'clsx'
 import {
@@ -17,6 +18,7 @@ import {
   FiKey as PwdIcon,
   FiChevronsRight as CLoseIcon
 } from 'react-icons/fi'
+import { useHistory } from 'react-router-dom'
 //importing assets
 // import Pattern from '../../assets/images/patternpad.svg'
 import Logo from '../../components/Logo'
@@ -131,6 +133,8 @@ const useCSS = makeStyles(({ palette, spacing, breakpoints }) => ({
 }))
 
 const Login = () => {
+
+  const history = useHistory()
 
   const initState = {
     open: false,
@@ -265,12 +269,26 @@ const Login = () => {
     );
   }
 
+  useEffect(() => {
+    window.onpopstate = () => {
+      if (state.open) {
+        closeLogin()
+        history.replace('/')
+      }
+    }
+  }, [state])
+
+  const openLogin = () => {
+    setState(cur => ({
+      ...cur,
+      open: !state.open
+    }))
+    history.push('/')
+  }
+
   return (
     <>
-      <button onClick={() => setState(cur => ({
-        ...cur,
-        open: !state.open
-      }))}>Login</button>
+      <button onClick={openLogin}>Login</button>
       <Drawer classes={{ paper: css.page, root: css.root, docked: css.docked }}
         anchor="right" variant="temporary"
         open={state.open}

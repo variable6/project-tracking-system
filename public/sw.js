@@ -9,10 +9,10 @@ const assets = [
   '/manifest.json',
   '/favicon.png',
   'https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&family=Open+Sans:wght@300;400;600;700;800&display=swap',
-  `/static/js/2.4e9d4e18.chunk.js`,
-  '/static/js/main.5aed7d96.chunk.js',
-  '/static/js/3.4ff2306c.chunk.js',
-  '/static/js/runtime-main.144293fb.js',
+  `/static/js/2.2a4f905d.chunk.js`,
+  '/static/js/main.7dc35c2a.chunk.js',
+  '/static/js/3.35ab7edc.chunk.js ',
+  '/static/js/runtime-main.278b9ea6.js',
   '/static/css/main.3e6a0a69.chunk.css'
 ]
 

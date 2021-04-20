@@ -111,7 +111,7 @@ const ProjectDelete = (props: {
             <div style={{ position: 'relative' }}>
               {isSubmitting && <FormLoader />}
               <Typography variant="body1" color="secondary">
-                To delete the project <strong>{projectId} - {projectTitle}</strong>, enter your password to confrim.
+                To delete the project <strong>{projectTitle}</strong>, enter your password to confrim.
               </Typography>
               <form
                 onSubmit={e => {

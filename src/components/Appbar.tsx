@@ -26,7 +26,7 @@ import { AuthContext } from '../context/AuthContext'
 import { ProfileContext } from '../context/ProfilePageContext'
 
 // component
-const Appbar = React.memo(function Appbar(props: { setMobileOpen: () => void }) {
+const Appbar = React.memo(function Appbar() {
 
   const css = useCSS()
   const isSM = useMediaQuery(useTheme().breakpoints.down('sm'))
@@ -61,12 +61,6 @@ const Appbar = React.memo(function Appbar(props: { setMobileOpen: () => void }) 
     <div className={css.appbar}>
       <div className={css.toolbar}>
         <div className={css.bar}>
-          {isSM && (
-            <IconButton style={{ marginRight: 5 }}
-              edge="start" onClick={props.setMobileOpen} >
-              <MenuIcon />
-            </IconButton>
-          )}
           <Typography variant="h5" style={{ fontWeight: 600, flexGrow: 1 }} color="secondary">
             {route.context.pageTitle}
           </Typography>

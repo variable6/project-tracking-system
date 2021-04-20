@@ -3,9 +3,12 @@ import {
   Hidden,
   Drawer,
   makeStyles,
-  Button, AppBar, Toolbar, Typography, BottomNavigation
+  Button, AppBar, Toolbar, BottomNavigation, BottomNavigationAction
 } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
+import {
+  v4 as setKey
+} from 'uuid'
 // importing constants
 import drawerWidth from '../constants/sibebarWidth'
 import shadow from '../constants/backgroundShadow'
@@ -43,77 +46,72 @@ const useCSS = makeStyles(theme => ({
     boxShadow: 'none',
     backgroundColor: theme.palette.background.paper,
     filter: shadow
+  },
+  bottomNav: {
+    width: '100%',
+    '& svg': {
+      fontSize: theme.spacing(2.75),
+      marginBottom: theme.spacing(-0.5)
+    }
   }
 }))
 // Props type
 interface Props {
-  mobileOpen: boolean
-  setMobileOpen: () => void
   children: React.ReactNode
-  mobileSidebar: React.ReactNode
+  mobileNavbar: { label: string, path: string, icon: React.ReactNode }[]
 }
 // Componet
-const Sidebar = ({ mobileOpen, setMobileOpen, children, mobileSidebar }: Props) => {
+const Sidebar = ({ children, mobileNavbar }: Props) => {
 
   const drawer = children
   const classes = useCSS()
   const history = useHistory()
-  // toggle handler for small devices
-  const handleDrawerToggle = () => {
-    setMobileOpen()
-  };
+
+  const [bottomNav, setBottomNav] = React.useState(history.location.pathname)
+
+
+  React.useEffect(() => {
+    return history.listen(location => {
+      setBottomNav(location.pathname)
+    })
+  }, [history])
+
+  const bottomNavHandler = (event: React.ChangeEvent<{}>, newValue: string) => {
+    history.push(newValue)
+  }
 
   return (
     <>
       <nav className={classes.drawer} aria-label="sidebar navigation">
-      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        {/* <Hidden mdUp implementation="css">
-        <Drawer
-          // container={container}
-          variant="temporary"
-          anchor="left"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          classes={{
-            paper: classes.drawerPaper,
-            paperAnchorDockedLeft: classes.border
-          }}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-        >
-          <Button onClick={() => { history.replace('/'); setMobileOpen() }}
-            className={classes.logoContainer}
-            aria-label="WorkSpace"
+        <Hidden smDown implementation="css">
+          <Drawer
+            classes={{
+              paper: classes.drawerPaper,
+              paperAnchorDockedLeft: classes.border
+            }}
+            variant="permanent"
+            open
           >
-            <WorkspaceLogo />
-          </Button>
-          {mobileSidebar}
-          <span style={{ marginBottom: 'auto', marginTop: 'auto' }} />
-        </Drawer>
-      </Hidden> */}
-      <Hidden smDown implementation="css">
-        <Drawer
-          classes={{
-            paper: classes.drawerPaper,
-            paperAnchorDockedLeft: classes.border
-          }}
-          variant="permanent"
-          open
-        >
-          <Button aria-label="WorkSpace" onClick={() => history.replace('/')}
-            className={classes.logoContainer}>
-            <WorkspaceLogo />
-          </Button>
-          {drawer}
-        </Drawer>
-      </Hidden>
-    </nav>
+            <Button aria-label="WorkSpace" onClick={() => history.push('/')}
+              className={classes.logoContainer}>
+              <WorkspaceLogo />
+            </Button>
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
       <Hidden mdUp implementation="css">
         <AppBar position="fixed" color="default" className={classes.appbar}>
           <Toolbar>
-            <BottomNavigation>
-
+            <BottomNavigation value={bottomNav}
+              onChange={bottomNavHandler} className={classes.bottomNav}>
+              {
+                mobileNavbar.map(link => (
+                  <BottomNavigationAction key={setKey()}
+                    label="︎•" value={link.path} icon={link.icon}
+                  />
+                ))
+              }
             </BottomNavigation>
           </Toolbar>
         </AppBar>

@@ -53,7 +53,7 @@ const Form = withStyles(({ spacing, breakpoints, palette }) => ({
     }
   }
 }))(Drawer)
-const useCSS = makeStyles(({ spacing, palette, shape, breakpoints, shadows }) => ({
+const useCSS = makeStyles(({ spacing, palette, shape, breakpoints, mixins }) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -118,7 +118,8 @@ const useCSS = makeStyles(({ spacing, palette, shape, breakpoints, shadows }) =>
   fab: {
     zIndex: 999,
     position: 'fixed',
-    bottom: spacing(2.5),
+    bottom: mixins.toolbar.minHeight,
+    marginBottom: spacing(2.5),
     right: spacing(2.5),
     backgroundColor: palette.primary.main,
     color: palette.secondary.main,

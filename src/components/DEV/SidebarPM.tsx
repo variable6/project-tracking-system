@@ -1,21 +1,12 @@
 import Sidebar from "../Sidebar"
 
-// Props types
-interface Props {
-  mobileOpen: boolean
-  setMobileOpen: any
-}
 
 
-const SidebarPM = ({ mobileOpen, setMobileOpen }: Props) => {
 
-  const mobileSidebar = (
-    <>
-    </>
-  )
+const SidebarPM = () => {
 
   return (
-    <Sidebar mobileSidebar={mobileSidebar} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} >
+    <Sidebar mobileNavbar={[]} >
       sd
     </Sidebar>
   );

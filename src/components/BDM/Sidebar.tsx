@@ -34,31 +34,13 @@ const navLinks: { label: string, path: string, icon: ReactNode }[] = [
 ]
 
 
-const SidebarBDM = (props: { setMobileOpen: () => void, mobileOpen: boolean }) => {
+const SidebarBDM = () => {
 
   const css = useStyles()
 
-  const mobileSidebar = (
-    <div className={css.root}>
-      {
-        navLinks.map(link => (
-          <NavLink onClick={e => {
-            props.setMobileOpen()
-          }} key={key()} to={link.path} exact
-            className={css.link} activeClassName={css.active}>
-            {link.icon}
-            {link.label}
-          </NavLink>
-        ))
-      }
-    </div>
-  )
-
   return (
     <Sidebar
-      setMobileOpen={props.setMobileOpen}
-      mobileSidebar={mobileSidebar}
-      mobileOpen={props.mobileOpen}
+      mobileNavbar={navLinks}
     >
       <div className={css.root}>{
         navLinks.map(link => (

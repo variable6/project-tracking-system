@@ -12,11 +12,6 @@ import { v4 as key } from 'uuid'
 // importing components
 import Sidebar, { useStyles as useCSS } from '../Sidebar'
 
-// Props types
-interface Props {
-  mobileOpen: boolean
-  setMobileOpen: any
-}
 
 const navLinks: { label: string, path: string, icon: ReactNode }[] = [
   {
@@ -30,29 +25,12 @@ const navLinks: { label: string, path: string, icon: ReactNode }[] = [
   }
 ]
 
-const SidebarHR = ({ mobileOpen, setMobileOpen }: Props) => {
+const SidebarHR = () => {
 
   const css = useCSS()
 
-  const mobileSidebar = (
-    <div className={css.root}>
-      {
-        navLinks.map(link => (
-          <NavLink onClick={e => {
-            setMobileOpen()
-          }} key={key()} to={link.path} exact
-            className={css.link} activeClassName={css.active}>
-            {link.icon}
-            {link.label}
-          </NavLink>
-        ))
-      }
-    </div>
-  )
-
   return (
-    <Sidebar mobileSidebar={mobileSidebar}
-      mobileOpen={mobileOpen} setMobileOpen={setMobileOpen}>
+    <Sidebar mobileNavbar={navLinks}>
       <div className={css.root}>{
         navLinks.map(link => (
           <NavLink key={key()} to={link.path} exact className={css.link} activeClassName={css.active}>

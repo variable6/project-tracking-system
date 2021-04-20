@@ -3,6 +3,7 @@ import {
   useState,
   ReactNode
 } from 'react'
+import { useHistory } from 'react-router-dom'
 
 interface ProfilePageType {
   isProfileOpen: boolean
@@ -19,10 +20,11 @@ const ProfileContext = createContext<ProfilePageType>({
 const ProfilePageContext = (props: { children: ReactNode }) => {
 
   const [state, setState] = useState(false)
-
+  const history = useHistory()
 
   const openProfile = () => {
     setState(true)
+    history.push(history.location.pathname)
   }
   const closeProfile = () => {
     setState(false)

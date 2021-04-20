@@ -17,6 +17,9 @@ import {
 import { RouteContext } from '../../../../context/RouteContext'
 
 import ProjectCard from './ProjectAccordion'
+import ProjectTable from './ProjectTable'
+import ProjectDelete from './ProjectDelete'
+import Form from './ProjectForm'
 import Card from '../../../../components/Card'
 import Breadcrumbs from '../../../../components/Breadcrumbs'
 
@@ -27,10 +30,9 @@ import setTitle from '../../../../constants/pageTitle'
 import storageKeys from '../../../../constants/storageKeys'
 
 import {
-  ProjectType, ProjectType2
+  ProjectType, ProjectType2, EmployeeType
 } from '../../../../types'
-import ProjectTable from './ProjectTable'
-import ProjectDelete from './ProjectDelete'
+
 
 
 
@@ -74,8 +76,26 @@ const Project = () => {
   const route = useContext(RouteContext)
   const css = useCSS()
 
+  const empLS = storage.get(storageKeys.employeeBDM)
+  const [employees, setEmployees] = useState<EmployeeType[]>(empLS ? empLS : [])
+
+  const fetchEmployees = () => {
+    axiosFetch()
+      .get('/bdm/emp')
+      .then(({ data }) => {
+        setEmployees(data)
+        storage.add(storageKeys.employeeBDM, data)
+      })
+      .catch(e => console.error(e))
+  }
+
   const projectLS = storage.get(storageKeys.projectsBDM)
   const [projects, setProjects] = useState<ProjectType[]>(projectLS ? projectLS : [])
+  const [openForm, setOpenForm] = useState(false)
+
+  const toggleForm = () => {
+    setOpenForm(!openForm)
+  }
 
   const [deleteProject, setDeleteProject] = useState<DeleteType>({
     open: false,
@@ -136,6 +156,7 @@ const Project = () => {
 
   useEffect(() => {
     fetchProjects()
+    fetchEmployees()
     route.setPageTitle(pageName)
     setTitle(pageName)
   }, [])
@@ -149,7 +170,8 @@ const Project = () => {
             Filters
           </Typography>
           <div className={css.cont}>
-            <Button disableElevation variant="contained" className={css.addBtn}>
+            <Button disableElevation variant="contained"
+              onClick={toggleForm} className={css.addBtn}>
               <AddIcon />&nbsp;&nbsp;Add Project
             </Button>
             <ToggleButtonGroup exclusive value={layout}
@@ -165,7 +187,9 @@ const Project = () => {
         </div>
         {layout === 'LIST' && <ProjectCard projects={records} setDelete={setDelete} />}
         {layout === 'TABLE' && <ProjectTable projects={records} />}
-        <ProjectDelete projectDetails={deleteProject.data} isOpen={deleteProject.open} closeDelete={closeDelete} />
+        <ProjectDelete projectDetails={deleteProject.data}
+          isOpen={deleteProject.open} closeDelete={closeDelete} />
+        <Form isOpen={openForm} toggleForm={toggleForm} employees={employees} fetchProjects={fetchProjects} />
       </Card>
     </>
   );
