@@ -50,8 +50,9 @@ const useCSS = makeStyles(theme => ({
   bottomNav: {
     width: '100%',
     '& svg': {
-      fontSize: theme.spacing(2.75),
-      marginBottom: theme.spacing(-0.5)
+      fontSize: theme.spacing(2.85),
+      marginBottom: theme.spacing(-1.2),
+      marginTop: theme.spacing(0.75)
     }
   }
 }))
@@ -103,12 +104,12 @@ const Sidebar = ({ children, mobileNavbar }: Props) => {
       <Hidden mdUp implementation="css">
         <AppBar position="fixed" color="default" className={classes.appbar}>
           <Toolbar>
-            <BottomNavigation value={bottomNav}
+            <BottomNavigation value={bottomNav} showLabels
               onChange={bottomNavHandler} className={classes.bottomNav}>
               {
                 mobileNavbar.map(link => (
                   <BottomNavigationAction key={setKey()}
-                    label="︎•" value={link.path} icon={link.icon}
+                    label="︎" value={link.path} icon={link.icon}
                   />
                 ))
               }

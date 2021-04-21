@@ -3,7 +3,8 @@ import {
   useEffect,
   useState
 } from 'react'
-import { Typography, Button, makeStyles } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
+import { Typography, Button, makeStyles, Hidden, Fab } from '@material-ui/core'
 import {
   ToggleButtonGroup,
   ToggleButton
@@ -73,6 +74,7 @@ interface DeleteType {
 
 const Project = () => {
 
+  const history = useHistory()
   const route = useContext(RouteContext)
   const css = useCSS()
 
@@ -95,6 +97,11 @@ const Project = () => {
 
   const toggleForm = () => {
     setOpenForm(!openForm)
+  }
+
+  const openProjectFrom = () => {
+    history.push(history.location.pathname)
+    toggleForm()
   }
 
   const [deleteProject, setDeleteProject] = useState<DeleteType>({
@@ -170,10 +177,12 @@ const Project = () => {
             Filters
           </Typography>
           <div className={css.cont}>
-            <Button disableElevation variant="contained"
-              onClick={toggleForm} className={css.addBtn}>
-              <AddIcon />&nbsp;&nbsp;Add Project
-            </Button>
+            <Hidden smDown implementation="css">
+              <Button disableElevation variant="contained"
+                onClick={openProjectFrom} className={css.addBtn}>
+                <AddIcon />&nbsp;&nbsp;Add Project
+              </Button>
+            </Hidden>
             <ToggleButtonGroup exclusive value={layout}
               onChange={(e, newLayout) => { setLayout(newLayout) }}>
               <ToggleButton value="LIST" aria-label="List Layout">
@@ -191,6 +200,16 @@ const Project = () => {
           isOpen={deleteProject.open} closeDelete={closeDelete} />
         <Form isOpen={openForm} toggleForm={toggleForm} employees={employees} fetchProjects={fetchProjects} />
       </Card>
+      <Hidden mdUp implementation="css" >
+        <Fab variant="extended" aria-label="Add Project"
+          className={css.fab} onClick={openProjectFrom} >
+          <AddIcon />
+          <Hidden xsDown implementation="css">
+            &nbsp;Add Project
+          </Hidden>
+        </Fab>
+        <div className={css.fix} />
+      </Hidden>
     </>
   );
 }
@@ -198,7 +217,7 @@ const Project = () => {
 export default Project;
 
 
-const useCSS = makeStyles(({ palette, spacing }) => ({
+const useCSS = makeStyles(({ palette, spacing, mixins }) => ({
   icon: {
     color: palette.secondary.light,
     fontSize: spacing(2.5)
@@ -224,5 +243,23 @@ const useCSS = makeStyles(({ palette, spacing }) => ({
     '&:hover': {
       backgroundColor: palette.common.white
     }
+  },
+  fab: {
+    zIndex: 999,
+    position: 'fixed',
+    bottom: mixins.toolbar.minHeight,
+    marginBottom: spacing(2.5),
+    right: spacing(2.5),
+    backgroundColor: palette.primary.main,
+    color: palette.secondary.main,
+    fontWeight: 600,
+    '&:hover': {
+      backgroundColor: palette.primary.dark
+    },
+    boxShadow: 'none',
+    filter: 'drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.25))'
+  },
+  fix: {
+    height: spacing(8)
   }
 }))

@@ -63,7 +63,7 @@ const ProjectAccordion = (props: {
           <Select
             labelId="employee-search-label"
             id="employee-search"
-            // className={css.searchBy}
+            className={css.searchBy}
             value={searchBy}
             onChange={({ target }) => setSearchBy(`${target.value}`)}
           >
@@ -125,7 +125,8 @@ const ProjectAccordion = (props: {
                   </section>
                 </Card>
                 <Card title="Description" marginTop="0" noshadow={true}>
-                  <Typography variant="body1" color="textPrimary">
+                  <Typography variant="body1"
+                    style={{ whiteSpace: 'pre-line' }} color="textPrimary">
                     {project.projectDesc}
                   </Typography>
                 </Card>
@@ -217,9 +218,27 @@ const useCSS = makeStyles(({ palette, shape, spacing, breakpoints }) => ({
   },
   tooltip: {
     display: 'flex',
-    alignItems: 'center',
-    gap: spacing(2),
+    flexDirection: 'column',
+    [breakpoints.only('sm')]: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    [breakpoints.up('lg')]: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
     marginBottom: spacing(2)
+  },
+  searchBy: {
+    marginBottom: 10,
+    [breakpoints.only('sm')]: {
+      marginBottom: 0,
+      marginRight: spacing(1.5)
+    },
+    [breakpoints.up('lg')]: {
+      marginBottom: 0,
+      marginRight: spacing(1.5)
+    }
   },
   btnCtn: {
     display: 'flex',

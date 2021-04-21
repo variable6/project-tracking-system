@@ -4,13 +4,16 @@ import {
   TextField,
   makeStyles,
   Typography,
-  Divider
+  Divider,
+  IconButton
 } from '@material-ui/core'
 import {
   useRef,
-  useState, useContext
+  useState, useContext, useEffect
 } from 'react'
+import { useHistory } from 'react-router-dom'
 import { v4 as setKey } from 'uuid'
+import { FiChevronRight as BackIcon } from 'react-icons/fi'
 
 import {
   EmployeeType
@@ -44,6 +47,8 @@ interface PropsTypes {
 const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsTypes) => {
 
   const css = useCSS()
+  const history = useHistory()
+
   const projectTitle = useRef<HTMLInputElement>(null)
   const projectDesc = useRef<HTMLInputElement>(null)
   const managerId = useRef<HTMLInputElement>(null)
@@ -61,12 +66,12 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
     };
   })
 
-  const closeForm = () => {
-    toggleForm()
-  }
-
   const secBtnHandler = () => {
     formRef.current?.reset()
+  }
+  const closeForm = () => {
+    toggleForm()
+    secBtnHandler()
   }
   // getting manager 
   const getManager = () => {
@@ -92,6 +97,16 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
     else
       return null
   }
+
+  useEffect(() => {
+    const current = history.location.pathname
+    window.onpopstate = () => {
+      if (isOpen) {
+        closeForm()
+        history.replace(current)
+      }
+    }
+  }, [isOpen])
 
   const submitHandler = (e: any) => {
     e.preventDefault()
@@ -145,9 +160,12 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
       onClose={closeForm}
     >
       <div className={css.formCont}>
-        {/* <FormLoader /> */}
-        <Typography variant="h4" color="textPrimary">
-          Add Project
+        {isSubmitting && <FormLoader />}
+        <Typography variant="h4" color="textPrimary" className={css.title}>
+          <IconButton edge="start" aria-label="Close" onClick={closeForm}>
+            <BackIcon />
+          </IconButton>
+          &nbsp;Add Project
         </Typography>
         <div className={css.divider} />
         <Divider />
@@ -198,11 +216,14 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
 
 export default ProjectForm
 
-const useCSS = makeStyles(({ spacing }) => ({
+const useCSS = makeStyles(({ spacing, breakpoints }) => ({
   formCont: {
     width: spacing(70),
     position: 'relative',
-    padding: spacing(2)
+    padding: spacing(2),
+    [breakpoints.down(spacing(70))]: {
+      width: '100vw'
+    }
   },
   form: {
     display: 'flex',
@@ -222,5 +243,9 @@ const useCSS = makeStyles(({ spacing }) => ({
   },
   btnFix: {
     width: spacing(2)
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }))
