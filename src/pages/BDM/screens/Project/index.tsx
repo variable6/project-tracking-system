@@ -21,6 +21,7 @@ import ProjectCard from './ProjectAccordion'
 import ProjectTable from './ProjectTable'
 import ProjectDelete from './ProjectDelete'
 import Form from './ProjectForm'
+import EditFrom from './EditForm'
 import Card from '../../../../components/Card'
 import Breadcrumbs from '../../../../components/Breadcrumbs'
 
@@ -95,6 +96,15 @@ const Project = () => {
   const [projects, setProjects] = useState<ProjectType[]>(projectLS ? projectLS : [])
   const [openForm, setOpenForm] = useState(false)
 
+  const [curProject, setCurProject] = useState<ProjectType2 | null>(null)
+
+  const addCurProject = (project: ProjectType2) => {
+    setCurProject(project)
+  }
+  const clearCurProject = () => {
+    setCurProject(null)
+  }
+
   const toggleForm = () => {
     setOpenForm(!openForm)
   }
@@ -152,7 +162,6 @@ const Project = () => {
     axiosFetch()
       .get('/bdm/project')
       .then(({ data }) => {
-        console.log(data)
         data = creatProjectList(data)
         setProjects(data)
         storage.add(storageKeys.projectsBDM, data)
@@ -198,7 +207,8 @@ const Project = () => {
         {layout === 'TABLE' && <ProjectTable projects={records} />}
         <ProjectDelete projectDetails={deleteProject.data}
           isOpen={deleteProject.open} closeDelete={closeDelete} />
-        <Form isOpen={openForm} toggleForm={toggleForm} employees={employees} fetchProjects={fetchProjects} />
+        <Form toggleForm={toggleForm} isOpen={openForm} employees={employees} fetchProjects={fetchProjects} />
+        <EditFrom />
       </Card>
       <Hidden mdUp implementation="css" >
         <Fab variant="extended" aria-label="Add Project"

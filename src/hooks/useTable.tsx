@@ -65,8 +65,8 @@ const useTable = ({ records, headCells, filterFN }: UseTableTypes) => {
   const [orderBy, setOrderBy] = useState();
 
   const TblContainer = (props: any) => (
-    <TableContainer style={{ width: '100%' }} component="div">
-      <Table className={styles.table} >
+    <TableContainer style={{ width: '100%', maxHeight: '50vh' }} component="div" >
+      <Table className={styles.table} stickyHeader >
         {props.children}
       </Table>
     </TableContainer>

@@ -44,6 +44,7 @@ interface PropsTypes {
   fetchProjects: () => void
 }
 
+
 const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsTypes) => {
 
   const css = useCSS()
@@ -52,7 +53,10 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
   const projectTitle = useRef<HTMLInputElement>(null)
   const projectDesc = useRef<HTMLInputElement>(null)
   const managerId = useRef<HTMLInputElement>(null)
+  const startDate = useRef<HTMLInputElement>(null)
+  const endDate = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
+
 
   const { openAlert } = useContext(AlertContext)
 
@@ -98,6 +102,7 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
       return null
   }
 
+
   useEffect(() => {
     const current = history.location.pathname
     window.onpopstate = () => {
@@ -111,20 +116,37 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
   const submitHandler = (e: any) => {
     e.preventDefault()
 
-    setIsSubmitting(true)
-
+    if (!navigator.onLine) return null
+    
+    const sdate = startDate.current?.value ? new Date(startDate.current?.value) : null
+    const edate = endDate.current?.value ? new Date(endDate.current?.value) : null
     const projectManagerID = getManager()
     const projectId = generateId()
     const title = projectTitle.current?.value
     const desc = projectDesc.current?.value
 
+    const data = (sdate && edate) ? {
+      projectId,
+      projectTitle: title,
+      projectDesc: desc,
+      managerId: projectManagerID,
+      startDate: sdate,
+      endDate: edate
+    } : ((sdate) ? {
+      projectId,
+      projectTitle: title,
+      projectDesc: desc,
+      managerId: projectManagerID,
+      startDate: sdate
+    } : {
+      projectId,
+      projectTitle: title,
+      projectDesc: desc,
+      managerId: projectManagerID
+    })
+
     axiosConfig()
-      .post('/bdm/project/add', {
-        projectId,
-        projectTitle: title,
-        projectDesc: desc,
-        managerId: projectManagerID
-      })
+      .post('/bdm/project/add', data)
       .then(({ data }) => {
         setIsSubmitting(false)
         formRef.current?.reset()
@@ -202,6 +224,26 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
               <TextField {...params} label="Project Manager" color="secondary" inputRef={managerId} variant="outlined" />
             )}
           />
+          <div className={css.date}>
+            <label >Start Date</label>
+            <TextField
+              variant="outlined"
+              size="small"
+              type="date"
+              name="startDate"
+              inputRef={startDate}
+            />
+          </div>
+          <div className={css.date}>
+            <label >End Date</label>
+            <TextField
+              variant="outlined"
+              size="small"
+              type="date"
+              name="startDate"
+              inputRef={endDate}
+            />
+          </div>
           <Divider />
           <div className={css.btnContainer}>
             <Button.Secondary label="Clear" type="reset" onClick={secBtnHandler} />
@@ -214,7 +256,6 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
   );
 }
 
-export default ProjectForm
 
 const useCSS = makeStyles(({ spacing, breakpoints }) => ({
   formCont: {
@@ -247,5 +288,15 @@ const useCSS = makeStyles(({ spacing, breakpoints }) => ({
   title: {
     display: 'flex',
     alignItems: 'center'
+  },
+  date: {
+    display: 'flex', flexDirection: 'column', gap: 5,
+    '&:focus-within > label': {
+      fontWeight: 600
+    }
   }
 }))
+
+export { useCSS }
+
+export default ProjectForm
