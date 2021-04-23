@@ -33,7 +33,7 @@ const EditForm = () => {
   }
 
   return (
-    <Slide open={true} anchor="right">
+    <Slide open={false} anchor="right">
       <Card title="Edit Project">
         <form className={css.form} onSubmit={submitHandler}>
           <TextField />

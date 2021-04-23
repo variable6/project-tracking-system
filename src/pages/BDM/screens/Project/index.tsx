@@ -205,7 +205,7 @@ const Project = () => {
         </div>
         {layout === 'LIST' && <ProjectCard projects={records} setDelete={setDelete} />}
         {layout === 'TABLE' && <ProjectTable projects={records} />}
-        <ProjectDelete projectDetails={deleteProject.data}
+        <ProjectDelete projectDetails={deleteProject.data} fetchProjects={fetchProjects}
           isOpen={deleteProject.open} closeDelete={closeDelete} />
         <Form toggleForm={toggleForm} isOpen={openForm} employees={employees} fetchProjects={fetchProjects} />
         <EditFrom />

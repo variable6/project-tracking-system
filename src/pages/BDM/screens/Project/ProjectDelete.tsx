@@ -22,6 +22,7 @@ const Model = withStyles(({ breakpoints }) => ({
 const ProjectDelete = (props: {
   isOpen: boolean,
   closeDelete: () => void,
+  fetchProjects: () => void,
   projectDetails: {
     projectId: string,
     projectTitle: string
@@ -67,6 +68,7 @@ const ProjectDelete = (props: {
           projectId
         })
         .then(({ data }) => {
+          props.fetchProjects()
           setIsSubmitting(false)
           openAlert({
             type: data.type,
