@@ -181,6 +181,6 @@ const useCSS = makeStyles(theme => ({
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: 2
+    zIndex: 99
   }
 }))

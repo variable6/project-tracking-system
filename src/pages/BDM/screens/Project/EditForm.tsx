@@ -1,5 +1,4 @@
 import {
-  TextField,
   Drawer,
   withStyles
 } from '@material-ui/core'
@@ -8,6 +7,15 @@ import {
 } from 'react'
 import Card from '../../../../components/Card'
 import { useCSS } from './ProjectForm'
+import useFormField from './../../../../hooks/useFormField'
+import Button from '../../../../components/Button'
+import Input from '../../../../components/InputField'
+
+
+/// PropsType
+interface PropsType {
+  isOpen: boolean
+}
 
 const Slide = withStyles(({ palette, spacing, breakpoints }) => ({
   paper: {
@@ -22,21 +30,34 @@ const Slide = withStyles(({ palette, spacing, breakpoints }) => ({
   }
 }))(Drawer)
 
-const EditForm = () => {
+
+
+const EditForm = ({ isOpen }: PropsType) => {
 
   const css = useCSS()
+
+  const titleField = useFormField()
+  const descField = useFormField()
 
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault()
-
+    console.log(titleField.value, descField.value)
   }
 
   return (
-    <Slide open={false} anchor="right">
+    <Slide open={isOpen} anchor="right">
       <Card title="Edit Project">
         <form className={css.form} onSubmit={submitHandler}>
-          <TextField />
+          <Input
+            label="Project Title"
+            {...titleField}
+          />
+          <Input
+            label="Project Description"
+            {...descField}
+          />
+          <Button.Primary label="Edit" type="submit" />
         </form>
       </Card>
     </Slide>

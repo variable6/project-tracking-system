@@ -96,6 +96,12 @@ const Project = () => {
   const [projects, setProjects] = useState<ProjectType[]>(projectLS ? projectLS : [])
   const [openForm, setOpenForm] = useState(false)
 
+
+  const [editForm, setEditForm] = useState(false)
+  const toggleEditForm = () => {
+    setEditForm(!editForm)
+  }
+
   const [curProject, setCurProject] = useState<ProjectType2 | null>(null)
 
   const addCurProject = (project: ProjectType2) => {
@@ -203,12 +209,12 @@ const Project = () => {
             </ToggleButtonGroup>
           </div>
         </div>
-        {layout === 'LIST' && <ProjectCard projects={records} setDelete={setDelete} />}
+        {layout === 'LIST' && <ProjectCard openEditForm={toggleEditForm} projects={records} setDelete={setDelete} />}
         {layout === 'TABLE' && <ProjectTable projects={records} />}
         <ProjectDelete projectDetails={deleteProject.data} fetchProjects={fetchProjects}
           isOpen={deleteProject.open} closeDelete={closeDelete} />
         <Form toggleForm={toggleForm} isOpen={openForm} employees={employees} fetchProjects={fetchProjects} />
-        <EditFrom />
+        <EditFrom isOpen={editForm} />
       </Card>
       <Hidden mdUp implementation="css" >
         <Fab variant="extended" aria-label="Add Project"

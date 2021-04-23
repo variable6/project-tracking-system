@@ -22,7 +22,8 @@ import {
 
 const ProjectAccordion = (props: {
   projects: ProjectType2[],
-  setDelete: (id: string, title: string) => void
+  setDelete: (id: string, title: string) => void,
+  openEditForm: () => void
 }) => {
 
   const css = useCSS()
@@ -52,9 +53,15 @@ const ProjectAccordion = (props: {
     setExpanded(isExpanded ? panel : false);
   };
 
+
+  const editHandler = () => {
+    props.openEditForm()
+  }
+
   const getDate = (date: Date) => (
     <Moment format="MMM DD, YYYY">{date}</Moment>
   )
+
 
   return (
     <>
@@ -163,7 +170,7 @@ const ProjectAccordion = (props: {
                         onClick={() => props.setDelete(project.projectId, project.projectTitle)}>
                         &nbsp;<DeleteIcon /> &nbsp; delete&nbsp;
                       </Button>
-                      <Button className={css.btnEdit}>
+                      <Button className={css.btnEdit} onClick={editHandler}>
                         &nbsp;&nbsp;<EditIcon /> &nbsp; edit &nbsp;
                       </Button>
                     </div>
