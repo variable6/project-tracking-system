@@ -8,9 +8,12 @@ const useFormField = (initialValue: string = "") => {
     setValue(event.target.value as string)
   }, [])
 
+  const reset = () => setValue('')
+
   return ({
     value,
-    onChange
+    onChange,
+    reset
   })
 }
 

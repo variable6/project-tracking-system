@@ -109,7 +109,7 @@ const Sidebar = ({ children, mobileNavbar }: Props) => {
               {
                 mobileNavbar.map(link => (
                   <BottomNavigationAction key={setKey()}
-                    label="︎" value={link.path} icon={link.icon}
+                    label="︎ " value={link.path} icon={link.icon}
                   />
                 ))
               }

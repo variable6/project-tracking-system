@@ -44,3 +44,8 @@ export interface UserType {
   __v: number
   _id: string
 }
+
+
+export interface InitialStateType {
+  projects: ProjectType2[]
+}
