@@ -3,11 +3,11 @@ import {
   FormControl,
   MenuItem,
   Select,
-  withStyles
+  withStyles, Typography
 } from '@material-ui/core'
-import {
-  FormEvent
-} from 'react'
+import { FormEvent, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+import Moment from 'react-moment'
 import { v4 as setKey } from 'uuid'
 import Card from '../../../../components/Card'
 import { useCSS } from './ProjectForm'
@@ -16,6 +16,8 @@ import Button from '../../../../components/Button'
 import Input from '../../../../components/InputField'
 
 import { ProjectType2, EmployeeType } from '../../../../types'
+import axiosConfig from '../../../../config/axiosConfig'
+import moment from 'moment'
 
 /// PropsType
 interface PropsType {
@@ -43,18 +45,61 @@ const Slide = withStyles(({ palette, spacing, breakpoints }) => ({
 const EditForm = ({ isOpen, clearCurProject, curProject, employees }: PropsType) => {
 
   const css = useCSS()
+  const history = useHistory()
 
   const titleField = useFormField(curProject?.projectTitle ? curProject.projectTitle : '')
   const descField = useFormField(curProject?.projectDesc ? curProject.projectDesc : '')
   const managerField = useFormField(curProject?.manager_id ? curProject.manager_id : '')
+  const startDateField = useFormField('')
+  const endDateField = useFormField('')
 
   const closeHandler = () => {
     clearCurProject()
   }
 
+  useEffect(() => {
+    const current = history.location.pathname
+    window.onpopstate = () => {
+      if (isOpen) {
+        closeHandler()
+        history.replace(current)
+      }
+    }
+  }, [isOpen])
+
+  const getDate = (date: string | Date | undefined | null) => {
+    if (date === null || date === undefined)
+      return 'No End Date'
+    return moment(date).format('MMM DD, YYYY')
+  }
+
   const submitHandler = (event: FormEvent) => {
     event.preventDefault()
-    console.log(titleField.value, descField.value)
+
+    let updatedProject: any = {
+      startDate: startDateField.value ? new Date(startDateField.value) : curProject?.startDate,
+      endDate: endDateField.value ? new Date(endDateField.value) : curProject?.endDate
+    }
+
+    if (titleField.value !== curProject?.projectTitle)
+      updatedProject.projectTitle = titleField.value
+
+    if (descField.value !== curProject?.projectDesc)
+      updatedProject.projectDesc = descField.value
+
+    if (managerField.value !== curProject?.manager_id)
+      updatedProject.managerId = managerField.value
+
+    console.log(updatedProject)
+
+    axiosConfig()
+      .post('/bdm/project/update', updatedProject)
+      .then(({ data }) => {
+        console.log(data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
   }
 
   return (
@@ -80,12 +125,31 @@ const EditForm = ({ isOpen, clearCurProject, curProject, employees }: PropsType)
               >
                 {
                   employees.map(emp => (
-                    <MenuItem key={setKey()} value={emp._id}>{emp.name}</MenuItem>
+                    <MenuItem key={setKey()} value={emp._id}>{emp.name} - {emp.employeeId}</MenuItem>
                   ))
                 }
               </Select>
             </FormControl>
           </div>
+          <FormControl variant="outlined">
+            <Typography variant="body1" color="textPrimary">
+              Start Date: <strong>{getDate(curProject?.startDate)}</strong>
+            </Typography>
+            <Input
+              type="date"
+              {...startDateField}
+            />
+          </FormControl>
+          <FormControl variant="outlined">
+            <Typography variant="body1" color="textPrimary">
+              End Date: <strong>{getDate(curProject?.endDate)}</strong>
+            </Typography>
+            <Input
+              type="date"
+              {...endDateField}
+            />
+          </FormControl>
+          <Button.Secondary label="Cancel" />
           <Button.Primary label="Edit" type="submit" />
         </form>
       </Card>

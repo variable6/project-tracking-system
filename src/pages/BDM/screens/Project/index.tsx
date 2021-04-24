@@ -47,7 +47,7 @@ interface ProjectTypeParams {
   projectDesc: string
   startDate: Date
   endDate: Date
-  managerId: {
+  manager: {
     _id: string,
     name: string
   }
@@ -61,8 +61,8 @@ const creatProjectList = (val: ProjectTypeParams[]) => val.map(project => ({
   startDate: project.startDate,
   endDate: project.endDate,
   manager: {
-    _id: project.managerId._id,
-    name: project.managerId.name
+    _id: project.manager._id,
+    name: project.manager.name
   }
 }))
 interface DeleteType {
@@ -113,8 +113,10 @@ const Project = () => {
   }
 
   useEffect(() => {
-    if (curProject !== null)
+    if (curProject !== null) {
+      history.push(history.location.pathname)
       setEditForm(true)
+    }
     else
       setEditForm(false)
   }, [curProject])
@@ -172,9 +174,10 @@ const Project = () => {
     axiosFetch()
       .get('/bdm/project')
       .then(({ data }) => {
-        data = creatProjectList(data)
-        setProjects(data)
-        storage.add(storageKeys.projectsBDM, data)
+        // data = creatProjectList(data)
+        // setProjects(data)
+        console.log(data)
+        // storage.add(storageKeys.projectsBDM, data)
       })
       .catch(e => console.error(e))
   }
@@ -186,6 +189,7 @@ const Project = () => {
     route.setPageTitle(pageName)
     setTitle(pageName)
   }, [])
+
 
   return (
     <>

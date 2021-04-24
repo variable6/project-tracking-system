@@ -1,4 +1,4 @@
-import { Button as Btn } from '@material-ui/core'
+import { Button as Btn, makeStyles, fade } from '@material-ui/core'
 
 //type
 interface Props {
@@ -16,6 +16,7 @@ const Primary = ({ label, onClick, type }: Props) => {
       style={{ fontWeight: 600 }}
       onClick={onClick}
       type={type ? type : 'button'}
+      className={useCSS().primary}
     >
       {label}
     </Btn>
@@ -24,7 +25,7 @@ const Primary = ({ label, onClick, type }: Props) => {
 
 const Secondary = ({ label, onClick }: Props) => {
   return (
-    <Btn variant="text" color="secondary" onClick={onClick} style={{ fontWeight: 600 }} >
+    <Btn variant="text" color="secondary" className={useCSS().secondary} onClick={onClick} style={{ fontWeight: 600 }} >
       {label}
     </Btn>
   )
@@ -33,3 +34,18 @@ const Secondary = ({ label, onClick }: Props) => {
 const Button = { Primary, Secondary }
 
 export default Button
+
+
+const useCSS = makeStyles(({ palette }) => ({
+  secondary: {
+    backgroundColor: fade(palette.secondary.light, 0.09),
+    '&:hover': {
+      backgroundColor: fade(palette.secondary.light, 0.12)
+    }
+  },
+  primary: {
+    '&:hover': {
+      backgroundColor: fade(palette.primary.main, 0.9)
+    }
+  }
+}))
