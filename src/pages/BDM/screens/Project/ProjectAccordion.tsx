@@ -23,7 +23,7 @@ import {
 const ProjectAccordion = (props: {
   projects: ProjectType2[],
   setDelete: (id: string, title: string) => void,
-  openEditForm: () => void
+  addCurProject: (project: ProjectType2) => void
 }) => {
 
   const css = useCSS()
@@ -54,8 +54,8 @@ const ProjectAccordion = (props: {
   };
 
 
-  const editHandler = () => {
-    props.openEditForm()
+  const editHandler = (project: ProjectType2) => {
+    props.addCurProject(project)
   }
 
   const getDate = (date: Date) => (
@@ -170,7 +170,7 @@ const ProjectAccordion = (props: {
                         onClick={() => props.setDelete(project.projectId, project.projectTitle)}>
                         &nbsp;<DeleteIcon /> &nbsp; delete&nbsp;
                       </Button>
-                      <Button className={css.btnEdit} onClick={editHandler}>
+                      <Button className={css.btnEdit} onClick={() => editHandler(project)}>
                         &nbsp;&nbsp;<EditIcon /> &nbsp; edit &nbsp;
                       </Button>
                     </div>

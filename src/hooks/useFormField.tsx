@@ -4,8 +4,8 @@ const useFormField = (initialValue: string = "") => {
 
   const [value, setValue] = useState(initialValue)
 
-  const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value)
+  const onChange = useCallback((event: ChangeEvent<HTMLInputElement> | ChangeEvent<{ value: unknown }>) => {
+    setValue(event.target.value as string)
   }, [])
 
   return ({
