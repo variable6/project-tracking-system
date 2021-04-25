@@ -7,7 +7,6 @@ import {
 } from '@material-ui/core'
 import { FormEvent, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import Moment from 'react-moment'
 import { v4 as setKey } from 'uuid'
 import Card from '../../../../components/Card'
 import { useCSS } from './ProjectForm'

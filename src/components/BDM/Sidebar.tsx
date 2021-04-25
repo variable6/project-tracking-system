@@ -1,5 +1,4 @@
 import Sidebar, { useStyles } from "../Sidebar";
-import { makeStyles } from '@material-ui/core';
 import { ReactNode } from 'react'
 import {
   NavLink
@@ -11,11 +10,6 @@ import {
 } from 'react-icons/fi'
 import { v4 as key } from 'uuid'
 
-// Props types
-interface Props {
-  mobileOpen: boolean
-  setMobileOpen: any
-}
 
 const navLinks: { label: string, path: string, icon: ReactNode }[] = [
   {

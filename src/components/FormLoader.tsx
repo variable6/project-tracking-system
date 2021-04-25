@@ -9,7 +9,7 @@ const css = makeStyles(theme => ({
     bottom: 0,
     backdropFilter: 'blur(3px)',
     backgroundColor: fade(theme.palette.background.paper, 0.5),
-    zIndex: 2
+    zIndex: 10
   },
   loader: {
     height: theme.spacing(0.65),

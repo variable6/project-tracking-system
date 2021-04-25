@@ -3,7 +3,6 @@ import {
   useEffect,
   useContext
 } from 'react'
-import { useHistory } from 'react-router-dom'
 
 import { RouteContext } from '../../../../context/RouteContext'
 import axiosConfig from '../../../../config/axiosConfig'
@@ -27,7 +26,6 @@ const pageName = 'Employees'
 const Employees = () => {
 
   const route = useContext(RouteContext)
-  const history = useHistory()
 
   const empLS = storage.get(storageKeys.employeeBDM)
   const [employees, setEmployees] = useState<EmployeeType[]>(empLS ? empLS : [])

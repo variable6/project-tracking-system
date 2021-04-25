@@ -174,10 +174,9 @@ const Project = () => {
     axiosFetch()
       .get('/bdm/project')
       .then(({ data }) => {
-        // data = creatProjectList(data)
-        // setProjects(data)
-        console.log(data)
-        // storage.add(storageKeys.projectsBDM, data)
+        data = creatProjectList(data)
+        setProjects(data)
+        storage.add(storageKeys.projectsBDM, data)
       })
       .catch(e => console.error(e))
   }
@@ -220,7 +219,7 @@ const Project = () => {
         {layout === 'LIST' && (
           <ProjectCard projects={records} setDelete={setDelete} addCurProject={addCurProject} />
         )}
-        {layout === 'TABLE' && <ProjectTable projects={records} />}
+        {layout === 'TABLE' && <ProjectTable projects={records} setDelete={setDelete} addCurProject={addCurProject} />}
         <ProjectDelete projectDetails={deleteProject.data} fetchProjects={fetchProjects}
           isOpen={deleteProject.open} closeDelete={closeDelete} />
         <Form toggleForm={toggleForm} isOpen={openForm} employees={employees} fetchProjects={fetchProjects} />

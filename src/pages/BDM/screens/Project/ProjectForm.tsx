@@ -117,7 +117,9 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
     e.preventDefault()
 
     if (!navigator.onLine) return null
-    
+
+    setIsSubmitting(true)
+
     const sdate = startDate.current?.value ? new Date(startDate.current?.value) : null
     const edate = endDate.current?.value ? new Date(endDate.current?.value) : null
     const projectManagerID = getManager()
@@ -150,10 +152,11 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
       .then(({ data }) => {
         setIsSubmitting(false)
         formRef.current?.reset()
+        console.log(data)
         toggleForm()
         openAlert({
           message: data.message,
-          type: data.message
+          type: 'message'
         })
         fetchProjects()
       })
@@ -170,6 +173,7 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
             type: 'error'
           })
         }
+        setIsSubmitting(false)
       })
 
   }
@@ -182,75 +186,77 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
       onClose={closeForm}
     >
       <div className={css.formCont}>
-        {isSubmitting && <FormLoader />}
         <Typography variant="h4" color="textPrimary" className={css.title}>
           <IconButton edge="start" aria-label="Close" onClick={closeForm}>
             <BackIcon />
           </IconButton>
-          &nbsp;Add Project
+          &nbsp; {isSubmitting ? 'Adding Project' : 'Add Project'}
         </Typography>
         <div className={css.divider} />
         <Divider />
-        <div className={css.divider} />
-        <form
-          className={css.form}
-          onSubmit={submitHandler}
-          ref={formRef}
-        >
-          <TextField required
-            variant="outlined"
-            color="secondary"
-            size="small"
-            name="projectTitle"
-            inputRef={projectTitle}
-            label="Project Title"
-          />
-          <TextField multiline
-            required
-            variant="outlined"
-            color="secondary"
-            size="small"
-            rows={5}
-            rowsMax={10}
-            name="projectDesc"
-            inputRef={projectDesc}
-            label="Project Description"
-          />
-          <Autocomplete size="small"
-            options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-            groupBy={(option) => option.firstLetter}
-            getOptionLabel={(option) => `${option.name} - ${option.employeeId}`}
-            renderInput={(params) => (
-              <TextField {...params} label="Project Manager" color="secondary" inputRef={managerId} variant="outlined" />
-            )}
-          />
-          <div className={css.date}>
-            <label >Start Date</label>
-            <TextField
+        <div style={{ position: 'relative' }}>
+          {isSubmitting && <FormLoader />}
+          <div className={css.divider} />
+          <form
+            className={css.form}
+            onSubmit={submitHandler}
+            ref={formRef}
+          >
+            <TextField required
               variant="outlined"
+              color="secondary"
               size="small"
-              type="date"
-              name="startDate"
-              inputRef={startDate}
+              name="projectTitle"
+              inputRef={projectTitle}
+              label="Project Title"
             />
-          </div>
-          <div className={css.date}>
-            <label >End Date</label>
-            <TextField
+            <TextField multiline
+              required
               variant="outlined"
+              color="secondary"
               size="small"
-              type="date"
-              name="startDate"
-              inputRef={endDate}
+              rows={5}
+              rowsMax={10}
+              name="projectDesc"
+              inputRef={projectDesc}
+              label="Project Description"
             />
-          </div>
-          <Divider />
-          <div className={css.btnContainer}>
-            <Button.Secondary label="Clear" type="reset" onClick={secBtnHandler} />
-            <div className={css.btnFix} />
-            <Button.Primary label="Add" type="submit" />
-          </div>
-        </form>
+            <Autocomplete size="small"
+              options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+              groupBy={(option) => option.firstLetter}
+              getOptionLabel={(option) => `${option.name} - ${option.employeeId}`}
+              renderInput={(params) => (
+                <TextField {...params} label="Project Manager" color="secondary" inputRef={managerId} variant="outlined" />
+              )}
+            />
+            <div className={css.date}>
+              <label >Start Date</label>
+              <TextField
+                variant="outlined"
+                size="small"
+                type="date"
+                name="startDate"
+                inputRef={startDate}
+              />
+            </div>
+            <div className={css.date}>
+              <label >End Date</label>
+              <TextField
+                variant="outlined"
+                size="small"
+                type="date"
+                name="startDate"
+                inputRef={endDate}
+              />
+            </div>
+            <Divider />
+            <div className={css.btnContainer}>
+              <Button.Secondary label="Clear" type="reset" onClick={secBtnHandler} />
+              <div className={css.btnFix} />
+              <Button.Primary label="Add" type="submit" />
+            </div>
+          </form>
+        </div>
       </div>
     </FormContainer>
   );

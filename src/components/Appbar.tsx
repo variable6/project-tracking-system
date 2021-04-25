@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core'
 import {
   FiPower,
-  FiAlignLeft as MenuIcon,
   FiMoreHorizontal as MoreIcon
 } from 'react-icons/fi'
 import Moment from 'react-moment'

@@ -167,7 +167,7 @@ const ProjectAccordion = (props: {
                     </div>
                     <div className={css.btnCtn}>
                       <Button className={css.btnDelete}
-                        onClick={() => props.setDelete(project.projectId, project.projectTitle)}>
+                        onClick={() => props.setDelete(project._id, project.projectTitle)}>
                         &nbsp;<DeleteIcon /> &nbsp; delete&nbsp;
                       </Button>
                       <Button className={css.btnEdit} onClick={() => editHandler(project)}>
