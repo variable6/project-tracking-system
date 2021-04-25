@@ -5,7 +5,7 @@ import {
   Select,
   withStyles, Typography
 } from '@material-ui/core'
-import { FormEvent, useEffect } from 'react'
+import { FormEvent, useEffect, useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { v4 as setKey } from 'uuid'
 import Card from '../../../../components/Card'
@@ -13,10 +13,12 @@ import { useCSS } from './ProjectForm'
 import useFormField from './../../../../hooks/useFormField'
 import Button from '../../../../components/Button'
 import Input from '../../../../components/InputField'
+import { AlertContext } from '../../../../context/AlertContext'
 
 import { ProjectType2, EmployeeType } from '../../../../types'
 import axiosConfig from '../../../../config/axiosConfig'
 import moment from 'moment'
+import FormLoader from '../../../../components/FormLoader'
 
 /// PropsType
 interface PropsType {
@@ -45,6 +47,10 @@ const EditForm = ({ isOpen, clearCurProject, curProject, employees }: PropsType)
 
   const css = useCSS()
   const history = useHistory()
+
+  const { openAlert } = useContext(AlertContext)
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const titleField = useFormField(curProject?.projectTitle ? curProject.projectTitle : '')
   const descField = useFormField(curProject?.projectDesc ? curProject.projectDesc : '')
@@ -75,7 +81,10 @@ const EditForm = ({ isOpen, clearCurProject, curProject, employees }: PropsType)
   const submitHandler = (event: FormEvent) => {
     event.preventDefault()
 
+    setIsSubmitting(true)
+
     let updatedProject: any = {
+      projectId: curProject?.projectId,
       startDate: startDateField.value ? new Date(startDateField.value) : curProject?.startDate,
       endDate: endDateField.value ? new Date(endDateField.value) : curProject?.endDate
     }
@@ -89,22 +98,30 @@ const EditForm = ({ isOpen, clearCurProject, curProject, employees }: PropsType)
     if (managerField.value !== curProject?.manager_id)
       updatedProject.managerId = managerField.value
 
-    console.log(updatedProject)
-
     axiosConfig()
       .post('/bdm/project/update', updatedProject)
       .then(({ data }) => {
-        console.log(data)
+        setIsSubmitting(false)
+        closeHandler()
+        openAlert({
+          message: data.message,
+          type: 'message'
+        })
       })
-      .catch(e => {
-        console.log(e)
+      .catch(({ response }) => {
+        setIsSubmitting(false)
+        openAlert({
+          message: response ? response?.data?.message : 'Something went wrong',
+          type: 'error'
+        })
       })
   }
 
   return (
     <Slide open={isOpen} anchor="right" onClose={closeHandler}>
-      <Card title="Edit Project">
-        <form className={css.form} onSubmit={submitHandler}>
+      <Card title={`${isSubmitting ? 'Updating' : 'Edit'} Project`}>
+        <form className={css.form} style={{ position: 'relative' }} onSubmit={submitHandler}>
+          {isSubmitting && <FormLoader />}
           <Input
             label="Project Title"
             value={titleField.value}

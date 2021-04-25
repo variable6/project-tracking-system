@@ -47,7 +47,7 @@ interface ProjectTypeParams {
   projectDesc: string
   startDate: Date
   endDate: Date
-  manager: {
+  managerId: {
     _id: string,
     name: string
   }
@@ -61,8 +61,8 @@ const creatProjectList = (val: ProjectTypeParams[]) => val.map(project => ({
   startDate: project.startDate,
   endDate: project.endDate,
   manager: {
-    _id: project.manager._id,
-    name: project.manager.name
+    _id: project.managerId._id,
+    name: project.managerId.name
   }
 }))
 interface DeleteType {
@@ -174,6 +174,7 @@ const Project = () => {
     axiosFetch()
       .get('/bdm/project')
       .then(({ data }) => {
+        console.log(data)
         data = creatProjectList(data)
         setProjects(data)
         storage.add(storageKeys.projectsBDM, data)
