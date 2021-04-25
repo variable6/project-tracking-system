@@ -1,21 +1,24 @@
 import { useEffect, useContext } from 'react'
 //import context
-import { RouteContext } from '../../../context/RouteContext'
+import useApp from '../useApp'
 
 
 const PAGENAME = 'Dashboard'
 
 const Dashboard = () => {
 
-  const route = useContext(RouteContext)
+  const { AppContext } = useApp()
+  const { app, dispatch } = useContext(AppContext)
 
   useEffect(() => {
     document.title = `WorkSpace | PM - ${PAGENAME}`
-    route.setPageTitle(PAGENAME)
   }, [])
 
   return (
-    <></>
+    <>
+      {app.auth.user.name}
+      <button onClick={dispatch.fetchProjects}>Logout</button>
+    </>
   );
 }
 

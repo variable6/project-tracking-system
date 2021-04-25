@@ -1,28 +1,22 @@
-// import { useState } from 'react';
-import MainContainer from '../../components/MainContainer';
+import useAPP from './useApp';
 import Root from '../../components/RootContainer'
-import Sidebar from '../../components/DEV/SidebarPM';
-import RouteContextProvider from '../../context/RouteContext';
 import Routes from './DEV.routes'
-import ProfilePageContext from '../../context/ProfilePageContext';
 import useStore from '../../data/useStore'
+
 
 const ProjectManager = () => {
 
   const { StoreProvider } = useStore()
 
+  const { AppContextProvider } = useAPP()
+
   return (
     <Root>
-      <ProfilePageContext>
-        <StoreProvider>
-          <Sidebar />
-          <RouteContextProvider>
-            <MainContainer >
-              <Routes />
-            </MainContainer>
-          </RouteContextProvider>
-        </StoreProvider>
-      </ProfilePageContext>
+      <StoreProvider>
+        <AppContextProvider>
+          <Routes />
+        </AppContextProvider>
+      </StoreProvider>
     </Root>
   );
 }

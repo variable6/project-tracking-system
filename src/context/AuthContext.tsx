@@ -7,7 +7,7 @@ import {
 
 interface ContextType {
   user: UserType,
-  addUser: (...args: any) => any
+  addUser: (user: UserType) => void
   clearUser: () => void
   logout: () => void
   openPopup: boolean

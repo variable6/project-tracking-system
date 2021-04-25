@@ -4,7 +4,7 @@ import initialState from './initialState'
 import { InitialStateType } from '../types'
 
 interface ContextType {
-  state: InitialStateType | undefined
+  state: InitialStateType
   dispatch: any
 }
 

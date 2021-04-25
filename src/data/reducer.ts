@@ -9,6 +9,8 @@ import {
 import projectHandlers from './actionHandlers/projecthandlers'
 
 // --------->>>>> TYpes
+import { InitialStateType } from '../types'
+
 interface ActionType {
   type: string
   payload: any
@@ -17,7 +19,7 @@ interface ActionType {
 /*
  -------------> reducer Function
 */
-const reducer = (state = initialState, { type, payload }: ActionType) => {
+const reducer = (state: InitialStateType = initialState, { type, payload }: ActionType): InitialStateType => {
   switch (type) {
     /*
       -------->>>>> actions on project
@@ -30,7 +32,7 @@ const reducer = (state = initialState, { type, payload }: ActionType) => {
       ------>>>>>> actions on task
     */
     // fetching tasks
-    case task.fetch: return
+    case task.fetch: return state
 
     // default case
     default: return state

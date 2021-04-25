@@ -9,7 +9,7 @@ const fetchProjects = (state: InitialStateType): InitialStateType => {
   axiosConfig()
     .get('')
     .then(({ data }) => {
-
+      
     })
     .catch(e => console.log('Error while fetching Projects'))
 
