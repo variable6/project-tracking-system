@@ -65,7 +65,7 @@ const ProjectDelete = (props: {
       axiosConfig()
         .post('bdm/project/remove', {
           password: pwdRef ? pwdRef.current?.value : '',
-          projectId
+          project_id: projectId
         })
         .then(({ data }) => {
           props.fetchProjects()
@@ -75,6 +75,7 @@ const ProjectDelete = (props: {
             message: data.message
           })
           closeDelete()
+          props.fetchProjects()
         })
         .catch(error => {
           setIsSubmitting(false)

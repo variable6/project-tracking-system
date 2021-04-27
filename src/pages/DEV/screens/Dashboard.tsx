@@ -1,4 +1,5 @@
 import { useEffect, useContext } from 'react'
+import PageContainer from '../layouts/PageContainer'
 //import context
 import useApp from '../useApp'
 
@@ -15,10 +16,9 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <>
-      {app.auth.user.name}
-      <button onClick={dispatch.fetchProjects}>Logout</button>
-    </>
+    <PageContainer>
+      <button onClick={dispatch.auth.logout}>logout</button>
+    </PageContainer>
   );
 }
 

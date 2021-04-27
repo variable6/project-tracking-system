@@ -39,7 +39,7 @@ const dashboard = {
 
 const App = () => {
 
-  const cls = { width: '100vw', height: '100vh', display: 'grid', placeItems: 'center' }
+  const cls = { width: '100vw', height: '100vh', display: 'grid', placeItems: 'center', backgroundColor: '#FFF' }
 
   const { user, clearUser, openPopup, quitLogout } = useContext(AuthContext)
 

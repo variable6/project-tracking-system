@@ -159,6 +159,7 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
           type: 'message'
         })
         fetchProjects()
+        fetchProjects()
       })
       .catch(e => {
         if (e.response.data) {
@@ -175,7 +176,6 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
         }
         setIsSubmitting(false)
       })
-
   }
 
   return (

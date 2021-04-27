@@ -34,6 +34,7 @@ import storageKeys from '../../../../constants/storageKeys'
 import {
   ProjectType, ProjectType2, EmployeeType
 } from '../../../../types'
+import Loader from '../../../../components/Loader'
 
 
 
@@ -81,6 +82,7 @@ const Project = () => {
 
   const empLS = storage.get(storageKeys.employeeBDM)
   const [employees, setEmployees] = useState<EmployeeType[]>(empLS ? empLS : [])
+  const [isLoading, setIsLoading] = useState(false)
 
   const fetchEmployees = () => {
     axiosFetch()
@@ -171,6 +173,7 @@ const Project = () => {
   const [layout, setLayout] = useState<'LIST' | 'TABLE'>('LIST')
 
   const fetchProjects = () => {
+    setIsLoading(true)
     axiosFetch()
       .get('/bdm/project')
       .then(({ data }) => {
@@ -178,8 +181,12 @@ const Project = () => {
         data = creatProjectList(data)
         setProjects(data)
         storage.add(storageKeys.projectsBDM, data)
+        setIsLoading(false)
       })
-      .catch(e => console.error(e))
+      .catch(e => {
+        console.log('Error occured while fetching projects')
+        setIsLoading(false)
+      })
   }
 
 
@@ -195,6 +202,8 @@ const Project = () => {
     <>
       <Breadcrumbs currentPage={pageName} links={[{ label: 'Dashboard', path: '/' }]} />
       <Card title="All Projects" >
+        <div style={{ position: 'relative' }}>
+          {isLoading && <Loader />}
         <div className={css.toolBar}>
           <Typography variant="h6" color="textPrimary">
             Filters
@@ -224,7 +233,8 @@ const Project = () => {
         <ProjectDelete projectDetails={deleteProject.data} fetchProjects={fetchProjects}
           isOpen={deleteProject.open} closeDelete={closeDelete} />
         <Form toggleForm={toggleForm} isOpen={openForm} employees={employees} fetchProjects={fetchProjects} />
-        {curProject && <EditFrom isOpen={editForm} clearCurProject={clearCurProject} employees={employees} curProject={curProject} />}
+          {curProject && <EditFrom fetchProjects={fetchProjects} isOpen={editForm} clearCurProject={clearCurProject} employees={employees} curProject={curProject} />}
+        </div>
       </Card>
       <Hidden mdUp implementation="css" >
         <Fab variant="extended" aria-label="Add Project"

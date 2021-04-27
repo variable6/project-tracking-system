@@ -26,6 +26,7 @@ interface PropsType {
   clearCurProject: () => void
   curProject: ProjectType2 | null
   employees: EmployeeType[]
+  fetchProjects: () => void
 }
 
 const Slide = withStyles(({ palette, spacing, breakpoints }) => ({
@@ -43,7 +44,7 @@ const Slide = withStyles(({ palette, spacing, breakpoints }) => ({
 
 
 
-const EditForm = ({ isOpen, clearCurProject, curProject, employees }: PropsType) => {
+const EditForm = ({ isOpen, clearCurProject, curProject, fetchProjects, employees }: PropsType) => {
 
   const css = useCSS()
   const history = useHistory()
@@ -107,6 +108,7 @@ const EditForm = ({ isOpen, clearCurProject, curProject, employees }: PropsType)
           message: data.message,
           type: 'message'
         })
+        fetchProjects()
       })
       .catch(({ response }) => {
         setIsSubmitting(false)
