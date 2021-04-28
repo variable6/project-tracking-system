@@ -316,7 +316,6 @@ const useCSS = makeStyles(theme => ({
     alignItems: 'flex-start',
     paddingTop: theme.spacing(2),
     [theme.breakpoints.up(theme.spacing(105.01))]: {
-      alignItems: 'center',
       bacKdropFilter: 'blur(5px)'
     },
     overflow: 'auto'

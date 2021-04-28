@@ -34,6 +34,7 @@ import storageKeys from '../../../../constants/storageKeys'
 import {
   ProjectType, ProjectType2, EmployeeType
 } from '../../../../types'
+import FormLoader from '../../../../components/FormLoader'
 import Loader from '../../../../components/Loader'
 
 
@@ -203,7 +204,7 @@ const Project = () => {
       <Breadcrumbs currentPage={pageName} links={[{ label: 'Dashboard', path: '/' }]} />
       <Card title="All Projects" >
         <div style={{ position: 'relative' }}>
-          {isLoading && <Loader />}
+          {(isLoading && projects.length === 0) && <div className={css.loaderContainer}><Loader /></div>}
         <div className={css.toolBar}>
           <Typography variant="h6" color="textPrimary">
             Filters
@@ -226,14 +227,14 @@ const Project = () => {
             </ToggleButtonGroup>
           </div>
         </div>
-        {layout === 'LIST' && (
+          {layout === 'LIST' && (
           <ProjectCard projects={records} setDelete={setDelete} addCurProject={addCurProject} />
         )}
-        {layout === 'TABLE' && <ProjectTable projects={records} setDelete={setDelete} addCurProject={addCurProject} />}
+          {layout === 'TABLE' && <ProjectTable projects={records} setDelete={setDelete} addCurProject={addCurProject} />}
         <ProjectDelete projectDetails={deleteProject.data} fetchProjects={fetchProjects}
           isOpen={deleteProject.open} closeDelete={closeDelete} />
         <Form toggleForm={toggleForm} isOpen={openForm} employees={employees} fetchProjects={fetchProjects} />
-          {curProject && <EditFrom fetchProjects={fetchProjects} isOpen={editForm} clearCurProject={clearCurProject} employees={employees} curProject={curProject} />}
+        {curProject && <EditFrom fetchProjects={fetchProjects} isOpen={editForm} clearCurProject={clearCurProject} employees={employees} curProject={curProject} />}
         </div>
       </Card>
       <Hidden mdUp implementation="css" >
@@ -253,7 +254,7 @@ const Project = () => {
 export default Project;
 
 
-const useCSS = makeStyles(({ palette, spacing, mixins }) => ({
+const useCSS = makeStyles(({ palette, spacing, mixins, shape }) => ({
   icon: {
     color: palette.secondary.light,
     fontSize: spacing(2.5)
@@ -262,7 +263,7 @@ const useCSS = makeStyles(({ palette, spacing, mixins }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: spacing(1.5)
+    marginBottom: spacing(1.5),
   },
   cont: {
     display: 'flex',
@@ -297,5 +298,15 @@ const useCSS = makeStyles(({ palette, spacing, mixins }) => ({
   },
   fix: {
     height: spacing(8)
+  },
+  loaderContainer: {
+    backgroundColor: palette.background.paper,
+    borderRadius: shape.borderRadius,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 99
   }
 }))

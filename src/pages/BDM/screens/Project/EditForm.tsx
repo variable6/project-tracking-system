@@ -167,7 +167,7 @@ const EditForm = ({ isOpen, clearCurProject, curProject, fetchProjects, employee
               {...endDateField}
             />
           </FormControl>
-          <Button.Secondary label="Cancel" />
+          <Button.Secondary label="Cancel" onClick={closeHandler} />
           <Button.Primary label="Edit" type="submit" />
         </form>
       </Card>
