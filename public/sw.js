@@ -1,5 +1,5 @@
 //  ---->>>>>>>>>>>>> static keys
-const version = 1.4
+const version = 1.5
 const CACHE_NAME = `site-assets-${version}`
 
 const dbURL = 'https://pts-001.herokuapp.com/api/'
@@ -9,9 +9,9 @@ const assets = [
   '/manifest.json',
   '/favicon.png',
   'https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&family=Open+Sans:wght@300;400;600;700;800&display=swap',
-  '/static/js/2.4b170629.chunk.js',
-  '/static/js/main.f66eb405.chunk.js',
-  '/static/js/main.e15c5c0d.chunk.css',
+  '/static/js/2.8edc061e.chunk.js',
+  '/static/js/main.6d7c1eab.chunk.js',
+  '/static/js/main.3e1f77da.chunk.css',
   '/static/js/3.0da3c75a.chunk.js',
   '/static/css/runtime-main.edce9a3a.js'
 ]

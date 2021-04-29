@@ -23,7 +23,8 @@ import { Alert, TabContext, TabList, TabPanel } from '@material-ui/lab'
 import {
   FiChevronRight as CloseIcon,
   FiUser as UserIcon,
-  FiKey
+  FiKey,
+  FiAtSign as EmailIcon
 } from 'react-icons/fi'
 import Card from './Card'
 import { ProfileContext } from '../context/ProfilePageContext'
@@ -34,6 +35,7 @@ import axiosConfig from '../config/axiosConfig'
 import storage from '../config/localStorageConfig'
 import FormLoader from './FormLoader'
 import Btn from './Button'
+import isName from '../constants/isName'
 
 const Profile = withStyles(({ breakpoints, spacing }) => ({
   root: {
@@ -59,7 +61,7 @@ interface StateTypes {
 const ProfilePage = () => {
 
   const { isProfileOpen, closeProfile } = useContext(ProfileContext)
-  const { user, clearUser } = useContext(AuthContext)
+  const { user, clearUser, addUser } = useContext(AuthContext)
   const { openAlert } = useContext(AlertContext)
 
   const initState: StateTypes = {
@@ -75,7 +77,8 @@ const ProfilePage = () => {
     old: ''
   }
 
-  const passwordRegEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,50}$/;
+  const passwordRegEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,50}$/
+  const emailRegEx = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
 
   const confirmPasswordRef = useRef<HTMLInputElement>(null)
   const confirmPasswordFormRef = useRef<HTMLFormElement>(null)
@@ -83,6 +86,10 @@ const ProfilePage = () => {
   const changePasswordRef = useRef<HTMLInputElement>(null)
   const confirmChangePasswordRef = useRef<HTMLInputElement>(null)
   const changePasswordFormRef = useRef<HTMLFormElement>(null)
+
+  const nameFieldRef = useRef<HTMLInputElement>(null)
+  const emailFieldRef = useRef<HTMLInputElement>(null)
+  const editFormRef = useRef<HTMLFormElement>(null)
 
   const [value, setValue] = useState('1');
   const [state, setState] = useState<StateTypes>(initState)
@@ -96,6 +103,22 @@ const ProfilePage = () => {
   const css = useCSS()
 
   const history = useHistory()
+
+  const nameValidator = () => {
+    const name = nameFieldRef.current?.value
+    let message = ''
+    if (name && !isName(name))
+      message = 'Invalid name, name must not contain any special characters or digits'
+    nameFieldRef.current?.setCustomValidity(message)
+  }
+
+  const emailValidator = () => {
+    const email = emailFieldRef.current?.value
+    let message = ''
+    if (email && !emailRegEx.test(email))
+      message = 'Invalid Email'
+    emailFieldRef.current?.setCustomValidity(message)
+  }
 
   useEffect(() => {
     const current = history.location.pathname
@@ -154,7 +177,7 @@ const ProfilePage = () => {
   }
 
   const editInfoBtnHandler = () => {
-    setState(c => ({ ...c, options: c.options === '' ? 'EDIT' : '' }))
+    setState(c => ({ ...c, options: c.options === 'EDIT' ? '' : 'EDIT' }))
   }
 
   const setFromLoader = () => {
@@ -298,6 +321,62 @@ const ProfilePage = () => {
     }
   }
 
+  const editInfoOnSubmit = () => {
+
+    setFromLoader()
+
+    axiosConfig()
+      .post('user/profile', {
+        name: nameFieldRef.current?.value,
+        email: emailFieldRef.current?.value
+      })
+      .then(({ data }) => {
+
+        removeFromLoader()
+
+        setState(cur => ({
+          ...cur,
+          hasAlert: false,
+          alert: {
+            message: '',
+            type: 'info'
+          },
+          options: ''
+        }))
+        addUser(data.data)
+        openAlert({
+          'type': data.type,
+          'message': data.message
+        })
+      })
+      .catch(({ response }) => {
+
+        removeFromLoader()
+
+        openAlert({
+          message: (response.data) ? response.data.message : 'Something went worng',
+          type: 'error'
+        })
+      })
+  }
+
+  const editInfoFormHandler = (event: FormEvent<HTMLFormElement>) => {
+
+    event.preventDefault()
+
+    if (navigator.onLine)
+      return editInfoOnSubmit()
+
+    setState(cur => ({
+      ...cur,
+      hasAlert: true,
+      alert: {
+        message: 'Check your Internet connect',
+        type: 'warning'
+      }
+    }))
+  }
+
   const options = (
     <Card title={getFormTitle[state.options]}>
       <div style={{ display: 'flex', gap: 20, marginBottom: 16 }}>
@@ -394,6 +473,46 @@ const ProfilePage = () => {
           </Step>
         </Stepper>
       </div>
+      {
+        state.options === 'EDIT' && (
+          <div style={{ marginTop: '16px', position: 'relative' }}>
+            {state.isSubmitting && <FormLoader />}
+            <form className={css.form} ref={editFormRef} onSubmit={editInfoFormHandler}>
+              <FormControl variant="outlined" size="small">
+                <OutlinedInput
+                  placeholder="Enter your name"
+                  defaultValue={user.name}
+                  onBlur={nameValidator}
+                  inputRef={nameFieldRef}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <UserIcon />
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+              <FormControl variant="outlined" size="small">
+                <OutlinedInput
+                  placeholder="Enter your email"
+                  type="email"
+                  defaultValue={user.email}
+                  onBlur={emailValidator}
+                  inputRef={emailFieldRef}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <EmailIcon />
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+              <div className={css.formBtnContainer}>
+                <Btn.Secondary label="Clear" onClick={() => editFormRef.current?.reset()} />
+                <Btn.Primary label="Edit" type="submit" />
+              </div>
+            </form>
+          </div>
+        )
+      }
     </Card>
   )
 
@@ -540,6 +659,7 @@ const useCSS = makeStyles(({ breakpoints, palette, spacing }) => ({
     }
   },
   form: {
+    marginTop: spacing(1.25),
     display: 'flex',
     flexDirection: 'column',
     '& > *': {

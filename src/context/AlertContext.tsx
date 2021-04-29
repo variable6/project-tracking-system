@@ -17,13 +17,13 @@ const useCSS = makeStyles(theme => ({
 interface AlertType {
   open: boolean,
   message: string,
-  type: 'message' | 'error'
+  type: 'message' | 'error' | 'success'
 }
 
 interface AuthContextType {
   alert: AlertType
   setAlert: (val: AlertType) => any
-  openAlert: (val: { message: string, type: 'message' | 'error' }) => void
+  openAlert: (val: { message: string, type: 'message' | 'error' | 'success' }) => void
 }
 
 const AlertContext = createContext<AuthContextType>({
@@ -58,9 +58,9 @@ const AC = (props: { children: ReactNode }) => {
     type: type
   })
 
-  const getType = (val: 'message' | 'error') => val === 'message' ? 'info' : val
+  const getType = (val: 'message' | 'error' | 'success') => val === 'message' ? 'info' : val
 
-  const openAlert = (val: { message: string, type: 'message' | 'error' }) => {
+  const openAlert = (val: { message: string, type: 'message' | 'error' | 'success' }) => {
     setAlert({
       open: true,
       message: val.message,
