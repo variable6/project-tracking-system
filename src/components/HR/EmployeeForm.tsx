@@ -382,7 +382,6 @@ const EmployeeForm = ({ open, toggleForm, curEmp, curEmpHandler, fetchEmployees 
                 onChange={inputHandler}
               >
                 <FormControlLabel value="DEV" control={<Radio />} label="Developer" />
-                <FormControlLabel value="PM" control={<Radio />} label="Project Manager" />
                 <FormControlLabel value="HR" control={<Radio />} label="Human Resource Manager" />
                 <FormControlLabel value="BDM" control={<Radio />} label="Business Development Manager" />
               </RadioGroup>

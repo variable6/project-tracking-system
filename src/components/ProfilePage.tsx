@@ -24,7 +24,7 @@ import {
   FiChevronRight as CloseIcon,
   FiUser as UserIcon,
   FiKey,
-  FiAtSign as EmailIcon
+  FiMail as EmailIcon
 } from 'react-icons/fi'
 import Card from './Card'
 import { ProfileContext } from '../context/ProfilePageContext'
@@ -659,7 +659,7 @@ const useCSS = makeStyles(({ breakpoints, palette, spacing }) => ({
     }
   },
   form: {
-    marginTop: spacing(1.25),
+    marginTop: spacing(1.5),
     display: 'flex',
     flexDirection: 'column',
     '& > *': {

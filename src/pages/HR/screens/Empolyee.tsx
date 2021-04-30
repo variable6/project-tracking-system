@@ -41,6 +41,8 @@ const Empolyee = () => {
 
   const [curEmp, setCurEmp] = React.useState<EmployeeType>(initCurEmp)
 
+  const [isLoading, setIsLoading] = React.useState(false)
+
   const [openForm, setOpenForm] = React.useState(false)
 
   const [getInActive, setGetInActive] = React.useState(false)
@@ -59,12 +61,17 @@ const Empolyee = () => {
 
   // fetching data
   const fetchEmployees = () => {
+    navigator.onLine && setIsLoading(true)
     navigator.onLine && axios.get('hr/emp/inactive')
       .then(({ data }) => {
+        setIsLoading(false)
         storage.add(keys.inActiveEmp, data)
         setInActiveEmps(data)
       })
-      .catch(err => console.warn(err))
+      .catch(err => {
+        setIsLoading(false)
+        console.log(err)
+      })
     navigator.onLine && axios
       .get('hr/emp')
       .then(({ data }) => {
@@ -96,7 +103,7 @@ const Empolyee = () => {
         curEmpHandler={{ add: addCurEmp, clear: clearCurEmp }}
         fetchEmployees={fetchEmployees}
       />
-      <Table
+      <Table isLoading={isLoading}
         setGetInActive={setGetInActive}
         getInActive={getInActive}
         employees={getInActive ? InActiveEmps : employees}

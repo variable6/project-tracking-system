@@ -136,6 +136,21 @@ const useCSS = makeStyles(theme => ({
     left: 0,
     right: 0,
     zIndex: 99
+  },
+  noDataMesage: {
+    textAlign: 'center',
+    margin: theme.spacing(2),
+    marginTop: theme.spacing(2.75)
+  },
+  totalCount: {
+    display: 'flex',
+    margin: `${theme.spacing(0.75)}px 0px ${theme.spacing(1.25)}px`,
+    backgroundColor: theme.palette.common.white,
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(1.5),
+    '& span': {
+      fontWeight: 600
+    }
   }
 }))
 
@@ -153,6 +168,7 @@ const Popover = withStyles(theme => ({
 
 // PropsTypes
 interface PropsType {
+  isLoading: boolean
   employees: EmpType[]
   curEmp: {
     curEmp: EmpType,
@@ -177,7 +193,7 @@ const Transition = React.forwardRef(function Transition(
 
 
 //components
-const EmployeeTable = ({ employees, curEmp, form, fetchEmployees, setGetInActive, getInActive }: PropsType) => {
+const EmployeeTable = ({ employees, isLoading, curEmp, form, fetchEmployees, setGetInActive, getInActive }: PropsType) => {
 
   const css = useCSS()
   const isSM = useMediaQuery(useTheme().breakpoints.down('sm'))
@@ -339,7 +355,7 @@ const EmployeeTable = ({ employees, curEmp, form, fetchEmployees, setGetInActive
     <>
       <Card title="All Employees">
         <div style={{ position: 'relative' }}>
-          {employees.length === 0 && (<div className={css.loaderContainer}><Loader /></div>)}
+          {(employees.length === 0 && isLoading) && (<div className={css.loaderContainer}><Loader /></div>)}
           <Popover
             TransitionComponent={Transition}
             open={deleteEmp.modal.open}
@@ -435,23 +451,38 @@ const EmployeeTable = ({ employees, curEmp, form, fetchEmployees, setGetInActive
               </FormControl>
             </div>
           </div>
-          <TblContainer>
-            <TblHead />
-            <TableBody>
-              {
-                recordsAfterPagingAndSorting().map(emp => (
-                  <TableRow key={setKey()} onClick={() => viewProfile(emp)} >
-                    <TableCell style={{ width: '20%' }}>{emp.employeeId}</TableCell>
-                    <TableCell style={{ width: '35%' }}>{emp.name}</TableCell>
-                    <TableCell style={{ width: '30%' }}>{emp.email}</TableCell>
-                    <TableCell style={{ width: '25%' }}>{emp.designation}</TableCell>
-                  </TableRow>
-                ))
-              }
-            </TableBody>
-          </TblContainer>
-          <TblPagination />
+          {
+            employees.length === 0 ? (
+              <Typography variant="body1" className={css.noDataMesage} color="textPrimary">
+                No employees {getInActive ? ' are droped' : 'hired'}.
+              </Typography>
+            ) : (
+              <>
+                <TblContainer>
+                  <TblHead />
+                  <TableBody>
+                    {
+                      recordsAfterPagingAndSorting().map(emp => (
+                        <TableRow key={setKey()} onClick={() => viewProfile(emp)} >
+                          <TableCell style={{ width: '20%' }}>{emp.employeeId}</TableCell>
+                          <TableCell style={{ width: '35%' }}>{emp.name}</TableCell>
+                          <TableCell style={{ width: '30%' }}>{emp.email}</TableCell>
+                          <TableCell style={{ width: '25%' }}>{emp.designation}</TableCell>
+                        </TableRow>
+                      ))
+                    }
+                  </TableBody>
+                </TblContainer>
+                <TblPagination />
+              </>
+            )
+          }
           <Popup />
+          <div className={css.totalCount}>
+            <Typography variant="body1" color="textPrimary">
+              Total no. of {getInActive ? 'in-active ' : ''}employees: <span>{employees.length}</span>
+            </Typography>
+          </div>
           <FormControlLabel
             control={
               <Switch checked={getInActive}
