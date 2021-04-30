@@ -41,7 +41,7 @@ const App = () => {
 
   const cls = { width: '100vw', height: '100vh', display: 'grid', placeItems: 'center', backgroundColor: '#FFF' }
 
-  const { user, clearUser, openPopup, quitLogout } = useContext(AuthContext)
+  const { user, clearUser, openPopup, quitLogout, addUser } = useContext(AuthContext)
 
   const [state, setState] = useState({
     isLoading: true
@@ -52,18 +52,16 @@ const App = () => {
       fetchMethod()
       .get('')
       .then(({ data }) => {
-        if (!data.isLogin)
+        if (data.isLogin)
+          addUser(data.user)
+        else
           removeUser()
-        setState({
-          isLoading: false
-        })
+        setState({ isLoading: false })
       })
-        .catch(e => {
-          console.log(e)
-          setState({
-            isLoading: false
-          })
-        })
+      .catch(e => {
+        console.log('Something went wrong')
+        setState({ isLoading: false })
+      })
     } else {
       setState({ isLoading: false })
     }

@@ -21,7 +21,10 @@ const useCSS = makeStyles(theme => ({
   titleContainer: {
     display: 'flex',
     marginBottom: theme.spacing(1.85),
-    marginTop: theme.spacing(1.5)
+    marginTop: theme.spacing(1.5),
+    '-webkit-user-select': 'none',
+    '-ms-user-select': 'none',
+    'user-select': 'none'
   },
   span: {
     width: theme.spacing(0.5),

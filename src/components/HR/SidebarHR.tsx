@@ -4,7 +4,8 @@ import {
 } from 'react-router-dom'
 import {
   FiGrid as DashboardIcon,
-  FiUsers as EmployeesIcon
+  FiUsers as EmployeesIcon,
+  FiCode as ProjectsIcon
 } from 'react-icons/fi'
 import { v4 as key } from 'uuid'
 
@@ -21,6 +22,10 @@ const navLinks: { label: string, path: string, icon: ReactNode }[] = [
     label: 'Employees',
     path: '/employees',
     icon: <EmployeesIcon />
+  }, {
+    label: 'Projects',
+    path: '/projects',
+    icon: <ProjectsIcon />
   }
 ]
 

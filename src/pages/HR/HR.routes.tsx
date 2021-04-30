@@ -1,10 +1,11 @@
 import { Switch, Route } from 'react-router-dom'
 import { v4 as key } from 'uuid'
-import Dashboard from './screens/Dashboard'
-import ErrorPage from '../PageNotFound'
 
 //importing screens 
 import Employee from './screens/Empolyee'
+import Dashboard from './screens/Dashboard'
+import ErrorPage from '../PageNotFound'
+import Projects from './screens/Projects'
 
 
 const routeList: { path: string, component: React.ReactNode }[] = [
@@ -14,6 +15,9 @@ const routeList: { path: string, component: React.ReactNode }[] = [
   }, {
     path: '/employees',
     component: <Employee />
+  }, {
+    path: '/projects',
+    component: <Projects />
   }
 ]
 
