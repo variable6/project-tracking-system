@@ -320,7 +320,7 @@ const Login = () => {
                     >
                       <FormControl variant="outlined" size="small">
                         <OutlinedInput
-                          required
+                          required autoFocus
                           id="employeeId"
                           startAdornment={
                             <InputAdornment position="start">

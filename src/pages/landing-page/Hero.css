@@ -40,7 +40,7 @@ div.quote {
   font-weight: 300;
   display: grid;
   place-items: center;
-  animation: qoute-slider 2.25s 1s linear;
+  animation: qoute-slider 2.25s 750ms linear;
 
   -webkit-animation-fill-mode: forwards;
 	-moz-animation-fill-mode: forwards;
@@ -54,7 +54,7 @@ div.span {
   left: 0;
   right: 0;
   background-color: #f5cb5c;
-  animation: qoute-slider 2.25s 1.02s linear;
+  animation: qoute-slider 2.25s 770ms linear;
 
   -webkit-animation-fill-mode: forwards;
 	-moz-animation-fill-mode: forwards;
@@ -83,7 +83,7 @@ div.cover {
   left: 0;
   right: 0;
   background-color: #FFF;
-  animation: slider 2s 0ms linear;
+  animation: slider 1.75s 0ms linear;
 
   -webkit-animation-fill-mode: forwards;
 	-moz-animation-fill-mode: forwards;

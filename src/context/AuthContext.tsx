@@ -24,8 +24,6 @@ const AuthContext = createContext<ContextType>({
     name: "",
     status: "IN-ACTIVE",
     _id: '',
-    projects: [],
-    tasks: [],
     __v: 0,
   },
   addUser: () => null,
@@ -60,8 +58,6 @@ const ACProvider = (props: { children: ReactNode }) => {
       status: "IN-ACTIVE",
       _id: '',
       __v: 0,
-      projects: [],
-      tasks: []
     })
   }
 

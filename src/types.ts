@@ -38,9 +38,7 @@ export interface UserType {
   email: string
   employeeId: string
   name: string
-  projects: any[]
   status: "ACTIVE" | "IN-ACTIVE"
-  tasks: any[]
   __v: number
   _id: string
 }
@@ -48,4 +46,12 @@ export interface UserType {
 
 export interface InitialStateType {
   projects: ProjectType2[]
+}
+
+export interface RouteListType {
+  path: string
+  component: React.ReactNode
+  label: string
+  icon: React.ReactNode
+  isInBottomNav: boolean
 }

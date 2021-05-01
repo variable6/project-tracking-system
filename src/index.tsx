@@ -7,10 +7,10 @@ import theme from './constants/theme'
 import ACProvider from './context/AuthContext'
 import { BrowserRouter } from 'react-router-dom'
 
-// if ('serviceWorker' in navigator) {
-//   navigator.serviceWorker.register(`${process.env.PUBLIC_URL}/sw.js`)
-//     .catch(() => console.warn('Service worker not registered'))
-// }
+if ((process.env.NODE_ENV === 'production') && ('serviceWorker' in navigator)) {
+  navigator.serviceWorker.register(`${process.env.PUBLIC_URL}/sw.js`)
+    .catch(() => console.warn('Service worker not registered'))
+}
 
 const Index = () => (
   <ACProvider>
