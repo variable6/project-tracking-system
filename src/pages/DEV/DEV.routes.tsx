@@ -6,8 +6,10 @@ import { v4 as uuid } from 'uuid'
 import {
   FiGrid as DashboardIcon,
   FiCode as ProjectIcon,
-  FiTerminal as TaskIcon
+  FiTerminal as TaskIcon,
+  FiUser as AvatarIcon
 } from 'react-icons/fi'
+import { Avatar, makeStyles, fade } from '@material-ui/core'
 
 // importing pages
 import PageNotFound from '../PageNotFound';
@@ -18,6 +20,15 @@ import ProfilePage from './screens/ProjectPage';
 // importing Types 
 import { RouteListType } from '../../types'
 import TaskPage from './screens/TaskPage';
+
+const ProfileIcon = () => {
+
+  const css = useCSS()
+
+  return (
+    <Avatar className={css.avatar}><AvatarIcon /></Avatar>
+  )
+}
 
 
 export const pmRoutes: RouteListType[] = [
@@ -42,8 +53,8 @@ export const pmRoutes: RouteListType[] = [
   }, {
     path: '/profile',
     component: <ProfilePage />,
-    icon: <ProjectIcon />,
-    label: 'Dashboard',
+    icon: <ProfileIcon />,
+    label: 'Profile',
     isInBottomNav: false
   }
 ]
@@ -65,3 +76,12 @@ const PMroutes = () => {
 }
 
 export default PMroutes;
+
+const useCSS = makeStyles(({ palette }) => ({
+  avatar: {
+    backgroundColor: fade(palette.text.hint, 0.15),
+    '& svg': {
+      color: palette.primary.contrastText
+    }
+  }
+}))

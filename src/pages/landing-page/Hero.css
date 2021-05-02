@@ -216,6 +216,12 @@ div.cover {
 }
 
 @media screen and (max-width: 490px) {
+  .nav {
+    padding: 15px 20px;
+  }
+  .hero-section {
+    margin-left: 20px;
+  }
   .hero-section h5 {
     font-size: 1.3rem;
     line-height: 4.5rem;
