@@ -52,6 +52,7 @@ const App = () => {
       fetchMethod()
       .get('')
       .then(({ data }) => {
+        console.log(data)
         if (data.isLogin)
           addUser(data.user)
         else

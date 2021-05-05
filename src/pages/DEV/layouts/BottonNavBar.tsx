@@ -1,50 +1,67 @@
 import {
-  Hidden,
+  Hidden, useMediaQuery, useTheme, CardActionArea,
   AppBar, Toolbar, makeStyles, IconButton
 } from '@material-ui/core'
 import { NavLink } from "react-router-dom";
 import { v4 as getKey } from 'uuid'
 import { FiMoreVertical as MenuIcon } from 'react-icons/fi'
+import { useContext } from 'react'
+import { DataContext } from '../DataContext'
 
-import { pmRoutes } from '../DEV.routes'
+import { pmRoutes, tlRoutes, devRoutes } from '../DEV.routes'
+import RolePopup from './RolePopup';
+import theme from '../../../constants/theme';
 
-const bottomRoutes = pmRoutes.filter(route => route.isInBottomNav === true)
-const profileRoute = pmRoutes.filter(route => route.label === 'Profile')[0]
+const routes = {
+  'DEV': devRoutes,
+  'PM': pmRoutes,
+  'TL': tlRoutes
+}
 
-console.log(profileRoute)
 
 const BottonNavBar = () => {
 
+  const { dispatch, data } = useContext(DataContext)
   const css = useCSS()
+
+  const bottomRoutes = routes[data.role].filter(route => route.isInBottomNav === true)
+  const profileRoute = routes[data.role].filter(route => route.label === 'Profile')[0]
+
+  const smDown = useMediaQuery(useTheme().breakpoints.down('sm'))
 
   return (
     <Hidden mdUp implementation="css">
       <AppBar position="fixed" className={css.appBar}>
         <Toolbar>
-          <IconButton edge="start" >
-            <MenuIcon />
-          </IconButton>
+          {
+            (data.roleList.isPM || data.roleList.isTL) && (
+              <IconButton edge="start" onClick={() => dispatch.openRoleModal()} >
+                <MenuIcon />
+              </IconButton>
+            )
+          }
           <div className={css.toolbar}>
           {
               bottomRoutes.map(route => (
               <NavLink key={getKey()} to={route.path} exact
                 className={css.navlink} activeClassName={css.activeNavLink} >
-                  <div className={css.iconContainer}>
+                  <CardActionArea className={css.iconContainer}>
                   {route.icon}
-                  </div>
+                  </CardActionArea>
               </NavLink>
             ))
           }
             <NavLink to={profileRoute.path} exact activeClassName={css.activeProfile}>
-              <div className={css.iconContainer}>
-                <div className={css.profileRing}>
+              <div style={{ flex: 1 }} className={css.iconContainer}>
+                <IconButton className={css.profileRing}>
                   {profileRoute.icon}
-                </div>
+                </IconButton>
               </div>
             </NavLink>
           </div>
         </Toolbar>
       </AppBar>
+      {smDown && <RolePopup />}
     </Hidden>
   )
 }
@@ -67,16 +84,22 @@ const useCSS = makeStyles(({ palette, spacing }) => ({
   },
   navlink: {
     color: palette.text.secondary,
-    fontWeight: 600,
-    fontSize: spacing(3)
+    height: '100%',
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center'
   },
   activeNavLink: {
     color: palette.primary.main
   },
   iconContainer: {
+    flex: 1,
     width: spacing(7),
+    height: theme.mixins.toolbar.minHeight,
     display: 'grid',
-    placeItems: 'center'
+    placeItems: 'center',
+    fontWeight: 600,
+    fontSize: spacing(3),
   },
   profileRing: {
     padding: 2,

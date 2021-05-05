@@ -1,8 +1,9 @@
 import { Button as Btn, makeStyles, fade } from '@material-ui/core'
+import { ReactNode } from 'react';
 
 //type
 interface Props {
-  label: string
+  label: string | ReactNode
   onClick?: (...args: any) => any
   type?: "button" | "submit" | "reset"
 }

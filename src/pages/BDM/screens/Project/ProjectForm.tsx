@@ -162,7 +162,7 @@ const ProjectForm = ({ isOpen, toggleForm, employees, fetchProjects }: PropsType
         fetchProjects()
       })
       .catch(e => {
-        if (e.response.data) {
+        if (e.response?.data) {
           const data = e.response.data
           openAlert({
             message: data.message,

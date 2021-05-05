@@ -1,3 +1,3 @@
-const drawerWidth = 270;
+const drawerWidth = 280;
 
 export default drawerWidth
