@@ -1,11 +1,11 @@
 import {
   Card,
   CardMedia, CardContent,
-  Typography, CardActions,
-  Button, makeStyles, IconButton, CardActionArea
+  Typography, MenuItem, OutlinedInput, InputAdornment,
+  Select, makeStyles, FormControl, CardActionArea
 } from '@material-ui/core'
-import { useContext } from 'react'
-import { FiArrowRight as NextIcon } from 'react-icons/fi'
+import { ChangeEvent, useContext, useEffect, useState } from 'react'
+import { FiSearch } from 'react-icons/fi'
 
 import images from '../../../../../assets/images'
 import shadow from '../../../../../constants/backgroundShadow'
@@ -13,7 +13,7 @@ import { DataContext } from '../../../DataContext'
 import { ProjectPMType } from '../../../../../types'
 import { useHistory } from 'react-router'
 
-const ProjectCard = ({ project }: { project: ProjectPMType }) => {
+const ProjectCard = ({ project, index }: { project: ProjectPMType, index: number }) => {
 
   const history = useHistory()
   const css = useStyles()
@@ -26,7 +26,7 @@ const ProjectCard = ({ project }: { project: ProjectPMType }) => {
         component="img"
         alt={project.projectTitle}
         height="140"
-        image={images[12]}
+        image={images[index]}
         title={project.projectTitle}
       />
       <CardContent>
@@ -38,7 +38,7 @@ const ProjectCard = ({ project }: { project: ProjectPMType }) => {
         </Typography>
       </CardContent>
       <div className={css.btnContainer}>
-        <CardActionArea className={css.button} onClick={() => history.push(`projects/${project._id}`)}>
+        <CardActionArea className={css.button} onClick={() => history.push(`projects/${project._id}-${index}`)}>
           &rarr;
       </CardActionArea>
       </div>
@@ -46,17 +46,71 @@ const ProjectCard = ({ project }: { project: ProjectPMType }) => {
   )
 }
 
-const ProjectCards = () => {
+export const ProjectCardFilter = ({ setRecords }: { setRecords: (...arg: any) => any }) => {
 
   const css = useStyles()
+
   const { data } = useContext(DataContext)
 
-  const loop = (Array.from(Array(15).keys()))
+  const [searchBy, setSearchBy] = useState('projectTitle')
+
+  const [filterFN, setFilterFN] = useState({
+    fn: (item: ProjectPMType[]): ProjectPMType[] => item
+  })
+
+  const handleSearch = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    setFilterFN({
+      fn: (item: ProjectPMType[]): ProjectPMType[] => {
+        if (target.value === '')
+          return item
+        else
+          return item.filter((x: any) => x[searchBy].toLowerCase().includes(target.value.toLowerCase()))
+      }
+    })
+  }
+
+  useEffect(() => {
+    setRecords(filterFN.fn(data.projects.PM))
+  }, [filterFN, data.projects.PM, setRecords])
+
+  return (
+    <div className={css.toolbox}>
+      <FormControl variant="outlined" size="small">
+        <Select
+          labelId="project-search-label"
+          id="employee-search"
+          className={css.searchBy}
+          value={searchBy}
+          onChange={({ target }) => setSearchBy(`${target.value}`)}
+        >
+          <MenuItem value="projectTitle">Search by Title</MenuItem>
+          <MenuItem value="projectId">Search by ID</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl variant="outlined" size="small" style={{ flexGrow: 1 }}>
+        <OutlinedInput
+          id="employee-search"
+          placeholder="Search..."
+          startAdornment={
+            <InputAdornment position="start">
+              <FiSearch className={css.searchIcon} />
+            </InputAdornment>
+          }
+          onChange={handleSearch}
+        />
+      </FormControl>
+    </div>
+  )
+}
+
+const ProjectCards = ({ projects }: { projects: ProjectPMType[] }) => {
+
+  const css = useStyles()
 
   return (
     <div className={css.container}>
       {
-        data.projects.PM.map(project => (<ProjectCard project={project} />))
+        projects.map((project, index) => (<ProjectCard project={project} index={index} />))
       }
     </div>
   );
@@ -64,7 +118,7 @@ const ProjectCards = () => {
 
 export default ProjectCards;
 
-const useStyles = makeStyles(({ spacing, palette }) => ({
+const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
   root: {
     maxWidth: 570,
     minWidth: 210,
@@ -93,5 +147,31 @@ const useStyles = makeStyles(({ spacing, palette }) => ({
     placeItems: 'center',
     color: palette.text.primary,
     backgroundColor: palette.common.white
+  },
+  searchBy: {
+    marginBottom: 10,
+    [breakpoints.only('sm')]: {
+      marginBottom: 0,
+      marginRight: spacing(1.5)
+    },
+    [breakpoints.up('lg')]: {
+      marginBottom: 0,
+      marginRight: spacing(1.5)
+    }
+  },
+  searchIcon: {
+    color: palette.text.hint
+  },
+  toolbox: {
+    display: 'flex',
+    flexDirection: 'column',
+    [breakpoints.only('sm')]: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    [breakpoints.up('lg')]: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    }
   }
 }))

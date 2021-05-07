@@ -58,7 +58,7 @@ export const pmRoutes: RouteListType[] = [
     label: 'Profile',
     isInBottomNav: false
   }, {
-    path: '/projects/:projectId',
+    path: '/projects/:projectId-:imgIndex',
     component: (params) => <ProjectDetails {...params} />,
     icon: <ProjectIcon />,
     label: 'Project details',

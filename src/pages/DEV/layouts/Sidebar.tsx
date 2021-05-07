@@ -88,7 +88,6 @@ const Sidebar = () => {
               (data.roleList.isPM || data.roleList.isTL) && (
                 <FormControl variant="outlined" size="small" style={{ marginTop: 20 }} className={classes.role}>
                   <Select value={data.role} onChange={({ target }) => {
-                    console.log(target.value === 'PM')
                     const val = target.value
                     if (val === 'PM')
                       dispatch.setRole('PM')

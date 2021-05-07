@@ -51,8 +51,7 @@ const App = () => {
     if (navigator.onLine) {
       fetchMethod()
       .get('')
-      .then(({ data }) => {
-        console.log(data)
+        .then(({ data }) => {
         if (data.isLogin)
           addUser(data.user)
         else

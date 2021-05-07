@@ -65,7 +65,8 @@ export interface ProjectPMType {
 export interface InitialStateType {
   projects: {
     PM: ProjectPMType[],
-
+    TL: ProjectPMType[],
+    DEV: ProjectPMType[]
   }
   role: 'DEV' | 'TL' | 'PM'
   roleList: {

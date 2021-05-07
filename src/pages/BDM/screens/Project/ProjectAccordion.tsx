@@ -17,6 +17,7 @@ import Moment from 'react-moment'
 import Card from '../../../../components/Card'
 
 import {
+  ProjectPMType,
   ProjectType2
 } from '../../../../types'
 
@@ -38,7 +39,7 @@ const ProjectAccordion = (props: {
   // ======================= initializing filterFunc
   const handleSearch = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     setFilterFN({
-      fn: item => {
+      fn: (item) => {
         if (target.value === '')
           return item
         else

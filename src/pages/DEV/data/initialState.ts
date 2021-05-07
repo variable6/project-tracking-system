@@ -7,7 +7,9 @@ const stateLS = storage.get(appStorageKey)
 
 const initialState: InitialStateType = stateLS ? stateLS : {
   projects: {
-    PM: []
+    PM: [],
+    TL: [],
+    DEV: []
   },
   role: 'DEV',
   roleList: {

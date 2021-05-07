@@ -43,7 +43,7 @@ const BottonNavBar = () => {
           <div className={css.toolbar}>
           {
               bottomRoutes.map(route => (
-              <NavLink key={getKey()} to={route.path} exact
+                <NavLink key={getKey()} to={route.path} exact={route.path === '/'}
                 className={css.navlink} activeClassName={css.activeNavLink} >
                   <CardActionArea className={css.iconContainer}>
                   {route.icon}
