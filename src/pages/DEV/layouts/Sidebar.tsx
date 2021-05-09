@@ -95,6 +95,7 @@ const Sidebar = () => {
                       dispatch.setRole('TL')
                     else if (val === 'DEV')
                       dispatch.setRole('DEV')
+                    history.push('/')
                   }}>
                     <MenuItem value="DEV">Software Devloper</MenuItem>
                     {data.roleList.isTL && (

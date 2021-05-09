@@ -9,11 +9,11 @@ const assets = [
   '/manifest.json',
   '/favicon.png',
   'https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&family=Open+Sans:wght@300;400;600;700;800&display=swap',
-  '/static/js/2.f6c76181.chunk.js',
-  '/static/js/main.bcfb76a8.chunk.js',
-  '/static/js/main.3706c7f9.chunk.css',
-  '/static/js/3.0da3c75a.chunk.js',
-  '/static/css/runtime-main.edce9a3a.js'
+  '/static/js/2.09257c86.chunk.js',
+  '/static/js/main.c58d8f8f.chunk.js',
+  '/static/js/runtime-main.3e2f4c36.js',
+  '/static/js/3.981df085.chunk.js',
+  '/static/css/main.3706c7f9.chunk.css'
 ]
 
 // ----> insatll service worker

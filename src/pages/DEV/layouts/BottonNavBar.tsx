@@ -11,6 +11,7 @@ import { DataContext } from '../DataContext'
 import { pmRoutes, tlRoutes, devRoutes } from '../DEV.routes'
 import RolePopup from './RolePopup';
 import theme from '../../../constants/theme';
+import shadow from '../../../constants/backgroundShadow';
 
 const routes = {
   'DEV': devRoutes,
@@ -74,7 +75,8 @@ const useCSS = makeStyles(({ palette, spacing }) => ({
     top: 'auto',
     bottom: 0,
     backgroundColor: palette.background.paper,
-    boxShadow: 'none'
+    boxShadow: 'none',
+    filter: shadow
   },
   toolbar: {
     display: 'flex',

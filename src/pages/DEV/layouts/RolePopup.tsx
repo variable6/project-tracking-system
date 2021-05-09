@@ -2,6 +2,7 @@ import {
   Drawer, FormControlLabel, makeStyles, Radio, RadioGroup, withStyles
 } from '@material-ui/core'
 import { useContext, FormEvent } from 'react';
+import { useHistory } from 'react-router';
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import useFormField from '../../../hooks/useFormField';
@@ -25,6 +26,7 @@ const RolePopup = () => {
   const { data, dispatch } = useContext(DataContext)
   const css = useCSS()
   const roleField = useFormField(data.role)
+  const history = useHistory()
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
@@ -35,6 +37,7 @@ const RolePopup = () => {
       dispatch.setRole('TL')
     else if (val === 'DEV')
       dispatch.setRole('DEV')
+    history.push('/')
     dispatch.closeRoleModal()
   }
 

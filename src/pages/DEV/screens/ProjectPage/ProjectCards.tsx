@@ -2,23 +2,26 @@ import {
   Card,
   CardMedia, CardContent,
   Typography, MenuItem, OutlinedInput, InputAdornment,
-  Select, makeStyles, FormControl, CardActionArea
+  Select, makeStyles, FormControl, IconButton
 } from '@material-ui/core'
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
-import { FiSearch } from 'react-icons/fi'
+import { FiChevronRight, FiSearch } from 'react-icons/fi'
 
-import images from '../../../../../assets/images'
-import shadow from '../../../../../constants/backgroundShadow'
-import { DataContext } from '../../../DataContext'
-import { ProjectPMType } from '../../../../../types'
+import images from '../../../../assets/images'
+import shadow from '../../../../constants/backgroundShadow'
+import { DataContext } from '../../DataContext'
+import { ProjectPMType } from '../../../../types'
 import { useHistory } from 'react-router'
 
-const ProjectCard = ({ project, index }: { project: ProjectPMType, index: number }) => {
+const ProjectCard = ({ project }: { project: ProjectPMType }) => {
 
   const history = useHistory()
   const css = useStyles()
 
   const trimDesc = (desc: string) => desc.length > 150 ? `${desc.substr(0, 150)}....` : desc
+
+  const imageImage = eval(project.projectId[project.projectId.length - 1].charCodeAt(0).toString().split('').join('+')) % 16
+
 
   return (
     <Card className={css.root}>
@@ -26,7 +29,7 @@ const ProjectCard = ({ project, index }: { project: ProjectPMType, index: number
         component="img"
         alt={project.projectTitle}
         height="140"
-        image={images[index]}
+        image={images[imageImage]}
         title={project.projectTitle}
       />
       <CardContent>
@@ -38,9 +41,9 @@ const ProjectCard = ({ project, index }: { project: ProjectPMType, index: number
         </Typography>
       </CardContent>
       <div className={css.btnContainer}>
-        <CardActionArea className={css.button} onClick={() => history.push(`projects/${project._id}-${index}`)}>
-          &rarr;
-      </CardActionArea>
+        <IconButton aria-label="Open Project" onClick={() => history.push(`projects/${project._id}-${imageImage}`)} >
+          <FiChevronRight />
+        </IconButton>
       </div>
     </Card>
   )
@@ -110,7 +113,7 @@ const ProjectCards = ({ projects }: { projects: ProjectPMType[] }) => {
   return (
     <div className={css.container}>
       {
-        projects.map((project, index) => (<ProjectCard project={project} index={index} />))
+        projects.map(project => (<ProjectCard project={project} />))
       }
     </div>
   );
@@ -120,7 +123,6 @@ export default ProjectCards;
 
 const useStyles = makeStyles(({ spacing, palette, breakpoints }) => ({
   root: {
-    maxWidth: 570,
     minWidth: 210,
     boxShadow: 'none',
     filter: shadow
