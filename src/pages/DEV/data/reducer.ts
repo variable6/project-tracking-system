@@ -1,15 +1,16 @@
 /*
       ->>>>>>>>>> Import statements
 */
-import initialState from './initialState'
 import {
   project,
   task,
-  role, view
+  role, view,
+  employees
 } from './actionTypes'
 // ------------->>>>>>>>>>>>>>>>> Handlers
 import projectHandlers from './actionHandlers/projecthandlers'
 import handleUI from './actionHandlers/uiHandlers'
+import employeeHandler from './actionHandlers/employeeHandlers'
 
 // --------->>>>> TYpes
 import { InitialStateType } from '../../../types'
@@ -54,6 +55,12 @@ const reducer = (state: InitialStateType, { type, payload }: ActionType): Initia
     */
     // Project view
     case view.CHANGE_PROJECT_VIEW: return handleUI.changeProjectView(state, payload)
+
+    /*
+        ------->>>>>>> Employees
+    */
+    // set employees
+    case employees.SET_EMPLOYEES: return employeeHandler.setEmployees(state, payload)
 
     // default case
     default: return state

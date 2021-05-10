@@ -1,5 +1,8 @@
-import { useContext, useState, UIEvent } from 'react'
-import { FiChevronLeft as BackIcon } from 'react-icons/fi'
+import { useContext, useState, UIEvent, useEffect } from 'react'
+import {
+  FiChevronLeft as BackIcon,
+  FiEdit as EditIcon
+} from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
 import { DataContext } from '../../../DataContext'
 import { makeStyles, Typography, fade, IconButton, AppBar, Toolbar } from "@material-ui/core";
@@ -9,6 +12,8 @@ import { ProjectPMType } from '../../../../../types'
 import PageContainer from '../../../layouts/PageContainer';
 import drawerWidth from '../../../../../constants/sibebarWidth';
 import Card from '../../../../../components/Card';
+import moment from 'moment';
+import useFetch from '../../../useFetch';
 
 const IMAGE_HEIGHT = 290
 
@@ -22,15 +27,28 @@ const setBackground = (index: number) => ({
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.05) 50%, rgba(0, 0, 0, 0.95) 100%), url("${images[index]}")`
 })
 
+const getDate = (date: Date | null) => date === null ? '-N/A-' : moment((new Date(date))).format('MMM DD, YYYY')
+
+
+/*
+  --------------->>>>>>>>>> Component
+*/
 const Index = ({ match }: { match: MatchParams }) => {
 
   const { projectId, imgIndex } = match.params
 
   const { data } = useContext(DataContext)
+  const { fetchEmployeesPM } = useFetch()
 
   const [showAppbar, setShowAppbar] = useState(false)
 
   const history = useHistory()
+
+  const teamOptions = [{
+    label: 'Edit',
+    onClick: () => { },
+    icon: <EditIcon />
+  }]
 
   const currentProject = data.projects.PM.filter((project: ProjectPMType) => project._id === projectId)[0]
 
@@ -45,6 +63,10 @@ const Index = ({ match }: { match: MatchParams }) => {
 
   const css = useCSS()
 
+  useEffect(() => {
+    fetchEmployeesPM()
+  }, [])
+
   return (
     <PageContainer>
       <AppBar position="fixed" color="inherit" className={`${css.appBar} ${showAppbar ? css.openAppBar : ''}`}>
@@ -56,7 +78,7 @@ const Index = ({ match }: { match: MatchParams }) => {
             <Typography variant="h4" component="h2" >
               {currentProject.projectTitle}
             </Typography>
-            <Typography variant="body1" component="p">
+            <Typography variant="body2" component="p">
               {currentProject.projectId}
             </Typography>
           </div>
@@ -87,329 +109,28 @@ const Index = ({ match }: { match: MatchParams }) => {
             </div>
           </Card>
           <Card title="Details">
+            <div className={css["details-container"]}>
+              <div>
+                <Typography variant="body2" color="textPrimary">
+                  Start Date
+                </Typography>
+                <Typography variant="body1" color="secondary" style={{ fontWeight: 600 }}>
+                  {getDate(currentProject.startDate)}
+                </Typography>
+              </div>
+              <div>
+                <Typography variant="body2" color="textPrimary">
+                  End Date
+                </Typography>
+                <Typography variant="body1" color="secondary" style={{ fontWeight: 600 }}>
+                  {getDate(currentProject.endDate)}
+                </Typography>
+              </div>
+            </div>
+          </Card>
+          <Card title="Project Team" options={teamOptions}>
 
           </Card>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            qwerty
-      </Typography>
-          <Typography variant="h5" color="textPrimary">
-            last
-      </Typography>
         </main>
       </div>
     </PageContainer>
@@ -485,7 +206,7 @@ const useCSS = makeStyles(({ spacing, palette, mixins, breakpoints }) => ({
       'white-space': 'nowrap',
       overflow: 'hidden',
       'text-overflow': 'ellipsis',
-      fontSize: spacing(3.15)
+      fontSize: spacing(2.75)
     },
     '& .MuiIconButton-root': {
       marginRight: spacing(1.5)
@@ -494,5 +215,11 @@ const useCSS = makeStyles(({ spacing, palette, mixins, breakpoints }) => ({
   openAppBar: {
     'clip-path': 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)',
     borderBottom: `1.5px solid ${fade(palette.text.hint, 0.25)}`
+  },
+  'details-container': {
+    padding: spacing(1.15),
+    display: 'grid',
+    'grid-template-columns': `repeat(auto-fit, minmax(${spacing(20.5)}px, 1fr))`,
+    gridGap: spacing(1.5)
   }
 }))

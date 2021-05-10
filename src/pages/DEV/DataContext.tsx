@@ -4,9 +4,9 @@ import {
 
 import reducer from './data/reducer'
 import initialState from './data/initialState'
-import { project, role, view } from './data/actionTypes'
+import { project, role, view, employees } from './data/actionTypes'
 
-import { InitialStateType, ProjectPMType } from '../../types'
+import { InitialStateType, ProjectPMType, EmployeeType } from '../../types'
 
 interface DataContxtType {
   data: InitialStateType
@@ -20,7 +20,8 @@ interface DataContxtType {
     setRole: (payload: 'DEV' | 'TL' | 'PM') => void,
     openRoleModal: () => void,
     closeRoleModal: () => void,
-    changeProjectView: (view: "LIST" | "GRID" | "TABLE") => void
+    changeProjectView: (view: "LIST" | "GRID" | "TABLE") => void,
+    setEmployees: (employees: EmployeeType[]) => void
   }
 }
 
@@ -36,7 +37,8 @@ export const DataContext = createContext<DataContxtType>({
     setRole: (payload: 'DEV' | 'TL' | 'PM') => { },
     openRoleModal: () => { },
     closeRoleModal: () => { },
-    changeProjectView: (view) => { }
+    changeProjectView: (view) => { },
+    setEmployees: (employees) => { }
   }
 })
 
@@ -70,6 +72,13 @@ const DataContextProvider = ({ children }: { children: ReactNode }) => {
     // project view
     changeProjectView: (payload: "LIST" | "GRID" | "TABLE") => {
       dispatch({ type: view.CHANGE_PROJECT_VIEW, payload })
+    },
+    /*
+      === -------->>>>> Employees
+    */
+    // set employees
+    setEmployees: (payload: EmployeeType[]) => {
+      dispatch({ type: employees.SET_EMPLOYEES, payload })
     }
   }
 

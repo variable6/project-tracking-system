@@ -5,6 +5,8 @@ import { useContext } from 'react'
 export interface UseFetchType {
   fetchRoles: () => void
   fetchProjectsPM: () => void
+  fetchEmployeesPM: () => void
+
 }
 
 const useFetch = (): UseFetchType => {
@@ -33,9 +35,19 @@ const useFetch = (): UseFetchType => {
       .catch(() => console.log('Error while fetching projects'))
   }
 
+  const fetchEmployeesPM = () => {
+    axiosConfig()
+      .get('/pm/emp')
+      .then(({ data }) => {
+        dispatch.setEmployees(data)
+      })
+      .catch(() => console.log('============================\nError while fetching employees\n============================'))
+  }
+
   return ({
     fetchRoles,
-    fetchProjectsPM
+    fetchProjectsPM,
+    fetchEmployeesPM
   })
 }
 

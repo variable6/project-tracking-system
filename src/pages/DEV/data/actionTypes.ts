@@ -16,3 +16,7 @@ export const role = {
 export const view = {
   CHANGE_PROJECT_VIEW: 'CHANGE_PROJECT_VIEW'
 }
+
+export const employees = {
+  SET_EMPLOYEES: 'SET_EMPLOYEES'
+}

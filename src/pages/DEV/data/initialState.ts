@@ -18,7 +18,8 @@ const initialState: InitialStateType = stateLS ? stateLS : {
     isTL: false
   },
   showRolePopup: false,
-  projectView: 'LIST'
+  projectView: 'LIST',
+  employees: []
 }
 
 export default initialState

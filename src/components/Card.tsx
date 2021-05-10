@@ -2,8 +2,12 @@ import { ReactNode } from 'react'
 import {
   Paper,
   makeStyles,
-  Typography
+  Typography,
+  ButtonGroup,
+  Button,
+  IconButton
 } from '@material-ui/core'
+import { v4 as getKey } from 'uuid'
 
 // styles
 const useCSS = makeStyles(theme => ({
@@ -30,8 +34,27 @@ const useCSS = makeStyles(theme => ({
     width: theme.spacing(0.5),
     borderRadius: theme.spacing(0.5),
     backgroundColor: theme.palette.primary.main
+  },
+  headContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  btnGroup: {
+    borderRadius: theme.spacing(999)
+  },
+  iconBtn: {
+    width: theme.spacing(4.5),
+    height: theme.spacing(4.9),
+    padding: `${theme.spacing(1.5)}px ${theme.spacing(1.2)}px`
   }
 }))
+
+interface OptionType {
+  label: string,
+  icon: ReactNode,
+  onClick: () => void
+}
 
 //PropTypes
 interface PropTypes {
@@ -39,27 +62,50 @@ interface PropTypes {
   title?: string
   marginTop?: number | string,
   noshadow?: boolean
+  options?: OptionType[]
 }
 
-const Card = ({ children, title, marginTop, noshadow }: PropTypes) => {
+const Card = ({ children, title, marginTop, noshadow, options }: PropTypes) => {
 
   const css = useCSS()
 
   const filter = noshadow ? 'none' : ''
 
+
   return (
     <Paper elevation={0} className={css.paper} style={marginTop ? { marginTop, filter } : {}}>
       {
         title ? (
-          <div className={css.titleContainer}>
-            <span className={css.span} />
-            <Typography
-              variant="h6"
-              color="secondary"
-              style={{ fontWeight: 600 }}
-            >
-              &nbsp;&nbsp;&nbsp;{title}
-            </Typography>
+          <div className={css.headContainer}>
+            <div className={css.titleContainer}>
+              <span className={css.span} />
+              <Typography
+                variant="h6"
+                color="secondary"
+                style={{ fontWeight: 600 }}
+              >
+                &nbsp;&nbsp;&nbsp;{title}
+              </Typography>
+            </div>
+            <div>
+              {
+                options ? (
+                  <ButtonGroup variant="text" className={css.btnGroup} disableElevation aria-label="card options" >
+                    {
+                      options.map(opt => (
+                        <IconButton key={getKey()}
+                          aria-label={opt.label}
+                          onClick={opt.onClick}
+                          className={css.iconBtn}
+                        >
+                          {opt.icon}
+                        </IconButton>
+                      ))
+                    }
+                  </ButtonGroup>
+                ) : null
+              }
+            </div>
           </div>
         ) : null
       }
