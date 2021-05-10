@@ -2,15 +2,15 @@ import { useContext, useState, UIEvent } from 'react'
 import { FiChevronLeft as BackIcon } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
 import { DataContext } from '../../../DataContext'
-import { makeStyles, Typography, fade, IconButton, AppBar, Toolbar, useTheme } from "@material-ui/core";
+import { makeStyles, Typography, fade, IconButton, AppBar, Toolbar } from "@material-ui/core";
 import images from "../../../../../assets/images";
 
 import { ProjectPMType } from '../../../../../types'
 import PageContainer from '../../../layouts/PageContainer';
-import shadow from '../../../../../constants/backgroundShadow';
 import drawerWidth from '../../../../../constants/sibebarWidth';
+import Card from '../../../../../components/Card';
 
-const IMAGE_HEIGHT = 270
+const IMAGE_HEIGHT = 290
 
 interface MatchParams {
   isExact: boolean
@@ -35,7 +35,7 @@ const Index = ({ match }: { match: MatchParams }) => {
   const currentProject = data.projects.PM.filter((project: ProjectPMType) => project._id === projectId)[0]
 
   const onScroll = (event: UIEvent<HTMLElement>) => {
-    if (event.currentTarget.scrollTop > (IMAGE_HEIGHT - 65))
+    if (event.currentTarget.scrollTop > (IMAGE_HEIGHT - 80))
       setShowAppbar(true)
     else
       setShowAppbar(false)
@@ -52,9 +52,14 @@ const Index = ({ match }: { match: MatchParams }) => {
           <IconButton edge="start" onClick={backButtonHandler} >
             <BackIcon />
           </IconButton>
-          <Typography variant="h4" component="h2">
-            {currentProject.projectTitle}
-          </Typography>
+          <div style={{ marginTop: 10, marginBottom: 10, width: '80%' }}>
+            <Typography variant="h4" component="h2" >
+              {currentProject.projectTitle}
+            </Typography>
+            <Typography variant="body1" component="p">
+              {currentProject.projectId}
+            </Typography>
+          </div>
         </Toolbar>
       </AppBar>
       <div className={css.scrollContainer} onScroll={onScroll}>
@@ -63,12 +68,27 @@ const Index = ({ match }: { match: MatchParams }) => {
             <IconButton edge="start" onClick={backButtonHandler} >
               <BackIcon />
             </IconButton>
-            <Typography variant="h4" component="h2">
-              {currentProject.projectTitle}
-            </Typography>
+            <main className="page-title">
+              <Typography variant="h4" component="h2">
+                {currentProject.projectTitle}
+              </Typography>
+              <Typography variant="body1" component="p">
+                {currentProject.projectId}
+              </Typography>
+            </main>
           </div>
         </div>
         <main className={css.container}>
+          <Card title="Description">
+            <div style={{ padding: 5 }}>
+              <Typography variant="body1" color="textPrimary" className="justify-text">
+                {currentProject.projectDesc}
+              </Typography>
+            </div>
+          </Card>
+          <Card title="Details">
+
+          </Card>
           <Typography variant="h5" color="textPrimary">
             qwerty
       </Typography>
@@ -407,7 +427,11 @@ const useCSS = makeStyles(({ spacing, palette, mixins, breakpoints }) => ({
     'background-position': 'center',
     display: 'flex',
     flexDirection: 'column-reverse',
-    '& h2': {
+    '& .page-title': {
+      width: '85%',
+      marginRigth: spacing(2.5)
+    },
+    '& .page-title h2': {
       color: fade(palette.background.paper, 0.9),
       fontWeight: 500,
       'white-space': 'nowrap',
@@ -416,6 +440,9 @@ const useCSS = makeStyles(({ spacing, palette, mixins, breakpoints }) => ({
       [breakpoints.down(spacing(55))]: {
         fontSize: spacing(3)
       }
+    },
+    '& .page-title p': {
+      color: fade(palette.background.paper, 0.8)
     },
     '& > div': {
       display: 'flex',
@@ -433,9 +460,9 @@ const useCSS = makeStyles(({ spacing, palette, mixins, breakpoints }) => ({
     }
   },
   container: {
-    padding: `${spacing(2.5)}px ${spacing(3)}px`,
+    padding: `${spacing(1)}px ${spacing(3)}px`,
     [breakpoints.down('xs')]: {
-      padding: spacing(2.5)
+      padding: `${spacing(1)}px ${spacing(2.5)}px`
     }
   },
   scrollContainer: {

@@ -123,8 +123,7 @@ const ProjectAccordion = (props: {
                   </section>
                 </Card>
                 <Card title="Description" marginTop="0" noshadow={true}>
-                  <Typography variant="body1"
-                    style={{ whiteSpace: 'pre-line' }} color="textPrimary">
+                  <Typography variant="body1" className="justify-text" color="textPrimary">
                     {project.projectDesc}
                   </Typography>
                 </Card>

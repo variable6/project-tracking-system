@@ -199,8 +199,7 @@ const Table = ({ projects, setDelete, addCurProject }: PropsType) => {
               </section>
             </Card>
             <Card title="Description" marginTop="0" noshadow={true}>
-              <Typography variant="body1"
-                style={{ whiteSpace: 'pre-line' }} color="textPrimary">
+              <Typography variant="body1" className="justify-text" color="textPrimary">
                 {curProject?.projectDesc}
               </Typography>
             </Card>
