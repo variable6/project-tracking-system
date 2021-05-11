@@ -12,6 +12,7 @@ import { useContext, useEffect, useState, ChangeEvent } from 'react'
 import {
   FiEdit as EditIcon,
   FiXCircle as CloseIcon,
+  FiWifiOff as OfflineIcon,
   FiSearch
 } from 'react-icons/fi'
 import { v4 as setKey } from 'uuid'
@@ -226,6 +227,20 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
     }))
   }, [form.teamLeader])
 
+
+  if (!navigator.onLine)
+    return (
+      <div className={css.offline}>
+        <OfflineIcon className={css.offlineIcon} />
+        <Typography variant="h5" color="textPrimary">
+          You are offline now.
+        </Typography>
+        <Typography variant="body1" color="textSecondary">
+          Check your internet connection to view more details.
+        </Typography>
+      </div>
+    )
+
   if (state.isLoading)
     return (
       <div className={css.loader}>
@@ -427,5 +442,18 @@ const useCSS = makeStyles(({ spacing, palette, shape }) => ({
         fontSize: spacing(2.5)
       }
     }
+  },
+  offline: {
+    margin: spacing(5),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    textAlign: 'center',
+    gap: spacing(1.5),
+  },
+  offlineIcon: {
+    fontSize: spacing(15),
+    color: '#888'
   }
 }))
