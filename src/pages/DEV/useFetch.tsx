@@ -6,7 +6,6 @@ export interface UseFetchType {
   fetchRoles: () => void
   fetchProjectsPM: () => void
   fetchEmployeesPM: () => void
-
 }
 
 const useFetch = (): UseFetchType => {
@@ -41,7 +40,7 @@ const useFetch = (): UseFetchType => {
       .then(({ data }) => {
         dispatch.setEmployees(data)
       })
-      .catch(() => console.log('============================\nError while fetching employees\n============================'))
+      .catch(() => console.log('=========================\nError while fetching employees\n========================='))
   }
 
   return ({

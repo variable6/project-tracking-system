@@ -6,9 +6,10 @@ interface Props {
   label: string | ReactNode
   onClick?: (...args: any) => any
   type?: "button" | "submit" | "reset"
+  className?: string
 }
 
-const Primary = ({ label, onClick, type }: Props) => {
+const Primary = ({ label, onClick, type, className }: Props) => {
   return (
     <Btn
       disableElevation
@@ -17,7 +18,7 @@ const Primary = ({ label, onClick, type }: Props) => {
       style={{ fontWeight: 600 }}
       onClick={onClick}
       type={type ? type : 'button'}
-      className={useCSS().primary}
+      className={`${useCSS().primary} ${className}`}
     >
       {label}
     </Btn>

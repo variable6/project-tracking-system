@@ -1,7 +1,6 @@
 import { useContext, useState, UIEvent, useEffect } from 'react'
 import {
-  FiChevronLeft as BackIcon,
-  FiEdit as EditIcon
+  FiChevronLeft as BackIcon
 } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
 import { DataContext } from '../../../DataContext'
@@ -14,6 +13,7 @@ import drawerWidth from '../../../../../constants/sibebarWidth';
 import Card from '../../../../../components/Card';
 import moment from 'moment';
 import useFetch from '../../../useFetch';
+import ProjectTeam from './ProjectTeam'
 
 const IMAGE_HEIGHT = 290
 
@@ -44,11 +44,6 @@ const Index = ({ match }: { match: MatchParams }) => {
 
   const history = useHistory()
 
-  const teamOptions = [{
-    label: 'Edit',
-    onClick: () => { },
-    icon: <EditIcon />
-  }]
 
   const currentProject = data.projects.PM.filter((project: ProjectPMType) => project._id === projectId)[0]
 
@@ -59,12 +54,13 @@ const Index = ({ match }: { match: MatchParams }) => {
       setShowAppbar(false)
   }
 
-  const backButtonHandler = () => history.goBack()
+  const backButtonHandler = () => history.push('/projects')
 
   const css = useCSS()
 
   useEffect(() => {
     fetchEmployeesPM()
+    document.title = `WorkSpace | PM - ${currentProject.projectTitle}`
   }, [])
 
   return (
@@ -128,9 +124,7 @@ const Index = ({ match }: { match: MatchParams }) => {
               </div>
             </div>
           </Card>
-          <Card title="Project Team" options={teamOptions}>
-
-          </Card>
+          <ProjectTeam project_id={currentProject._id} />
         </main>
       </div>
     </PageContainer>

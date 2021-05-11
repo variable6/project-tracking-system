@@ -37,6 +37,7 @@ const ProjectPage = () => {
 
   useEffect(() => {
     fetchProjectsPM()
+    document.title = 'WorkSpace | PM - Projects'
   }, [])
 
   const [filteredProjects, setFilteredProjects] = useState<ProjectPMType[]>([])
