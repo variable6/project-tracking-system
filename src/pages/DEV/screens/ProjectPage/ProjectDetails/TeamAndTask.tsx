@@ -194,7 +194,6 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
           isTaskLoading: false,
           tasks: res.data
         }))
-        console.log(res.data)
       })
       .catch(() => {
         console.log('Error while fetching teams')
@@ -304,7 +303,6 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
         team: cur.team.filter(member => member !== target.value)
       }))
     }
-    console.log(form.team.includes(target.value));
   }
 
   const editTask = (task: TaskType) => {
@@ -351,7 +349,6 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
           message: data.message
         })
         fetchTasks()
-        console.log(data)
         setState(cur => ({ ...cur, editTaskView: false }))
         setTaskForm({
           createdDate: (new Date()),
