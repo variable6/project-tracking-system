@@ -361,7 +361,6 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
         })
       })
       .catch((e) => {
-        console.log(e)
         openAlert({
           type: 'error',
           message: 'Error occurred'
