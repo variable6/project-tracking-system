@@ -74,10 +74,22 @@ export const tlRoutes: RouteListType[] = [
     label: 'Dashboard',
     isInBottomNav: true
   }, {
+    path: '/projects',
+    component: (params) => <ProjectPage {...params} />,
+    icon: <ProjectIcon />,
+    label: 'Projects',
+    isInBottomNav: true
+  }, {
     path: '/profile',
-    component: (params) => <ProfilePage />,
+    component: (params) => <ProfilePage {...params} />,
     icon: <ProfileIcon />,
     label: 'Profile',
+    isInBottomNav: false
+  }, {
+    path: '/projects/:projectId-:imgIndex',
+    component: (params) => <ProjectDetails {...params} />,
+    icon: <ProjectIcon />,
+    label: 'Project details',
     isInBottomNav: false
   }
 ]
@@ -90,10 +102,22 @@ export const devRoutes: RouteListType[] = [
     label: 'Dashboard',
     isInBottomNav: true
   }, {
+    path: '/projects',
+    component: (params) => <ProjectPage {...params} />,
+    icon: <ProjectIcon />,
+    label: 'Projects',
+    isInBottomNav: true
+  }, {
     path: '/profile',
     component: (params) => <ProfilePage {...params} />,
     icon: <ProfileIcon />,
     label: 'Profile',
+    isInBottomNav: false
+  }, {
+    path: '/projects/:projectId-:imgIndex',
+    component: (params) => <ProjectDetails {...params} />,
+    icon: <ProjectIcon />,
+    label: 'Project details',
     isInBottomNav: false
   }
 ]

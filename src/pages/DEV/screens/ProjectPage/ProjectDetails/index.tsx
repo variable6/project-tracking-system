@@ -13,7 +13,7 @@ import drawerWidth from '../../../../../constants/sibebarWidth';
 import Card from '../../../../../components/Card';
 import moment from 'moment';
 import useFetch from '../../../useFetch';
-import ProjectTeam from './ProjectTeam'
+import TeamAndTask from './TeamAndTask'
 
 const IMAGE_HEIGHT = 290
 
@@ -124,7 +124,7 @@ const Index = ({ match }: { match: MatchParams }) => {
               </div>
             </div>
           </Card>
-          <ProjectTeam project_id={currentProject._id} />
+          <TeamAndTask project_id={currentProject._id} />
         </main>
       </div>
     </PageContainer>
