@@ -4,7 +4,6 @@ import {
   makeStyles,
   Typography,
   ButtonGroup,
-  Button,
   IconButton
 } from '@material-ui/core'
 import { v4 as getKey } from 'uuid'

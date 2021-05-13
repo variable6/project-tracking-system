@@ -34,13 +34,13 @@ import { AuthContext } from '../../../../../context/AuthContext'
 import { DataContext } from '../../../DataContext'
 
 
-const priorityColor = {
+export const priorityColor = {
   LOW: '#f4d140',
   NORMAL: '#FFA500',
   HIGH: '#CE2029'
 }
 
-const statusColor = {
+export const statusColor = {
   NOT_STARTED: '#EA3C53',
   ACTIVE: '#29ab87',
   ON_HOLD: '#3a3a3a',
@@ -48,7 +48,7 @@ const statusColor = {
   BACKLOG: '#0d0d0d'
 }
 
-const status = {
+export const status = {
   NOT_STARTED: 'Not Started',
   ACTIVE: 'Active',
   ON_HOLD: 'On-hold',
@@ -56,13 +56,23 @@ const status = {
   BACKLOG: 'Backlog'
 }
 
+interface TeamLeader {
+  date: Date
+  designation: string
+  email: string
+  employeeId: string
+  name: string
+  status: string
+  __v: number
+  _id: string
+}
 
 interface FormType {
   teamLeader: string
   team: string[]
 }
 
-interface TaskType {
+export interface TaskType {
   priority: "NORMAL" | "HIGH" | "LOW"
   projectRef: string
   createdDate: Date
@@ -73,12 +83,14 @@ interface TaskType {
 }
 
 
-const Loader = () => (
+export const Loader = () => (
   <>
     <Skeleton variant="text" height={110} />
     <Skeleton variant="rect" style={{ borderRadius: 7 }} width="100%" height={210} />
   </>
 )
+
+export const getDate = (date: Date) => moment(date).format('MMM DD, YYYY')
 
 
 const ProjectTeam = ({ project_id }: { project_id: string }) => {
@@ -90,11 +102,17 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
   const css = useCSS()
   const classes = useStyles()
 
-
-  const getDate = (date: Date) => moment(date).format('MMM DD, YYYY')
-
   const [state, setState] = useState({
-    teamLeader: 'none',
+    teamLeader: {
+      date: new Date(),
+      designation: "",
+      email: "",
+      employeeId: "",
+      name: "",
+      status: "",
+      __v: 0,
+      _id: "",
+    },
     team: [],
     tasks: [],
     employees: data.employees.map(emp => ({
@@ -109,7 +127,8 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
     isTeamLoading: true,
     isTaskLoading: true,
     editTaskView: false,
-    isNewTask: true
+    isNewTask: true,
+    openTLForm: false,
   })
 
   const [expanded, setExpanded] = useState<string | false>(false)
@@ -119,7 +138,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
   };
 
   const [form, setForm] = useState<FormType>({
-    teamLeader: 'none',
+    teamLeader: '',
     team: []
   })
 
@@ -136,7 +155,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
   const closeEdit = () => {
     setState(cur => ({ ...cur, showDeltails: true }))
     setForm({
-      teamLeader: state.teamLeader,
+      teamLeader: state.teamLeader._id,
       team: state.team.map((member: any) => member.devRef)
     })
   }
@@ -173,12 +192,13 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
           }))
           setForm(cur => ({
             ...cur,
-            teamLeader: res.data[0].teamLeader,
-            team: res.data[0].teamMembers.map((member: any) => member.devRef)
+            teamLeader: res.data[0].teamLeader._id,
+            team: res.data[0].teamMembers.map((member: any) => member.devRef._id)
           }))
         }
         else
           setState(cur => ({ ...cur, isTeamLoading: false }))
+        console.log(res.data)
       })
       .catch(() => {
         console.log('Error while fetching teams')
@@ -338,7 +358,6 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
       priority: taskForm.priority,
       status: taskForm.status,
       taskDesc: taskForm.taskDesc,
-      createdDate: state.isNewTask ? new Date() : taskForm.createdDate,
       projectRef: project_id
     }
     if (state.isNewTask === false)
@@ -371,7 +390,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
       })
   }
 
-  const taskCardOptions = data.role === 'PM' && state.editTaskView === false ? [{
+  const taskCardOptions = data.role === 'PM' ? [{
     label: 'add',
     onClick: () => {
       if (state.editTaskView)
@@ -430,7 +449,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
   const details = (
     <div className={css.form}>
       {
-        state.teamLeader === 'none' && state.team.length === 0
+        state.teamLeader._id === '' && state.team.length === 0
           ? (
             <div className={css.info} >
               <Typography variant="h6" color="textPrimary">
@@ -449,7 +468,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
             <>
               <label>Team Leader</label>
               <TextField className={css.textField} variant="outlined"
-                size="small" disabled value={getEmployeeName(state.teamLeader)}
+                size="small" disabled value={`${state.teamLeader.name} - ${state.teamLeader.employeeId}`}
               />
               <label>Team Members</label>
               <div className={css.teamContainer}>
@@ -457,7 +476,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
                   state.team.map((member: any) => (
                     <div>
                       <Typography variant="body1" component="p" key={setKey()} color="textPrimary">
-                        {getEmployeeName(member.devRef)}
+                        {getEmployeeName(member.devRef._id)}
                       </Typography>
                     </div>
                   ))
@@ -539,12 +558,15 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
                   <FormControl component="fieldset" className={css.container}>
                     <FormGroup>
                       {
-                        state.developers.filter(emp => emp.id !== form.teamLeader).map(emp => (
+                        state.developers.filter(emp => emp.id !== form.teamLeader).map(emp => {
+                          console.log(emp)
+                          return (
                           <FormControlLabel key={setKey()}
                             control={<Checkbox color="primary" value={emp.id} checked={form.team.includes(emp.id)} onChange={handleTeamMember} />}
                             label={emp.name}
                           />
-                        ))
+                          )
+                        })
                       }
                     </FormGroup>
                   </FormControl>
@@ -585,23 +607,12 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
                         <MenuItem value="HIGH">High</MenuItem>
                       </Select>
                     </FormControl>
-                    <FormControl variant="outlined" size="small">
-                      <Typography variant="body2" color="textPrimary">Task Status</Typography>
-                      <Select required
-                        value={taskForm.status}
-                        onChange={e => setTaskForm(cur => ({ ...cur, status: `${e.target.value}` }))}
-                      >
-                        <MenuItem value="NOT_STARTED">Not Started</MenuItem>
-                        <MenuItem value="ACTIVE">Active</MenuItem>
-                        <MenuItem value="ON_HOLD">On-hold</MenuItem>
-                        <MenuItem value="COMPLETED">Completed</MenuItem>
-                      </Select>
-                    </FormControl>
                     <div className={css.btnContainer}>
                       <Button.Primary label={state.isNewTask ? 'add' : 'update'} type="submit" />
                       <Button.Secondary label="cancel" onClick={closeEditTask} />
                     </div>
                   </form>
+
                 ) : state.tasks.map((task: TaskType, index: number) => (
                   <Accordion elevation={0} expanded={expanded === task._id} key={setKey()} onChange={handleChange(task._id)}>
                     <AccordionSummary
@@ -642,7 +653,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
                       <div className={css.taskBtnContainer}>
                         <div className={css.property}>
                           <Typography variant="body2" component="h6" color="textSecondary">
-                            Start Date:&nbsp;
+                            Created on&nbsp;
                             </Typography>
                           <Typography variant="body2" component="p" color="textPrimary">
                             {getDate(task.createdDate)}
@@ -650,26 +661,30 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
                         </div>
                       </div>
                     </AccordionDetails>
-                    <AccordionActions>
-                      <Button.Secondary label={
-                        <>
-                          <span>&nbsp;</span>
-                          <DeleteIcon style={{ color: '#EA3C53' }} />
-                          <span style={{ color: '#EA3C53' }}>&nbsp;&nbsp;delete&nbsp;</span>
-                        </>
-                      } onClick={() => deleteTask(task._id)} />
-                      <Button.Secondary label={
-                        <>
-                          <span>&nbsp;</span>
-                          <EditIcon />
-                          <span>&nbsp;&nbsp;edit&nbsp;</span>
-                        </>
-                      } onClick={() => editTask(task)} />
-                    </AccordionActions>
+                    {
+                      data.role === 'PM' && (
+                        <AccordionActions>
+                          <Button.Secondary label={
+                            <>
+                              <span>&nbsp;</span>
+                              <DeleteIcon style={{ color: '#EA3C53' }} />
+                              <span style={{ color: '#EA3C53' }}>&nbsp;&nbsp;delete&nbsp;</span>
+                            </>
+                          } onClick={() => deleteTask(task._id)} />
+                          <Button.Secondary label={
+                            <>
+                              <span>&nbsp;</span>
+                              <EditIcon />
+                              <span>&nbsp;&nbsp;edit&nbsp;</span>
+                            </>
+                          } onClick={() => editTask(task)} />
+                        </AccordionActions>
+                      )
+                    }
                   </Accordion>
                 ))
               } {
-                state.tasks.length === 0 && (
+                (state.tasks.length === 0 && !state.editTaskView) && (
                   <div className={css.info} >
                     <Typography variant="h6" color="textPrimary">No task added yet.</Typography>
                     <Typography variant="body1" color="textPrimary">
@@ -677,7 +692,9 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
                     </Typography>
                     {
                       data.role === 'PM' ? (
-                        <Button.Primary className={css.createBtn} label="add now" />
+                        <Button.Primary className={css.createBtn} label="add now"
+                          onClick={() => setState(cur => ({ ...cur, editTaskView: true, isNewTask: true }))}
+                        />
                       ) : null
                     }
                   </div>
@@ -693,7 +710,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
 
 export default ProjectTeam
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
@@ -807,7 +824,8 @@ const useCSS = makeStyles(({ spacing, palette, shape }) => ({
   },
   propertiesContainer: {
     display: 'grid',
-    'grid-template-columns': `repeat(auto-fit, minmax(${spacing(15)}px, 1fr))`
+    'grid-template-columns': `repeat(auto-fit, minmax(${spacing(18.5)}px, 1fr))`,
+    gridGap: spacing(1.5)
   },
   property: {
     '& span': {

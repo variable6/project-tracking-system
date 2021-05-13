@@ -15,10 +15,12 @@ export interface ProjectType {
   projectDesc: string
   startDate: Date
   endDate: Date
+  last_update: Date
+  isCompleted: boolean
   manager: {
     _id: string,
     name: string
-  }
+  } | null
 }
 
 export interface ProjectType2 {
@@ -28,8 +30,10 @@ export interface ProjectType2 {
   projectDesc: string
   startDate: Date
   endDate: Date
-  manager_id: string,
-  managerName: string
+  last_update: Date
+  isCompleted: boolean
+  manager_id: string | null,
+  managerName: string | null
 }
 
 export interface UserType {

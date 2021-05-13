@@ -34,7 +34,6 @@ import storageKeys from '../../../../constants/storageKeys'
 import {
   ProjectType, ProjectType2, EmployeeType
 } from '../../../../types'
-import FormLoader from '../../../../components/FormLoader'
 import Loader from '../../../../components/Loader'
 
 
@@ -62,9 +61,12 @@ const creatProjectList = (val: ProjectTypeParams[]) => val.map(project => ({
   projectDesc: project.projectDesc,
   startDate: project.startDate,
   endDate: project.endDate,
-  manager: {
+  manager: project.managerId ? {
     _id: project.managerId._id,
     name: project.managerId.name
+  } : {
+    _id: 'None',
+    name: 'None'
   }
 }))
 interface DeleteType {
@@ -164,10 +166,12 @@ const Project = () => {
       projectId: project.projectId,
       projectTitle: project.projectTitle,
       _id: project._id,
+      isCompleted: project.isCompleted,
+      last_update: project.last_update,
       startDate: project.startDate,
       endDate: project.endDate,
-      managerName: project.manager.name,
-      manager_id: project.manager._id
+      managerName: project.manager ? project.manager.name : 'None',
+      manager_id: project.manager ? project.manager._id : 'None'
     }))
 
 
@@ -178,14 +182,13 @@ const Project = () => {
     axiosFetch()
       .get('/bdm/project')
       .then(({ data }) => {
-        console.log(data)
         data = creatProjectList(data)
         setProjects(data)
         storage.add(storageKeys.projectsBDM, data)
         setIsLoading(false)
       })
       .catch(e => {
-        console.log('Error occured while fetching projects')
+        console.log(e, 'Error occured while fetching projects')
         setIsLoading(false)
       })
   }

@@ -48,8 +48,12 @@ const DataContextProvider = ({ children }: { children: ReactNode }) => {
 
 
   const dispathHandler = {
-    // fetching projects
+    /*
+          =------[>>>>>>>>> Fetching projects]
+    */
+    // PM
     setProjectsPM: (payload: ProjectPMType) => { dispatch({ type: project.SET_PM_PROJECTS, payload }) },
+    // TL
 
     /*
       =================> Role

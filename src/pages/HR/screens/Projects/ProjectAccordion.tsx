@@ -3,8 +3,7 @@ import {
   AccordionSummary,
   AccordionDetails, MenuItem,
   makeStyles, Typography, FormControl, Select,
-  OutlinedInput, InputAdornment,
-  fade
+  OutlinedInput, InputAdornment
 } from '@material-ui/core'
 import { useState } from 'react'
 import {

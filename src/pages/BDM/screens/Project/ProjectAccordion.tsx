@@ -6,6 +6,7 @@ import {
   OutlinedInput, InputAdornment,
   Button, fade
 } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
 import { useState } from 'react'
 import {
   FiChevronDown as ExpandIcon,
@@ -15,11 +16,48 @@ import {
 } from 'react-icons/fi'
 import Moment from 'react-moment'
 import Card from '../../../../components/Card'
+import axiosConfig from '../../../../config/axiosConfig'
 
 import {
-  ProjectPMType,
   ProjectType2
 } from '../../../../types'
+
+const SkeletonLoader = () => (
+  <Skeleton width="100%" variant="rect" style={{ borderRadius: 7 }} height="120px" />
+)
+
+interface TeamType {
+  projectRef: string
+  teamLeader: {
+    date: string,
+    designation: string
+    email: string
+    employeeId: string
+    name: string
+    status: string
+    _id: string
+  }
+  teamMembers: {
+    devRef: {
+      date: string
+      designation: string
+      email: string
+      employeeId: string
+      name: string
+      status: string
+      _id: string
+    }
+    isAssigned: boolean
+    _id: string
+  }[]
+}
+
+interface StateType {
+  isTaskLoading: boolean
+  isTeamLoading: boolean
+  tasks: any[],
+  team: TeamType[]
+}
 
 const ProjectAccordion = (props: {
   projects: ProjectType2[],
@@ -28,7 +66,62 @@ const ProjectAccordion = (props: {
 }) => {
 
   const css = useCSS()
-  
+
+  const [state, setState] = useState<StateType>({
+    isTaskLoading: true,
+    isTeamLoading: true,
+    tasks: [],
+    team: []
+  })
+
+  const setTaskLoading = () => { setState(cur => ({ ...cur, isTaskLoading: true })); console.log('tl') }
+  const removeTaskLoading = () => { setState(cur => ({ ...cur, isTaskLoading: false })); console.log('tr') }
+
+  const setTeamLoading = () => { setState(cur => ({ ...cur, isTeamkLoading: true })); console.log('123') }
+  const removeTeamLoading = () => { setState(cur => ({ ...cur, isTeamLoading: false })); console.log('456') }
+
+  const fetchTeam = (id: string) => {
+    setTeamLoading()
+    axiosConfig()
+      .get(`/bdm/project/teams/${id}`)
+      .then(({ data }) => {
+        setState(cur => ({
+          ...cur,
+          team: data,
+          isTeamLoading: false
+        }))
+        console.log(data)
+      })
+      .catch(() => {
+        console.log('Error while fetching data')
+        removeTeamLoading()
+      })
+  }
+
+  const fetchTasks = (id: string) => {
+    setTaskLoading()
+    axiosConfig()
+      .get(`/bdm/project/teams/${id}`)
+      .then(({ data }) => {
+        setState(cur => ({
+          ...cur,
+          tasks: data,
+          isTaskLoading: false
+        }))
+      })
+      .catch(() => {
+        console.log('Error while fetching data')
+        removeTaskLoading()
+      })
+  }
+
+  const fetchTasksAndTeam = (id: string) => {
+    setTaskLoading()
+    setTeamLoading()
+    fetchTasks(id)
+    fetchTeam(id)
+  }
+
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const [filterFN, setFilterFN] = useState({
@@ -51,9 +144,11 @@ const ProjectAccordion = (props: {
   const projects: ProjectType2[] = filterFN.fn(props.projects)
 
   const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+    setTaskLoading()
+    setTeamLoading()
+    fetchTasksAndTeam(panel)
     setExpanded(isExpanded ? panel : false);
   };
-
 
   const editHandler = (project: ProjectType2) => {
     props.addCurProject(project)
@@ -103,11 +198,11 @@ const ProjectAccordion = (props: {
                 expandIcon={<ExpandIcon />}
               >
                 <div className={expanded === project._id ? css.summaryHidden : css.summary}>
+                  <Typography variant="body1" component="p" color="textSecondary">
+                    {project.projectId}
+                  </Typography>
                   <Typography variant="h6" color="secondary">
                     {project.projectTitle}
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    {project.projectId}
                   </Typography>
                 </div>
               </AccordionSummary>
@@ -176,6 +271,30 @@ const ProjectAccordion = (props: {
                     </div>
                   </section>
                 </Card>
+                {
+                  state.isTeamLoading ? <SkeletonLoader /> : (
+                    <Card title="Team" marginTop="0" noshadow={true}>
+                      {
+                        state.team.length === 0 ? (
+                          <Typography variant="h6" color="textPrimary">
+                            No team created yet.
+                          </Typography>
+                        ) : (
+                          <section className={css.section}>
+                            <div>
+                              <Typography variant="body2" component="p" color="textSecondary">
+                                Project ID
+                              </Typography>
+                              <Typography variant="h6" color="textPrimary">
+                                {state.team[0].teamLeader.name}
+                              </Typography>
+                            </div>
+                          </section>
+                        )
+                      }
+                    </Card >
+                  )
+                }
               </AccordionDetails>
             </Accordion>
           ))
@@ -206,6 +325,9 @@ const useCSS = makeStyles(({ palette, shape, spacing, breakpoints }) => ({
     display: 'flex',
     alignItems: 'center',
     gap: spacing(1),
+    '& p': {
+      width: spacing(9)
+    }
   },
   summaryHidden: {
     display: 'none'

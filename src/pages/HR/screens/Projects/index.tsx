@@ -43,6 +43,8 @@ interface ProjectTypeParams {
   projectDesc: string
   startDate: Date
   endDate: Date
+  last_update: Date
+  isCompleted: boolean
   managerId: {
     _id: string,
     name: string
@@ -77,14 +79,16 @@ const Project = () => {
 
   if (projects.length !== 0)
     records = projects.map(project => ({
+      isCompleted: project.isCompleted,
+      last_update: project.last_update,
       projectDesc: project.projectDesc,
       projectId: project.projectId,
       projectTitle: project.projectTitle,
       _id: project._id,
       startDate: project.startDate,
       endDate: project.endDate,
-      managerName: project.manager.name,
-      manager_id: project.manager._id
+      managerName: project.manager !== null ? project.manager.name : 'None',
+      manager_id: project.manager !== null ? project.manager._id : 'None'
     }))
 
 

@@ -14,6 +14,7 @@ import Card from '../../../../../components/Card';
 import moment from 'moment';
 import useFetch from '../../../useFetch';
 import TeamAndTask from './TeamAndTask'
+import TLDetails from './TLDetails';
 
 const IMAGE_HEIGHT = 290
 
@@ -38,7 +39,7 @@ const Index = ({ match }: { match: MatchParams }) => {
   const { projectId, imgIndex } = match.params
 
   const { data } = useContext(DataContext)
-  const { fetchEmployeesPM } = useFetch()
+  const { fetchEmployeesPM, fetchProjectTL } = useFetch()
 
   const [showAppbar, setShowAppbar] = useState(false)
 
@@ -60,6 +61,7 @@ const Index = ({ match }: { match: MatchParams }) => {
 
   useEffect(() => {
     fetchEmployeesPM()
+    fetchProjectTL()
     document.title = `WorkSpace | PM - ${currentProject.projectTitle}`
   }, [])
 
@@ -124,7 +126,13 @@ const Index = ({ match }: { match: MatchParams }) => {
               </div>
             </div>
           </Card>
-          <TeamAndTask project_id={currentProject._id} />
+          {
+            data.role === 'TL' ? (
+              <TLDetails project_id={currentProject._id} />
+            ) : (
+                <TeamAndTask project_id={currentProject._id} />
+            )
+          }
         </main>
       </div>
     </PageContainer>

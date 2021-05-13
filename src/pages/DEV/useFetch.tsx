@@ -6,6 +6,7 @@ export interface UseFetchType {
   fetchRoles: () => void
   fetchProjectsPM: () => void
   fetchEmployeesPM: () => void
+  fetchProjectTL: () => void
 }
 
 const useFetch = (): UseFetchType => {
@@ -23,6 +24,15 @@ const useFetch = (): UseFetchType => {
         })
       })
       .catch((e) => console.log('Error while fetching roles'))
+  }
+
+  const fetchProjectTL = () => {
+    axiosConfig()
+      .get('/tl/projects')
+      .then(({ data }) => {
+        console.log(data)
+      })
+      .catch(() => console.log('Error while fetching projects'))
   }
 
   const fetchProjectsPM = () => {
@@ -46,7 +56,8 @@ const useFetch = (): UseFetchType => {
   return ({
     fetchRoles,
     fetchProjectsPM,
-    fetchEmployeesPM
+    fetchEmployeesPM,
+    fetchProjectTL
   })
 }
 

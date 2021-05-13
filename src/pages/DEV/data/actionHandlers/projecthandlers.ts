@@ -18,9 +18,24 @@ const setProjectsPM = (state: InitialStateType, payload: ProjectPMType[]): Initi
   return newState
 }
 
+const setProjectsTL = (state: InitialStateType, payload: ProjectPMType[]): InitialStateType => {
+
+  let newState = {
+    ...state,
+    projects: {
+      ...state.projects,
+      TL: payload
+    }
+  }
+
+  storage.add(appStorageKey, newState)
+
+  return newState
+}
+
 
 const projectHandlers = {
-  setProjectsPM
+  setProjectsPM, setProjectsTL
 }
 
 export default projectHandlers

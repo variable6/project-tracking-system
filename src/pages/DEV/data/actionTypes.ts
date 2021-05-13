@@ -1,5 +1,6 @@
 export const project = {
-  SET_PM_PROJECTS: 'SET_PM_PROJECTS'
+  SET_PM_PROJECTS: 'SET_PM_PROJECTS',
+  SET_TL_PROJECTS: 'SET_TL_PROJECTS'
 }
 
 export const task = {

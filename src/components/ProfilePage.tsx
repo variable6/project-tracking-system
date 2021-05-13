@@ -590,14 +590,15 @@ const ProfilePage = () => {
               <TabList onChange={handleChange} aria-label="simple tabs example">
                 <Tab label="Personal" value="1" />
                 <Tab label="" disabled className={css.fix} />
-                <Tab label="Person" value="2" />
+                  <Tab label="Other" value="2" />
               </TabList>
             </AppBar>
             <TabPanel value="1" style={{ padding: 0 }}>
               {tabOne}
+              </TabPanel>
+              <TabPanel value="2" style={{ padding: 0 }}>
               {options}
-            </TabPanel>
-            <TabPanel value="2">qwertwy</TabPanel>
+              </TabPanel>
           </TabContext>
         </div>
       </div>

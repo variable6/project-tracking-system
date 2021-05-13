@@ -9,12 +9,13 @@ const assets = [
   '/manifest.json',
   '/favicon.png',
   'https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&family=Open+Sans:wght@300;400;600;700;800&display=swap',
-  '/static/js/2.e4491b21.chunk.js',
-  '/static/js/main.de39bd5d.chunk.js',
-  '/static/js/runtime-main.7c1fe055.js',
-  '/static/js/3.cf220627.chunk.js',
+  '/static/js/2.2371adfe.chunk.js',
+  '/static/js/main.b3b37600.chunk.js',
+  '/static/js/runtime-main.5b6ae865.js',
+  '/static/js/3.2225922a.chunk.js',
   '/static/css/main.3706c7f9.chunk.css'
 ]
+
 
 // ----> insatll service worker
 this.addEventListener('install', event => {
