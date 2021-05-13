@@ -14,13 +14,14 @@ import {
 } from '@material-ui/lab'
 import moment from 'moment'
 
-import { useContext, useEffect, useState, ChangeEvent } from 'react'
+import { useContext, useEffect, useState, ChangeEvent, } from 'react'
 import {
   FiEdit as EditIcon,
   FiXCircle as CloseIcon,
   FiWifiOff as OfflineIcon,
   FiChevronDown as ExpandMoreIcon,
   FiPlusCircle as AddIcon,
+  FiTrash2 as DeleteIcon,
   FiSearch
 } from 'react-icons/fi'
 import { v4 as setKey } from 'uuid'
@@ -89,6 +90,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
   const css = useCSS()
   const classes = useStyles()
 
+
   const getDate = (date: Date) => moment(date).format('MMM DD, YYYY')
 
   const [state, setState] = useState({
@@ -107,7 +109,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
     isTeamLoading: true,
     isTaskLoading: true,
     editTaskView: false,
-    isNewTask: true,
+    isNewTask: true
   })
 
   const [expanded, setExpanded] = useState<string | false>(false)
@@ -380,6 +382,26 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
     icon: state.editTaskView ? <CloseIcon /> : <AddIcon />
   }] : []
 
+  const deleteTask = (id: string) => {
+    setState(cur => ({ ...cur, isTaskLoading: true }))
+    axiosConfig()
+      .post('/pm/task/remove', { id })
+      .then(({ data }) => {
+        openAlert({
+          type: 'success',
+          message: data.message
+        })
+        fetchTasks()
+      })
+      .catch(() => {
+        openAlert({
+          type: 'success',
+          message: 'Error occurred while deleting'
+        })
+        setState(cur => ({ ...cur, isTaskLoading: false }))
+      })
+  }
+
   useEffect(() => {
     fetchTeams()
     fetchTasks()
@@ -632,6 +654,13 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
                       <Button.Secondary label={
                         <>
                           <span>&nbsp;</span>
+                          <DeleteIcon style={{ color: '#EA3C53' }} />
+                          <span style={{ color: '#EA3C53' }}>&nbsp;&nbsp;delete&nbsp;</span>
+                        </>
+                      } onClick={() => deleteTask(task._id)} />
+                      <Button.Secondary label={
+                        <>
+                          <span>&nbsp;</span>
                           <EditIcon />
                           <span>&nbsp;&nbsp;edit&nbsp;</span>
                         </>
@@ -663,7 +692,6 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
 }
 
 export default ProjectTeam
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
