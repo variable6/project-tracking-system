@@ -6,12 +6,13 @@ import reducer from './data/reducer'
 import initialState from './data/initialState'
 import { project, role, view, employees } from './data/actionTypes'
 
-import { InitialStateType, ProjectPMType, EmployeeType } from '../../types'
+import { InitialStateType, ProjectPMType, EmployeeType, TLProjectType } from '../../types'
 
 interface DataContxtType {
   data: InitialStateType
   dispatch: {
     setProjectsPM: (payload: ProjectPMType) => void,
+    setProjectsTL: (payload: TLProjectType) => void,
     getRoles: (payload: {
       isPM: boolean,
       isTL: boolean,
@@ -29,6 +30,7 @@ export const DataContext = createContext<DataContxtType>({
   data: initialState,
   dispatch: {
     setProjectsPM: (payload: ProjectPMType) => { },
+    setProjectsTL: (payload: TLProjectType) => { },
     getRoles: (payload: {
       isPM: boolean,
       isTL: boolean,
@@ -54,6 +56,7 @@ const DataContextProvider = ({ children }: { children: ReactNode }) => {
     // PM
     setProjectsPM: (payload: ProjectPMType) => { dispatch({ type: project.SET_PM_PROJECTS, payload }) },
     // TL
+    setProjectsTL: (payload: TLProjectType) => { dispatch({ type: project.SET_TL_PROJECTS, payload }) },
 
     /*
       =================> Role

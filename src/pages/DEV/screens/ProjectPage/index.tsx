@@ -32,12 +32,13 @@ const PAGENAME = 'Projects'
 const ProjectPage = () => {
 
   const { data, dispatch } = useContext(DataContext)
-  const { fetchProjectsPM } = useFetch()
+  const { fetchProjectsPM, fetchProjectTL } = useFetch()
   const css = useCSS()
 
   useEffect(() => {
     fetchProjectsPM()
-    document.title = 'WorkSpace | PM - Projects'
+    fetchProjectTL()
+    document.title = `WorkSpace | ${data.role} - Projects`
   }, [])
 
   const [filteredProjects, setFilteredProjects] = useState<ProjectPMType[]>([])

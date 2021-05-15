@@ -1,6 +1,6 @@
 import storage from '../../../../config/localStorageConfig'
 import { appStorageKey } from '../../../../constants/storageKeys/appStorageKey'
-import { InitialStateType, ProjectPMType } from '../../../../types'
+import { InitialStateType, ProjectPMType, TLProjectType } from '../../../../types'
 
 
 const setProjectsPM = (state: InitialStateType, payload: ProjectPMType[]): InitialStateType => {
@@ -18,7 +18,7 @@ const setProjectsPM = (state: InitialStateType, payload: ProjectPMType[]): Initi
   return newState
 }
 
-const setProjectsTL = (state: InitialStateType, payload: ProjectPMType[]): InitialStateType => {
+const setProjectsTL = (state: InitialStateType, payload: TLProjectType[]): InitialStateType => {
 
   let newState = {
     ...state,

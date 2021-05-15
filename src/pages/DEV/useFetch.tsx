@@ -30,7 +30,7 @@ const useFetch = (): UseFetchType => {
     axiosConfig()
       .get('/tl/projects')
       .then(({ data }) => {
-        console.log(data)
+        dispatch.setProjectsTL(data)
       })
       .catch(() => console.log('Error while fetching projects'))
   }

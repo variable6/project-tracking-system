@@ -31,10 +31,10 @@ const Dashboard = () => {
           <Typography variant="h5">
             {PAGENAME}
           </Typography>
+          <button onClick={() => auth.logout()}>logout</button>
         </Toolbar>
       </AppBar>
       <GreetingCard />
-      <button onClick={() => auth.logout()}>logout</button>
       {data.role === 'PM' && <p>qwerty pm</p>}
       {data.role === 'DEV' && <p>qwerty DEV</p>}
       {data.roleList.isPM && <p>qwerty PM .</p>}

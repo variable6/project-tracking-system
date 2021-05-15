@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core'
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { FiChevronRight, FiSearch } from 'react-icons/fi'
+import { v4 as setKey } from 'uuid'
 
 import images from '../../../../assets/images'
 import shadow from '../../../../constants/backgroundShadow'
@@ -73,8 +74,11 @@ export const ProjectCardFilter = ({ setRecords }: { setRecords: (...arg: any) =>
   }
 
   useEffect(() => {
-    setRecords(filterFN.fn(data.projects.PM))
-  }, [filterFN, data.projects.PM, setRecords])
+    if (data.role === 'PM')
+      setRecords(filterFN.fn(data.projects.PM))
+    else if (data.role === 'TL')
+      setRecords(filterFN.fn(data.projects.TL.map(project => project.projectRef)))
+  }, [filterFN, data.projects.PM, data.projects.TL, data.role, setRecords])
 
   return (
     <div className={css.toolbox}>
@@ -113,7 +117,7 @@ const ProjectCards = ({ projects }: { projects: ProjectPMType[] }) => {
   return (
     <div className={css.container}>
       {
-        projects.map(project => (<ProjectCard project={project} />))
+        projects.map(project => (<ProjectCard key={setKey()} project={project} />))
       }
     </div>
   );

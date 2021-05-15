@@ -23,6 +23,26 @@ export interface ProjectType {
   } | null
 }
 
+export interface TLProjectType {
+  projectRef: {
+    endDate: null | Date
+    isCompleted: boolean
+    last_update: Date
+    managerId: string
+    projectDesc: string
+    projectId: string
+    projectTitle: string
+    startDate: Date
+    _id: string
+  }
+  teamLeader: string
+  teamMembers: {
+    isAssigned: boolean
+    _id: string
+    devRef: EmployeeType[]
+  }[]
+}
+
 export interface ProjectType2 {
   _id: string
   projectId: string
@@ -60,7 +80,7 @@ export interface ProjectPMType {
 export interface InitialStateType {
   projects: {
     PM: ProjectPMType[],
-    TL: ProjectPMType[],
+    TL: TLProjectType[],
     DEV: ProjectPMType[]
   }
   role: 'DEV' | 'TL' | 'PM'

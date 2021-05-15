@@ -45,8 +45,15 @@ const Index = ({ match }: { match: MatchParams }) => {
 
   const history = useHistory()
 
+  const getCurrentProject = () => {
+    switch (data.role) {
+      case ('PM'): return data.projects.PM.filter((project: ProjectPMType) => project._id === projectId)[0]
+      case ('TL'): return data.projects.TL.filter(project => project.projectRef._id === projectId).map(project => project.projectRef)[0]
+    }
+  }
 
-  const currentProject = data.projects.PM.filter((project: ProjectPMType) => project._id === projectId)[0]
+
+  const currentProject: any = getCurrentProject()
 
   const onScroll = (event: UIEvent<HTMLElement>) => {
     if (event.currentTarget.scrollTop > (IMAGE_HEIGHT - 80))
@@ -62,7 +69,7 @@ const Index = ({ match }: { match: MatchParams }) => {
   useEffect(() => {
     fetchEmployeesPM()
     fetchProjectTL()
-    document.title = `WorkSpace | PM - ${currentProject.projectTitle}`
+    document.title = `WorkSpace | ${data.role} - ${currentProject.projectTitle}`
   }, [])
 
   return (
@@ -128,7 +135,10 @@ const Index = ({ match }: { match: MatchParams }) => {
           </Card>
           {
             data.role === 'TL' ? (
-              <TLDetails project_id={currentProject._id} />
+              <TLDetails
+                project_id={currentProject._id}
+                projectTeam={data.projects.TL.filter(project => project.projectRef._id === currentProject._id).map(project => project.teamMembers)[0]}
+              />
             ) : (
                 <TeamAndTask project_id={currentProject._id} />
             )

@@ -43,7 +43,7 @@ export const priorityColor = {
 export const statusColor = {
   NOT_STARTED: '#EA3C53',
   ACTIVE: '#29ab87',
-  ON_HOLD: '#3a3a3a',
+  ON_HOLD: '#999',
   COMPLETED: '#0CAFFF',
   BACKLOG: '#0d0d0d'
 }
@@ -53,7 +53,6 @@ export const status = {
   ACTIVE: 'Active',
   ON_HOLD: 'On-hold',
   COMPLETED: 'Completed',
-  BACKLOG: 'Backlog'
 }
 
 interface TeamLeader {
@@ -76,21 +75,25 @@ export interface TaskType {
   priority: "NORMAL" | "HIGH" | "LOW"
   projectRef: string
   createdDate: Date
-  status: "NOT_STARTED" | "ACTIVE" | "ON_HOLD" | "COMPLETED" | "BACKLOG"
+  status: "NOT_STARTED" | "ACTIVE" | "ON_HOLD" | "COMPLETED"
   taskDesc: string
+  credits: string
   __v: number
   _id: string
+  doc?: Date
 }
 
 
 export const Loader = () => (
   <>
-    <Skeleton variant="text" height={110} />
-    <Skeleton variant="rect" style={{ borderRadius: 7 }} width="100%" height={210} />
+    <Skeleton variant="text" height={90} />
+    <Skeleton variant="rect" style={{ borderRadius: 7 }} width="100%" height={140} />
   </>
 )
 
 export const getDate = (date: Date) => moment(date).format('MMM DD, YYYY')
+
+const credits = Array.from({ length: 10 }, (_, i) => i + 1)
 
 
 const ProjectTeam = ({ project_id }: { project_id: string }) => {
@@ -148,6 +151,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
     status: 'NOT_STARTED',
     priority: 'NORMAL',
     projectRef: '',
+    credits: '1',
     __v: 0,
     _id: ''
   })
@@ -347,6 +351,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
       status: 'NOT_STARTED',
       priority: 'NORMAL',
       projectRef: '',
+      credits: '1',
       __v: 0,
       _id: ''
     })
@@ -358,7 +363,8 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
       priority: taskForm.priority,
       status: taskForm.status,
       taskDesc: taskForm.taskDesc,
-      projectRef: project_id
+      projectRef: project_id,
+      credits: taskForm.credits
     }
     if (state.isNewTask === false)
       task = { ...task, id: taskForm._id }
@@ -377,6 +383,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
           status: 'NOT_STARTED',
           priority: 'NORMAL',
           projectRef: '',
+          credits: '1',
           __v: 0,
           _id: ''
         })
@@ -404,7 +411,10 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
   const deleteTask = (id: string) => {
     setState(cur => ({ ...cur, isTaskLoading: true }))
     axiosConfig()
-      .post('/pm/task/remove', { id })
+      .post('/pm/task/remove', {
+        id: id,
+        projectRef: project_id
+      })
       .then(({ data }) => {
         openAlert({
           type: 'success',
@@ -607,6 +617,19 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
                         <MenuItem value="HIGH">High</MenuItem>
                       </Select>
                     </FormControl>
+                    <FormControl variant="outlined" size="small">
+                      <Typography variant="body2" color="textPrimary">Task Credits</Typography>
+                      <Select required
+                        value={taskForm.credits}
+                        onChange={e => setTaskForm(cur => ({ ...cur, credits: `${e.target.value}` }))}
+                      >
+                        {
+                          credits.map(credit => (
+                            <MenuItem key={setKey()} value={credit}>{credit}</MenuItem>
+                          ))
+                        }
+                      </Select>
+                    </FormControl>
                     <div className={css.btnContainer}>
                       <Button.Primary label={state.isNewTask ? 'add' : 'update'} type="submit" />
                       <Button.Secondary label="cancel" onClick={closeEditTask} />
@@ -648,6 +671,10 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
                             {status[task.status]}
                           </Typography>
                         </div>
+                        <div className={css.property}>
+                          <Typography variant="body2" component="h6" color="textSecondary">Task Credit:&nbsp;</Typography>
+                          <Typography variant="body2" component="p" color="textPrimary">{task.credits}</Typography>
+                        </div>
                       </div>
                       <Divider />
                       <div className={css.taskBtnContainer}>
@@ -659,6 +686,16 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
                             {getDate(task.createdDate)}
                           </Typography>
                         </div>
+                        {
+                          task.status === 'COMPLETED' && (
+                            <div className={css.property}>
+                              <Typography variant="body2" component="h6" color="textSecondary">Completed on&nbsp;</Typography>
+                              <Typography variant="body2" component="p" color="textPrimary">
+                                {task.doc && getDate(task.doc)}
+                              </Typography>
+                            </div>
+                          )
+                        }
                       </div>
                     </AccordionDetails>
                     {
@@ -726,7 +763,7 @@ export const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const useCSS = makeStyles(({ spacing, palette, shape }) => ({
+export const useCSS = makeStyles(({ spacing, palette, shape }) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -783,7 +820,7 @@ const useCSS = makeStyles(({ spacing, palette, shape }) => ({
     'grid-template-columns': `repeat(auto-fit, minmax(${spacing(37)}px, 1fr))`,
     '& > div': {
       backgroundColor: palette.background.default,
-      margin: spacing(0.25),
+      margin: spacing(0.35),
       padding: spacing(0.75),
       borderRadius: shape.borderRadius,
       '& p': {
@@ -824,7 +861,7 @@ const useCSS = makeStyles(({ spacing, palette, shape }) => ({
   },
   propertiesContainer: {
     display: 'grid',
-    'grid-template-columns': `repeat(auto-fit, minmax(${spacing(18.5)}px, 1fr))`,
+    'grid-template-columns': `repeat(auto-fit, minmax(${spacing(20)}px, 1fr))`,
     gridGap: spacing(1.5)
   },
   property: {
@@ -842,9 +879,9 @@ const useCSS = makeStyles(({ spacing, palette, shape }) => ({
     }
   },
   taskBtnContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    display: 'grid',
+    'grid-template-columns': `repeat(auto-fit, minmax(${spacing(20)}px, 1fr))`,
+    gridGap: spacing(1.5)
   },
   viewBtn: {
     '& svg': {
