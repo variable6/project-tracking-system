@@ -89,13 +89,18 @@ const Sidebar = () => {
                 <FormControl variant="outlined" size="small" style={{ marginTop: 20 }} className={classes.role}>
                   <Select value={data.role} onChange={({ target }) => {
                     const val = target.value
-                    if (val === 'PM')
-                      dispatch.setRole('PM')
-                    else if (val === 'TL')
-                      dispatch.setRole('TL')
-                    else if (val === 'DEV')
-                      dispatch.setRole('DEV')
-                    history.push('/')
+                    if (val === data.role) {
+                      dispatch.closeRoleModal()
+                    } else {
+                      if (val === 'PM')
+                        dispatch.setRole('PM')
+                      else if (val === 'TL')
+                        dispatch.setRole('TL')
+                      else if (val === 'DEV')
+                        dispatch.setRole('DEV')
+                      history.push('/')
+                      dispatch.closeRoleModal()
+                    }
                   }}>
                     <MenuItem value="DEV">Software Devloper</MenuItem>
                     {data.roleList.isTL && (

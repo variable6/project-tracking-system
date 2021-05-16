@@ -1,7 +1,7 @@
 import {
   Drawer, FormControlLabel, makeStyles, Radio, RadioGroup, withStyles
 } from '@material-ui/core'
-import { useContext, FormEvent } from 'react';
+import { useContext, FormEvent, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
@@ -10,7 +10,7 @@ import { DataContext } from '../DataContext';
 
 const Model = withStyles(() => ({
   root: {
-    display: ', TextFieldgrid',
+    display: 'grid',
     placeItems: 'center',
   },
   paper: {
@@ -29,23 +29,45 @@ const RolePopup = () => {
   const history = useHistory()
 
   const onSubmit = (event: FormEvent) => {
+
     event.preventDefault()
     const val = roleField.value
-    if (val === 'PM')
-      dispatch.setRole('PM')
-    else if (val === 'TL')
-      dispatch.setRole('TL')
-    else if (val === 'DEV')
-      dispatch.setRole('DEV')
-    history.push('/')
-    dispatch.closeRoleModal()
+
+    if (val === data.role) {
+      dispatch.closeRoleModal()
+    } else {
+      if (val === 'PM')
+        dispatch.setRole('PM')
+      else if (val === 'TL')
+        dispatch.setRole('TL')
+      else if (val === 'DEV')
+        dispatch.setRole('DEV')
+      history.push('/')
+      dispatch.closeRoleModal()
+    }
   }
+
+  useEffect(() => {
+
+    const handleClick = ({ target }: any) => {
+
+      if (target.id && target.id === 'show-roles-modal')
+        dispatch.closeRoleModal()
+    }
+
+    window.addEventListener('click', handleClick)
+
+    return () => {
+      window.removeEventListener('click', handleClick)
+    }
+  })
 
   return (
     <Model
       variant="temporary"
       open={data.showRolePopup}
       anchor="bottom"
+      onClose={dispatch.closeRoleModal}
     >
       <section id="show-roles-modal" className={css.container}>
         <div className={css.modal}>
@@ -56,7 +78,10 @@ const RolePopup = () => {
                 {data.roleList.isTL && <FormControlLabel value="TL" control={<Radio />} label="Team Leader" />}
                 {data.roleList.isPM && <FormControlLabel value="PM" control={<Radio />} label="Project Manager" />}
               </RadioGroup>
-              <Button.Primary type="submit" label="Done" />
+              <div className={css.btnContainer}>
+                <Button.Secondary label="close" onClick={dispatch.closeRoleModal} />
+                <Button.Primary type="submit" label="Done" />
+              </div>
             </form>
           </Card>
         </div>
@@ -90,5 +115,14 @@ const useCSS = makeStyles(({ spacing, breakpoints }) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: spacing(2)
+  },
+  btnContainer: {
+    display: 'flex',
+    '& > *': {
+      flex: 1,
+      '&:last-child': {
+        marginLeft: spacing(2.5)
+      }
+    }
   }
 }))

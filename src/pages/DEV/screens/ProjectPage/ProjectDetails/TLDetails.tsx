@@ -49,6 +49,8 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
   const classes = useStyles()
   const styles = useClasses()
 
+  console.log(projectTeam)
+
   const { openAlert } = useContext(AlertContext)
   const { fetchProjectTL } = useFetch()
 
