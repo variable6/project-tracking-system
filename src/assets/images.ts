@@ -16,7 +16,7 @@ import img15 from './img15.svg'
 
 
 const images = [
-  img13, img1, img2, img3, img15, img4, img5, img6, img8, img9, img10, img11, img12, img7, img14
+  img2, img12, img1, img3, img15, img4, img5, img6, img8, img9, img10, img11, img7, img13, img14
 ]
 
 export default images

@@ -8,6 +8,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles, Paper } from '@material-ui/core'
+import { TodosCard } from '../../../components/TodoList'
 
 
 const PAGENAME = 'Dashboard'
@@ -39,6 +40,7 @@ const Dashboard = () => {
       {data.role === 'DEV' && <p>qwerty DEV</p>}
       {data.roleList.isPM && <p>qwerty PM .</p>}
       {data.roleList.isTL && <p>qwerty TL.</p>}
+      <TodosCard />
     </PageContainer>
   );
 }
