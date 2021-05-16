@@ -18,7 +18,11 @@ import {
 
 import Card from './../../../../components/Card'
 import { ProjectPMType } from './../../../../types'
+
 import ProjectCard, { ProjectCardFilter } from './ProjectCards'
+import ProjectTable from './ProjectTable'
+import ProjectList from './ProjectList'
+
 import { DataContext } from '../../DataContext'
 import BreadCrumbs from '../../../../components/Breadcrumbs'
 import PageContainer from '../../layouts/PageContainer'
@@ -82,6 +86,8 @@ const ProjectPage = () => {
             </ToggleButtonGroup>
           </div>
           {data.projectView === 'GRID' && <ProjectCardFilter setRecords={setFilteredProjects} />}
+          {data.projectView === 'TABLE' && <ProjectTable />}
+          {data.projectView === 'LIST' && <ProjectList />}
         </Card>
         {data.projectView === 'GRID' && <ProjectCard projects={filteredProjects} />}
       </div>

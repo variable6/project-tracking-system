@@ -9,14 +9,11 @@ import {
   FormControl,
   Select,
   MenuItem,
-  FormControlLabel,
-  Checkbox,
   Drawer
 } from '@material-ui/core'
 import {
   FiWifiOff as OfflineIcon,
   FiChevronDown as ExpandMoreIcon,
-  FiEdit as EditIcon
 } from 'react-icons/fi'
 import { useEffect, useState, ChangeEvent, useContext } from "react";
 import { v4 as setKey } from 'uuid'
@@ -28,7 +25,6 @@ import axiosConfig from "../../../../../config/axiosConfig";
 import { useCSS as useClasses } from './TeamAndTask'
 
 import { status, statusColor, priorityColor, useStyles, getDate, TaskType, Loader } from './TeamAndTask'
-import { DataContext } from '../../../DataContext';
 import useFetch from '../../../useFetch';
 import { AlertContext } from '../../../../../context/AlertContext';
 
@@ -53,7 +49,6 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
   const classes = useStyles()
   const styles = useClasses()
 
-  const { data } = useContext(DataContext)
   const { openAlert } = useContext(AlertContext)
   const { fetchProjectTL } = useFetch()
 

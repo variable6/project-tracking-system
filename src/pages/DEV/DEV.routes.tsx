@@ -40,12 +40,6 @@ export const pmRoutes: RouteListType[] = [
     label: 'Dashboard',
     isInBottomNav: true
   }, {
-    path: '/tasks',
-    component: (params) => <TaskPage {...params} />,
-    icon: <TaskIcon />,
-    label: 'Tasks',
-    isInBottomNav: true
-  }, {
     path: '/projects',
     component: (params) => <ProjectPage {...params} />,
     icon: <ProjectIcon />,
