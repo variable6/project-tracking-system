@@ -7,9 +7,10 @@ interface Props {
   onClick?: (...args: any) => any
   type?: "button" | "submit" | "reset"
   className?: string
+  disabled?: boolean
 }
 
-const Primary = ({ label, onClick, type, className }: Props) => {
+const Primary = ({ label, onClick, type, className, disabled }: Props) => {
   return (
     <Btn
       disableElevation
@@ -19,6 +20,7 @@ const Primary = ({ label, onClick, type, className }: Props) => {
       onClick={onClick}
       type={type ? type : 'button'}
       className={`${useCSS().primary} ${className}`}
+      disabled={disabled}
     >
       {label}
     </Btn>

@@ -1,6 +1,7 @@
 import { Checkbox, List, ListItem, FormControlLabel, makeStyles, IconButton, fade, TextField } from '@material-ui/core'
 import { useEffect, useState } from 'react'
 import { FiTrash2 } from 'react-icons/fi'
+import { v1 as setId } from 'uuid'
 import axiosConfig from '../config/axiosConfig'
 import storage from '../config/localStorageConfig'
 import useFormField from '../hooks/useFormField'
@@ -8,10 +9,9 @@ import Button from './Button'
 import Card from './Card'
 
 interface TodoType {
-  createdDate: Date
+  id: string
   isDone: boolean
   note: string
-  _id: string
 }
 
 export const TodosCard = () => {
@@ -27,34 +27,40 @@ export const TodosCard = () => {
     setTodos(todoList)
     storage.add('TODOS', todoList)
     axiosConfig()
-    // .post()
-    // .then()
-    // .catch()
+      .post('/todo/update', {
+        todos: todos
+      })
+      .then(() => null)
+      .catch(() => console.log('ERROR WHILE UPDATING TODOS'))
   }
 
   const addTodo = () => {
-
+    setTodos([...todos, { note: todoField.value, isDone: false, id: setId() }])
+    todoField.reset()
   }
 
   const toggleTodoDone = (id: string) => {
     setTodos(todos.map(todo => ({
       ...todo,
-      isDone: todo._id === id ? !todo.isDone : todo.isDone
+      isDone: todo.id === id ? !todo.isDone : todo.isDone
     })))
   }
 
   const deleteTodo = (id: string) => {
-    setTodos(todos.filter(todo => todo._id !== id))
+    setTodos(todos.filter(todo => todo.id !== id))
   }
 
   useEffect(() => saveTodos(todos), [todos])
 
   useEffect(() => {
     axiosConfig()
-      .get('/tl/todos')
+      .get('/todos')
       .then(({ data }) => {
-        console.log(data.todos)
-        saveTodos(data.todos)
+        if (data)
+          setTodos(data.todos)
+        else {
+          saveTodos([])
+        }
       })
       .catch(e => console.log(e))
   }, [])
@@ -70,7 +76,7 @@ export const TodosCard = () => {
           onChange={todoField.onChange}
         />
         <span />
-        <Button.Primary label="add" type="submit" />
+        <Button.Primary label="add" type="submit" disabled={todoField.value.length === 0} />
       </form>
       <List>
         {
@@ -80,14 +86,14 @@ export const TodosCard = () => {
                 control={
                   <Checkbox
                     checked={todo.isDone}
-                    onChange={() => toggleTodoDone(todo._id)}
+                    onChange={() => toggleTodoDone(todo.id)}
                     color="primary"
                   />
                 }
                 className={`${css.checkBox} ${todo.isDone && css.checked}`}
                 label={todo.note}
               />
-              <IconButton edge="end" className={css.trash} onClick={() => deleteTodo(todo._id)}>
+              <IconButton edge="end" className={css.trash} onClick={() => deleteTodo(todo.id)}>
                 <FiTrash2 />
               </IconButton>
             </ListItem>

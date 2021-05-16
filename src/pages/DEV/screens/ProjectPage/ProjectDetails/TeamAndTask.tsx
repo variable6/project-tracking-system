@@ -242,7 +242,9 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
       .post('/pm/team/update', {
         projectRef: project_id,
         teamLeader: form.teamLeader,
-        teamMembers: form.team.map(member => ({ devRef: member }))
+        teamMembers: form.team.map(member => ({
+          devRef: member
+        }))
       })
       .then(({ data }) => {
         openAlert({
