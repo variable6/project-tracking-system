@@ -12,6 +12,7 @@ interface DataContxtType {
   data: InitialStateType
   dispatch: {
     setProjectsPM: (payload: ProjectPMType) => void,
+    setProjectsDEV: (payload: TLProjectType) => void,
     setProjectsTL: (payload: TLProjectType) => void,
     getRoles: (payload: {
       isPM: boolean,
@@ -30,6 +31,7 @@ export const DataContext = createContext<DataContxtType>({
   data: initialState,
   dispatch: {
     setProjectsPM: (payload: ProjectPMType) => { },
+    setProjectsDEV: (payload: TLProjectType) => { },
     setProjectsTL: (payload: TLProjectType) => { },
     getRoles: (payload: {
       isPM: boolean,
@@ -55,6 +57,8 @@ const DataContextProvider = ({ children }: { children: ReactNode }) => {
     */
     // PM
     setProjectsPM: (payload: ProjectPMType) => { dispatch({ type: project.SET_PM_PROJECTS, payload }) },
+    // DEV
+    setProjectsDEV: (payload: TLProjectType) => { dispatch({ type: project.SET_DEV_PROJECTS, payload }) },
     // TL
     setProjectsTL: (payload: TLProjectType) => { dispatch({ type: project.SET_TL_PROJECTS, payload }) },
 

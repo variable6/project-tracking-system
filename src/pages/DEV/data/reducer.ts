@@ -32,6 +32,8 @@ const reducer = (state: InitialStateType, { type, payload }: ActionType): Initia
     case project.SET_PM_PROJECTS: return projectHandlers.setProjectsPM(state, payload)
     // set TL Projects
     case project.SET_TL_PROJECTS: return projectHandlers.setProjectsTL(state, payload)
+    // set DEV Projects
+    case project.SET_DEV_PROJECTS: return projectHandlers.setProjectsDEV(state, payload)
 
 
     /*

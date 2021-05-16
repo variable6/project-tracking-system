@@ -55,16 +55,15 @@ export const ProjectCardFilter = ({ setRecords }: { setRecords: (...arg: any) =>
   const css = useStyles()
 
   const { data } = useContext(DataContext)
-
   const [searchBy, setSearchBy] = useState('projectTitle')
 
   const [filterFN, setFilterFN] = useState({
-    fn: (item: ProjectPMType[]): ProjectPMType[] => item
+    fn: (item: any[]): any[] => item
   })
 
   const handleSearch = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setFilterFN({
-      fn: (item: ProjectPMType[]): ProjectPMType[] => {
+      fn: (item: any[]): any[] => {
         if (target.value === '')
           return item
         else
@@ -76,9 +75,11 @@ export const ProjectCardFilter = ({ setRecords }: { setRecords: (...arg: any) =>
   useEffect(() => {
     if (data.role === 'PM')
       setRecords(filterFN.fn(data.projects.PM))
+    else if (data.role === 'DEV')
+      setRecords(filterFN.fn(data.projects.DEV.map(project => project.projectRef)))
     else if (data.role === 'TL')
       setRecords(filterFN.fn(data.projects.TL.map(project => project.projectRef)))
-  }, [filterFN, data.projects.PM, data.projects.TL, data.role, setRecords])
+  }, [filterFN, data.projects.PM, data.projects.TL, data.projects.DEV, data.role, setRecords])
 
   return (
     <div className={css.toolbox}>

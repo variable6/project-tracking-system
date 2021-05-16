@@ -27,6 +27,7 @@ import { useCSS as useClasses } from './TeamAndTask'
 import { status, statusColor, priorityColor, useStyles, getDate, TaskType, Loader } from './TeamAndTask'
 import useFetch from '../../../useFetch';
 import { AlertContext } from '../../../../../context/AlertContext';
+import { DataContext } from '../../../DataContext';
 
 
 const initForm = {
@@ -48,6 +49,8 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
   const css = useCSS()
   const classes = useStyles()
   const styles = useClasses()
+
+  const { data } = useContext(DataContext)
 
   console.log(projectTeam)
 
@@ -110,18 +113,20 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
 
   const fetchTask = () => {
 
-    setTaskLoader()
-    axiosConfig()
-      .get(`/tl/project/tasks/${project_id}`)
-      .then(({ data }) => {
-        console.log(data)
-        setState(cur => ({ ...cur, tasks: data }))
-        removeTaskLoader()
-      })
-      .catch(e => {
-        console.log(e)
-        removeTaskLoader()
-      })
+    if (data.role === 'TL') {
+      setTaskLoader()
+      axiosConfig()
+        .get(`/tl/project/tasks/${project_id}`)
+        .then(({ data }) => {
+          console.log(data)
+          setState(cur => ({ ...cur, tasks: data }))
+          removeTaskLoader()
+        })
+        .catch(e => {
+          console.log(e)
+          removeTaskLoader()
+        })
+    }
   }
 
   const fetchAll = () => {
@@ -311,15 +316,15 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
         {Team}
         <div className={css.offline}>
           <OfflineIcon className={css.offlineIcon} />
-          <Typography variant="h5" color="textPrimary">
-            You are offline now.
-        </Typography>
+          <Typography variant="h5" color="textPrimary">You are offline now.</Typography>
           <Typography variant="body1" color="textSecondary">
             Check your internet connection to view more details.
-        </Typography>
+          </Typography>
         </div>
       </>
     )
+
+  if (data.role === 'DEV') return Team
 
 
   return (
@@ -413,7 +418,7 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
                               <div className={css.property}>
                                 <Typography variant="body2" component="h6" color="textSecondary">
                                   Assigned to&nbsp;
-                                </Typography>
+                                    </Typography>
                                 <Typography variant="body2" component="p" color="textPrimary">
                                   {getAssignedEmpName(task._id)}
                                 </Typography>
@@ -421,8 +426,8 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
                             ) : (
                               <div className={css.property}>
                                 <Typography variant="body2" component="h6" color="textSecondary">
-                                  Not Assigned
-                                </Typography>
+                                    Not Assigned
+                                    </Typography>
                               </div>
                             )
                           }
@@ -464,7 +469,7 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
             <Typography variant="h4" color="textPrimary">Are you sure?</Typography>
             <Typography variant="body1" color="textPrimary">
               Please, confirm to unassign the task.
-            </Typography>
+                </Typography>
             <Divider />
             <div className={css.btnContainer}>
               <Button.Secondary label="Confirm" onClick={unAssignEmp} />
@@ -509,7 +514,7 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
             >
               <Typography variant="h4" color="textPrimary">
                 Update Task Status
-                </Typography>
+                    </Typography>
               <FormControl variant="outlined" size="small">
                 <Select value={form.status} onChange={e => setForm(c => ({ ...c, status: `${e.target.value}` }))} >
                   <MenuItem value="NOT_STARTED">Not Started</MenuItem>

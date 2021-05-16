@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid'
 import {
   FiHome as DashboardIcon,
   FiServer as ProjectIcon,
-  FiCheckSquare as TaskIcon,
+  FiCheckSquare as TodoIcon,
   FiUser as AvatarIcon
 } from 'react-icons/fi'
 import { Avatar, makeStyles, fade } from '@material-ui/core'
@@ -17,10 +17,10 @@ import Dashboard from './screens/Dashboard';
 import ProjectPage from './screens/ProjectPage/index';
 import ProfilePage from './screens/ProfileScreen';
 import ProjectDetails from './screens/ProjectPage/ProjectDetails'
+import { TodoScreen } from './../../components/TodoList'
 
 // importing Types 
 import { RouteListType } from '../../types'
-import TaskPage from './screens/TaskPage';
 
 const ProfileIcon = () => {
 
@@ -38,6 +38,12 @@ export const pmRoutes: RouteListType[] = [
     component: (params) => <Dashboard {...params} />,
     icon: <DashboardIcon />,
     label: 'Dashboard',
+    isInBottomNav: true
+  }, {
+    path: '/todos',
+    component: (params) => <TodoScreen {...params} />,
+    icon: <TodoIcon />,
+    label: 'Todos',
     isInBottomNav: true
   }, {
     path: '/projects',
@@ -68,6 +74,12 @@ export const tlRoutes: RouteListType[] = [
     label: 'Dashboard',
     isInBottomNav: true
   }, {
+    path: '/todos',
+    component: (params) => <TodoScreen {...params} />,
+    icon: <TodoIcon />,
+    label: 'Todos',
+    isInBottomNav: true
+  }, {
     path: '/projects',
     component: (params) => <ProjectPage {...params} />,
     icon: <ProjectIcon />,
@@ -94,6 +106,12 @@ export const devRoutes: RouteListType[] = [
     component: (params) => <Dashboard {...params} />,
     icon: <DashboardIcon />,
     label: 'Dashboard',
+    isInBottomNav: true
+  }, {
+    path: '/todos',
+    component: (params) => <TodoScreen {...params} />,
+    icon: <TodoIcon />,
+    label: 'Todos',
     isInBottomNav: true
   }, {
     path: '/projects',

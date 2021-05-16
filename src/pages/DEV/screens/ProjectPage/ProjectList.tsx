@@ -28,7 +28,7 @@ const ProjectAccordion = () => {
     : (
       data.role === 'TL'
         ? data.projects.TL.map(project => project.projectRef)
-        : data.projects.TL.map(project => project.projectRef)
+        : data.projects.DEV.map(project => project.projectRef)
     )
 
   const image = (id: string) => eval(id[id.length - 1].charCodeAt(0).toString().split('').join('+')) % 16

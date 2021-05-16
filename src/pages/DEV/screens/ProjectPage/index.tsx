@@ -36,16 +36,17 @@ const PAGENAME = 'Projects'
 const ProjectPage = () => {
 
   const { data, dispatch } = useContext(DataContext)
-  const { fetchProjectsPM, fetchProjectTL } = useFetch()
+  const { fetchProjectsPM, fetchProjectTL, fetchProjectsDEV } = useFetch()
   const css = useCSS()
 
   useEffect(() => {
     fetchProjectsPM()
     fetchProjectTL()
+    fetchProjectsDEV()
     document.title = `WorkSpace | ${data.role} - Projects`
   }, [])
 
-  const [filteredProjects, setFilteredProjects] = useState<ProjectPMType[]>([])
+  const [filteredProjects, setFilteredProjects] = useState<any[]>([])
 
   const viewHandler = (val: string) => {
     if (val === 'GRID')

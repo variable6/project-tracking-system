@@ -28,7 +28,7 @@ export interface TLProjectType {
     endDate: null | Date
     isCompleted: boolean
     last_update: Date
-    managerId: string
+    managerId: EmployeeType
     projectDesc: string
     projectId: string
     projectTitle: string
@@ -81,7 +81,7 @@ export interface InitialStateType {
   projects: {
     PM: ProjectPMType[],
     TL: TLProjectType[],
-    DEV: ProjectPMType[]
+    DEV: TLProjectType[]
   }
   role: 'DEV' | 'TL' | 'PM'
   roleList: {

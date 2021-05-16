@@ -47,7 +47,8 @@ const Index = ({ match }: { match: MatchParams }) => {
 
   const getCurrentProject = () => {
     switch (data.role) {
-      case ('PM'): return data.projects.PM.filter((project: ProjectPMType) => project._id === projectId)[0]
+      case ('PM'): return data.projects.PM.filter((project: any) => project._id === projectId)[0]
+      case ('DEV'): return data.projects.DEV.filter(project => project.projectRef._id === projectId).map(project => project.projectRef)[0]
       case ('TL'): return data.projects.TL.filter(project => project.projectRef._id === projectId).map(project => project.projectRef)[0]
     }
   }
@@ -71,6 +72,7 @@ const Index = ({ match }: { match: MatchParams }) => {
     fetchProjectTL()
     document.title = `WorkSpace | ${data.role} - ${currentProject.projectTitle}`
   }, [])
+
 
   return (
     <PageContainer>
@@ -132,12 +134,24 @@ const Index = ({ match }: { match: MatchParams }) => {
                 </Typography>
               </div>
             </div>
+            {
+              currentProject.managerId && (
+                <div className={css["details-container"]}>
+                  <div>
+                    <Typography variant="body2" color="textPrimary">Project Manager</Typography>
+                    <Typography variant="body1" color="secondary" style={{ fontWeight: 600 }}>
+                      {currentProject.managerId.employeeId} - {currentProject.managerId.name} {data.role === 'PM' && '(YOU)'}
+                    </Typography>
+                  </div>
+                </div>
+              )
+            }
           </Card>
           {
-            data.role === 'TL' ? (
+            data.role === 'TL' || data.role === 'DEV' ? (
               <TLDetails
                 project_id={currentProject._id}
-                projectTeam={data.projects.TL.filter(project => project.projectRef._id === currentProject._id).map(project => project.teamMembers)[0]}
+                projectTeam={data.projects[data.role].filter(project => project.projectRef._id === currentProject._id).map(project => project.teamMembers)[0]}
               />
             ) : (
                 <TeamAndTask project_id={currentProject._id} />
