@@ -5,7 +5,7 @@ import {
 import {
   FiGrid as DashboardIcon,
   FiUsers as EmployeesIcon,
-  FiCode as ProjectsIcon
+  FiServer as ProjectsIcon
 } from 'react-icons/fi'
 import { v4 as key } from 'uuid'
 

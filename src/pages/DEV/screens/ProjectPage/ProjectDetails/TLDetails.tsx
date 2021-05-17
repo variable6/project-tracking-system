@@ -538,7 +538,7 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
 
 export default TLDetails
 
-const useCSS = makeStyles(({ spacing, palette, shape }) => ({
+export const useCSS = makeStyles(({ spacing, palette, shape }) => ({
   offline: {
     margin: spacing(5),
     display: 'flex',

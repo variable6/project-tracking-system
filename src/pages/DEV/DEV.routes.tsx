@@ -7,7 +7,8 @@ import {
   FiHome as DashboardIcon,
   FiServer as ProjectIcon,
   FiCheckSquare as TodoIcon,
-  FiUser as AvatarIcon
+  FiUser as AvatarIcon,
+  FiCode as TaskIcon
 } from 'react-icons/fi'
 import { Avatar, makeStyles, fade } from '@material-ui/core'
 
@@ -16,6 +17,7 @@ import PageNotFound from '../PageNotFound';
 import Dashboard from './screens/Dashboard';
 import ProjectPage from './screens/ProjectPage/index';
 import ProfilePage from './screens/ProfileScreen';
+import TaskScreen from './screens/TaskScreen';
 import ProjectDetails from './screens/ProjectPage/ProjectDetails'
 import { TodoScreen } from './../../components/TodoList'
 
@@ -40,16 +42,22 @@ export const pmRoutes: RouteListType[] = [
     label: 'Dashboard',
     isInBottomNav: true
   }, {
-    path: '/todos',
-    component: (params) => <TodoScreen {...params} />,
-    icon: <TodoIcon />,
-    label: 'Todos',
-    isInBottomNav: true
-  }, {
     path: '/projects',
     component: (params) => <ProjectPage {...params} />,
     icon: <ProjectIcon />,
     label: 'Projects',
+    isInBottomNav: true
+  }, {
+    path: '/tasks',
+    component: (params) => <TaskScreen {...params} />,
+    icon: <TaskIcon />,
+    label: 'Tasks',
+    isInBottomNav: false
+  }, {
+    path: '/todos',
+    component: (params) => <TodoScreen {...params} />,
+    icon: <TodoIcon />,
+    label: 'Todos',
     isInBottomNav: true
   }, {
     path: '/profile',
@@ -74,16 +82,16 @@ export const tlRoutes: RouteListType[] = [
     label: 'Dashboard',
     isInBottomNav: true
   }, {
-    path: '/todos',
-    component: (params) => <TodoScreen {...params} />,
-    icon: <TodoIcon />,
-    label: 'Todos',
-    isInBottomNav: true
-  }, {
     path: '/projects',
     component: (params) => <ProjectPage {...params} />,
     icon: <ProjectIcon />,
     label: 'Projects',
+    isInBottomNav: true
+  }, {
+    path: '/todos',
+    component: (params) => <TodoScreen {...params} />,
+    icon: <TodoIcon />,
+    label: 'Todos',
     isInBottomNav: true
   }, {
     path: '/profile',
@@ -108,16 +116,22 @@ export const devRoutes: RouteListType[] = [
     label: 'Dashboard',
     isInBottomNav: true
   }, {
-    path: '/todos',
-    component: (params) => <TodoScreen {...params} />,
-    icon: <TodoIcon />,
-    label: 'Todos',
-    isInBottomNav: true
-  }, {
     path: '/projects',
     component: (params) => <ProjectPage {...params} />,
     icon: <ProjectIcon />,
     label: 'Projects',
+    isInBottomNav: true
+  }, {
+    path: '/tasks',
+    component: (params) => <TaskScreen {...params} />,
+    icon: <TaskIcon />,
+    label: 'Tasks',
+    isInBottomNav: true
+  }, {
+    path: '/todos',
+    component: (params) => <TodoScreen {...params} />,
+    icon: <TodoIcon />,
+    label: 'Todos',
     isInBottomNav: true
   }, {
     path: '/profile',

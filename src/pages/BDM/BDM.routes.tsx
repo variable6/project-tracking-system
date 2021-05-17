@@ -4,7 +4,8 @@ import { v4 as uuid } from 'uuid'
 import {
   FiGrid as DashboardIcon,
   FiUsers as EmployeesIcon,
-  FiPieChart as ProjectIcon
+  FiServer as ProjectIcon,
+  FiCode as TodoIcon
 } from 'react-icons/fi'
 
 // import screens
@@ -12,6 +13,7 @@ import Dashboard from "./screens/Dashboard";
 import Employees from "./screens/Employees";
 import Project from './screens/Project'
 import PageNotFound from "../PageNotFound";
+import { TodoScreen } from "../../components/TodoList";
 
 const routeList: { path: string, component: ReactNode, icon: ReactNode }[] = [
   {
@@ -26,6 +28,10 @@ const routeList: { path: string, component: ReactNode, icon: ReactNode }[] = [
     icon: <ProjectIcon />,
     component: <Project />,
     path: '/projects'
+  }, {
+    icon: <TodoIcon />,
+    component: <TodoScreen />,
+    path: '/todos'
   }
 ]
 
