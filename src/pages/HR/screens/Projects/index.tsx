@@ -72,25 +72,7 @@ const Project = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const projectLS = storage.get(storageKeys.projectsBDM)
-  const [projects, setProjects] = useState<ProjectType[]>(projectLS ? projectLS : [])
-
-
-  let records: ProjectType2[] = []
-
-  if (projects.length !== 0)
-    records = projects.map(project => ({
-      isCompleted: project.isCompleted,
-      last_update: project.last_update,
-      projectDesc: project.projectDesc,
-      projectId: project.projectId,
-      projectTitle: project.projectTitle,
-      _id: project._id,
-      startDate: project.startDate,
-      endDate: project.endDate,
-      managerName: project.manager !== null ? project.manager.name : 'None',
-      manager_id: project.manager !== null ? project.manager._id : 'None'
-    }))
-
+  const [projects, setProjects] = useState<ProjectType2[]>(projectLS ? projectLS : [])
 
   const [layout, setLayout] = useState<'LIST' | 'TABLE'>('LIST')
 
@@ -99,7 +81,18 @@ const Project = () => {
     axiosFetch()
       .get('/hr/projects')
       .then(({ data }) => {
-        data = creatProjectList(data)
+        data = data.map((project: any) => ({
+          isCompleted: project.isCompleted,
+          last_update: project.last_update,
+          projectDesc: project.projectDesc,
+          projectId: project.projectId,
+          projectTitle: project.projectTitle,
+          _id: project._id,
+          startDate: project.startDate,
+          endDate: project.endDate,
+          managerName: project.managerId ? project.managerId.name : 'None',
+          managerId: project.managerId ? project.managerId._id : 'None'
+        }))
         setProjects(data)
         storage.add(storageKeys.projectsBDM, data)
         setIsLoading(false)
@@ -140,8 +133,8 @@ const Project = () => {
               </ToggleButtonGroup>
             </div>
           </div>
-          {(layout === 'LIST' && records.length !== 0) && (<ProjectCard projects={records} />)}
-          {(layout === 'TABLE' && projects.length !== 0) && <ProjectTable projects={records} />}
+          {(layout === 'LIST' && projects.length !== 0) && (<ProjectCard projects={projects} />)}
+          {(layout === 'TABLE' && projects.length !== 0) && <ProjectTable projects={projects} />}
           {projects.length === 0 && (
             <Typography variant="body1" className={css.noData} color="textPrimary">No projects exists</Typography>
           )}

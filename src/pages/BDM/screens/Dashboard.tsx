@@ -4,7 +4,7 @@ import { RouteContext } from '../../../context/RouteContext'
 import setTitle from '../../../constants/pageTitle'
 import axiosConfig from '../../../config/axiosConfig'
 import storage from '../../../config/localStorageConfig'
-import { makeStyles } from '@material-ui/core'
+import { Hidden, makeStyles } from '@material-ui/core'
 import { TodosCard } from '../../../components/TodoList'
 import Charts from '../../../components/Charts'
 import BreadCrumbs from '../../../components/Breadcrumbs'
@@ -24,18 +24,28 @@ const Dashboard = () => {
   return (
     <>
       <BreadCrumbs currentPage="Dashboard" links={[]} />
-      <div className={css.flexContainer}>
+      <Hidden xsDown implementation="js" >
+        <div className={css.flexContainer}>
+          <TaskChart />
+          <TaskStatusChart />
+        </div>
+        <div className={css.threeLayout}>
+          <ProjectsChart />
+          <TodosCard />
+        </div>
+        <div className={css.flexContainer}>
+          <EmpChart />
+          <EmpStatusChart />
+        </div>
+      </Hidden>
+      <Hidden smUp implementation="js" >
         <TaskChart />
         <TaskStatusChart />
-      </div>
-      <div className={css.threeLayout}>
         <ProjectsChart />
         <TodosCard />
-      </div>
-      <div className={css.flexContainer}>
         <EmpChart />
         <EmpStatusChart />
-      </div>
+      </Hidden>
     </>
   )
 }
@@ -267,7 +277,7 @@ const TaskStatusChart = () => {
 
 export default Dashboard
 
-const useCSS = makeStyles(({ spacing, breakpoints }) => ({
+export const useCSS = makeStyles(({ spacing, breakpoints }) => ({
   flexContainer: {
     display: 'grid',
     'grid-template-columns': `repeat(auto-fit, minmax(${spacing(47)}px, 1fr))`,
