@@ -52,8 +52,6 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
 
   const { data } = useContext(DataContext)
 
-  console.log(projectTeam)
-
   const { openAlert } = useContext(AlertContext)
   const { fetchProjectTL } = useFetch()
 
@@ -101,7 +99,6 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
     axiosConfig()
       .get(`/tl/project/team/assigned/${project_id}`)
       .then(({ data }) => {
-        console.log(data)
         setState(cur => ({ ...cur, assignEmp: data }))
         fetchUnAssignEmp()
       })
@@ -118,7 +115,6 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
       axiosConfig()
         .get(`/tl/project/tasks/${project_id}`)
         .then(({ data }) => {
-          console.log(data)
           setState(cur => ({ ...cur, tasks: data }))
           removeTaskLoader()
         })

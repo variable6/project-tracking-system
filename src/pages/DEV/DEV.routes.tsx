@@ -120,7 +120,7 @@ export const devRoutes: RouteListType[] = [
     component: (params) => <ProjectPage {...params} />,
     icon: <ProjectIcon />,
     label: 'Projects',
-    isInBottomNav: true
+    isInBottomNav: false
   }, {
     path: '/tasks',
     component: (params) => <TaskScreen {...params} />,

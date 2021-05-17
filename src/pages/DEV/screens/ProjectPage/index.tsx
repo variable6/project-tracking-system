@@ -10,6 +10,8 @@ import {
 
 import { useContext, useState, useEffect } from 'react'
 
+import { useHistory } from 'react-router-dom'
+
 import {
   FiList as ListIcon,
   FiLayout as TableIcon,
@@ -35,7 +37,10 @@ const PAGENAME = 'Projects'
 
 const ProjectPage = () => {
 
+  const history = useHistory()
   const { data, dispatch } = useContext(DataContext)
+  if (data.role === 'DEV')
+    history.replace('/')
   const { fetchProjectsPM, fetchProjectTL, fetchProjectsDEV } = useFetch()
   const css = useCSS()
 
@@ -56,6 +61,11 @@ const ProjectPage = () => {
     else if (val === 'TABLE')
       dispatch.changeProjectView('TABLE')
   }
+
+  if (data.role === 'DEV')
+    return (
+      <Typography variant="h5" color="textPrimary">Access Denied</Typography>
+    )
 
   return (
     <PageContainer>

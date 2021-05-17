@@ -40,7 +40,6 @@ const useFetch = (): UseFetchType => {
     axiosConfig()
       .get('/pm/projects')
       .then(({ data }) => {
-        console.log(data)
         dispatch.setProjectsPM(data)
       })
       .catch(() => console.log('Error while fetching projects'))
@@ -50,9 +49,12 @@ const useFetch = (): UseFetchType => {
     axiosConfig()
       .get('/dev/projects')
       .then(({ data }) => {
-        dispatch.setProjectsDEV(data)
+        if (data.message)
+          console.log(data)
+        else
+          dispatch.setProjectsDEV(data)
       })
-      .catch(() => console.log('Error while fetching projects'))
+      .catch((e) => console.log(e, 'Error while fetching projects'))
   }
 
   const fetchEmployeesPM = () => {

@@ -63,7 +63,6 @@ export const TodosCard = () => {
     axiosConfig()
       .get(`/todos/${user._id}`)
       .then(({ data }) => {
-        console.log(data)
         if (data)
           setTodos(data.todos)
         else {
@@ -159,7 +158,6 @@ export const TodoScreen = () => {
     axiosConfig()
       .get(`/todos/${user._id}`)
       .then(({ data }) => {
-        console.log(data)
         if (data)
           setTodos(data.todos)
         else {

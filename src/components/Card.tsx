@@ -27,7 +27,17 @@ const useCSS = makeStyles(theme => ({
     marginTop: theme.spacing(1.5),
     '-webkit-user-select': 'none',
     '-ms-user-select': 'none',
-    'user-select': 'none'
+    'user-select': 'none',
+    '& h4': {
+      flex: '1',
+      fontWeight: 600,
+      [theme.breakpoints.down('xs')]: {
+        width: theme.spacing(25),
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }
+    }
   },
   span: {
     width: theme.spacing(0.5),
@@ -52,7 +62,7 @@ const useCSS = makeStyles(theme => ({
 interface OptionType {
   label: string,
   icon: ReactNode,
-  onClick: () => void
+  onClick: (...args: any[]) => void
 }
 
 //PropTypes
@@ -61,10 +71,11 @@ interface PropTypes {
   title?: string
   marginTop?: number | string,
   noshadow?: boolean
-  options?: OptionType[]
+  options?: OptionType[],
+  menu?: ReactNode
 }
 
-const Card = ({ children, title, marginTop, noshadow, options }: PropTypes) => {
+const Card = ({ children, title, marginTop, menu, noshadow, options }: PropTypes) => {
 
   const css = useCSS()
 
@@ -80,8 +91,8 @@ const Card = ({ children, title, marginTop, noshadow, options }: PropTypes) => {
               <span className={css.span} />
               <Typography
                 variant="h6"
+                component="h4"
                 color="secondary"
-                style={{ fontWeight: 600 }}
               >
                 &nbsp;&nbsp;&nbsp;{title}
               </Typography>
@@ -102,7 +113,7 @@ const Card = ({ children, title, marginTop, noshadow, options }: PropTypes) => {
                       ))
                     }
                   </ButtonGroup>
-                ) : null
+                ) : (menu ? menu : null)
               }
             </div>
           </div>
