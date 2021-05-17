@@ -5,6 +5,7 @@ import {
 import { useHistory } from 'react-router-dom'
 //importing context
 import { RouteContext } from '../../../context/RouteContext'
+import { TodosCard } from '../../../components/TodoList'
 // importing components
 
 
@@ -26,6 +27,7 @@ const Dashboard = () => {
   return (
     <>
       <Button onClick={() => history.push('/employees')}>employee</Button>
+      <TodosCard />
     </>
   )
 }

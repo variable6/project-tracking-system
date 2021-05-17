@@ -1,10 +1,11 @@
-import { Checkbox, List, ListItem, FormControlLabel, makeStyles, IconButton, fade, TextField, CssBaseline, Typography, Paper } from '@material-ui/core'
-import { useEffect, useState } from 'react'
+import { Checkbox, List, ListItem, FormControlLabel, makeStyles, IconButton, fade, TextField, Typography, Paper } from '@material-ui/core'
+import { useContext, useEffect, useState } from 'react'
 import { FiCoffee, FiTrash2 } from 'react-icons/fi'
 import { v1 as setId } from 'uuid'
 import axiosConfig from '../config/axiosConfig'
 import storage from '../config/localStorageConfig'
 import shadow from '../constants/backgroundShadow'
+import { AuthContext } from '../context/AuthContext'
 import useFormField from '../hooks/useFormField'
 import PageContainer from '../pages/DEV/layouts/PageContainer'
 import BreadCrumbs from './Breadcrumbs'
@@ -19,6 +20,8 @@ interface TodoType {
 
 export const TodosCard = () => {
 
+  const { user } = useContext(AuthContext)
+
   const css = useCSS()
   const todosLS = storage.get('TODOS')
 
@@ -31,6 +34,7 @@ export const TodosCard = () => {
     storage.add('TODOS', todoList)
     axiosConfig()
       .post('/todo/update', {
+        _id: user._id,
         todos: todos
       })
       .then(() => null)
@@ -57,8 +61,9 @@ export const TodosCard = () => {
 
   useEffect(() => {
     axiosConfig()
-      .get('/todos')
+      .get(`/todos/${user._id}`)
       .then(({ data }) => {
+        console.log(data)
         if (data)
           setTodos(data.todos)
         else {
@@ -111,6 +116,8 @@ export const TodosCard = () => {
 
 export const TodoScreen = () => {
 
+  const { user } = useContext(AuthContext)
+
   const css = useCSS()
   const todosLS = storage.get('TODOS')
 
@@ -123,6 +130,7 @@ export const TodoScreen = () => {
     storage.add('TODOS', todoList)
     axiosConfig()
       .post('/todo/update', {
+        _id: user._id,
         todos: todos
       })
       .then(() => null)
@@ -149,8 +157,9 @@ export const TodoScreen = () => {
 
   useEffect(() => {
     axiosConfig()
-      .get('/todos')
+      .get(`/todos/${user._id}`)
       .then(({ data }) => {
+        console.log(data)
         if (data)
           setTodos(data.todos)
         else {

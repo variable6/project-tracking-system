@@ -7,6 +7,7 @@ import Card from '../../../components/Card'
 import axiosConfig from '../../../config/axiosConfig'
 import { makeStyles } from '@material-ui/core'
 import { TodosCard } from '../../../components/TodoList'
+import Charts from '../../../components/Charts'
 
 const pageName = 'Dashboard'
 
@@ -31,78 +32,43 @@ const Dashboard = () => {
   )
 }
 
-const empChartDataset = {
-  label: '# of Employees',
-  backgroundColor: [
-    'rgba(255, 99, 132, 0.2)',
-    'rgba(54, 162, 235, 0.2)',
-    'rgba(255, 206, 86, 0.2)',
-    'rgba(75, 192, 192, 0.2)',
-    'rgba(153, 102, 255, 0.2)',
-    'rgba(255, 159, 64, 0.2)',
-  ],
-  borderColor: [
-    'rgba(255, 99, 132, 1)',
-    'rgba(54, 162, 235, 1)',
-    'rgba(255, 206, 86, 1)',
-    'rgba(75, 192, 192, 1)',
-    'rgba(153, 102, 255, 1)',
-    'rgba(255, 159, 64, 1)',
-  ],
-  borderWidth: 1,
-}
-
 const EmpChart = () => {
 
   const [isLoading, setIsLoading] = useState(true)
-  const [data, setData] = useState({
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [
-      {
-        label: '# of Employees',
-        data: [0, 0, 0, 0, 0, 0],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
+
+  const setLoader = () => setIsLoading(true)
+  const removeLoader = () => setIsLoading(false)
+
+  const [state, setState] = useState<{ data: (number | string)[], labels: string[] }>({
+    data: [],
+    labels: []
   })
 
-  useEffect(() => {
+  const fetchData = () => {
+    setLoader()
     axiosConfig()
       .get('/bdm/chart/emp')
       .then(({ data }) => {
-        setData(cur => ({
-          ...cur,
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple',],
-          datasets: [{
-            ...empChartDataset,
-            data: data.map((element: any) => element.data).splice(1, 6)
-          }]
-        }))
-        setIsLoading(false)
+        setState({
+          labels: data.map((element: any) => element.label).splice(1, 6),
+          data: data.map((element: any) => element.data).splice(1, 6)
+        })
+        removeLoader()
       })
-      .catch(e => console.log(e))
-  }, [])
+      .catch(() => {
+        console.log('ERROR while fetching employee chart')
+        removeLoader()
+      })
+  }
+
+  useEffect(fetchData, [])
 
   return (
-    <Card title="Employees" >
-      {isLoading || <Line type="bar" options={{ plugins: { legend: { position: 'bottom' } } }} data={data} />}
-    </Card>
+    <Charts
+      title="Employees" data={state.data}
+      labels={state.labels} defaultChart="doughnut"
+      onReload={fetchData} isLoading={isLoading}
+    />
   )
 }
 

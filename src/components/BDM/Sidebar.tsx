@@ -25,10 +25,10 @@ const navLinks: { label: string, path: string, icon: ReactNode }[] = [
     label: 'Employees',
     path: '/employees',
     icon: <EmployeesIcon />
-  }, {
-    icon: <TaskIcon />,
-    label: 'Todos',
-    path: '/todos'
+  // }, {
+  //   icon: <TaskIcon />,
+  //   label: 'Todos',
+  //   path: '/todos'
   }
 ]
 

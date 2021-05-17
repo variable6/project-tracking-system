@@ -17,7 +17,7 @@ const BDM = () => {
       <RouteContextProvider>
           <SidebarBDM />
           <MainContainer >
-          <BDMroutes />
+            <BDMroutes />
             <ProfilePage />
         </MainContainer>
       </RouteContextProvider>
