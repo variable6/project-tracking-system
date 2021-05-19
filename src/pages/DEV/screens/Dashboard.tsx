@@ -12,7 +12,8 @@ import Typography from '@material-ui/core/Typography'
 import { Hidden, IconButton, makeStyles } from '@material-ui/core'
 import { TodosCard } from '../../../components/TodoList'
 import { FiPower } from 'react-icons/fi'
-import Charts from '../../../components/Charts'
+import Charts, { Charts2, MultiCharts2, MultiCharts3 } from '../../../components/Charts'
+import { useCSS as useStyles } from './../../BDM/screens/Dashboard'
 
 
 const PAGENAME = 'Dashboard'
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const auth = useContext(AuthContext)
 
   const css = useCSS()
+  const css1 = useStyles()
 
   const api = useFetch()
 
@@ -44,12 +46,16 @@ const Dashboard = () => {
         </Toolbar>
       </AppBar>
       <div className={css.root}>
-        <ChartTask />
-        <ProjectChart />
-        <ProjectPercentageChart />
-        <Hidden implementation="css" xsDown>
-          <TodosCard />
-        </Hidden>
+        {data.role === 'DEV' && (
+          <div className={css1.flexContainer}><ChartTask /></div>
+        )}
+        {data.role === 'TL' && (
+          <div className={css1.flexContainer}><ProjectChart /></div>
+        )}
+        {data.role === 'PM' && (
+          <div className={css1.flexContainer}><ProjectPercentageChart /></div>
+        )}
+        <TodosCard />
       </div>
     </PageContainer>
   );
@@ -80,7 +86,7 @@ const ChartTask = () => {
           labels: data.map((element: any) => element.label),
           data: data.map((element: any) => element.data)
         }
-        console.log(dataSet)
+        console.log(dataSet, data, 'dev')
         setState(dataSet)
         storage.add('task-chart', dataSet)
         removeLoader()
@@ -104,35 +110,44 @@ const ChartTask = () => {
 }
 
 const ProjectChart = () => {
+
   const [isLoading, setIsLoading] = useState(true)
 
   const setLoader = () => setIsLoading(true)
   const removeLoader = () => setIsLoading(false)
 
-  const empChartTL = storage.get('percent-pm-chart')
+  const empChartTL = storage.get('tp-3-project-chart')
 
-  const [state, setState] = useState<{ data: (number | string)[], labels: string[] }>(empChartTL ? empChartTL : {
-    data: [],
+  const [state, setState] = useState<{
+    dataset1: (number | string)[],
+    dataset2: (number | string)[],
+    dataset3: (number | string)[],
+    labels: string[]
+  }>(empChartTL ? empChartTL : {
+    dataset1: [],
+    dataset2: [],
+    dataset3: [],
     labels: []
   })
 
   const fetchData = () => {
     setLoader()
     navigator.onLine && axiosConfig()
-      .get('/pm/chart/projects/percent')
+      .get('/tl/chart/projects/percent')
       .then(({ data }) => {
-        console.log(data, 1)
         const dataSet = {
-          labels: data.map((element: any) => element.label),
-          data: data.map((element: any) => element.data)
+          labels: data.map((element: any) => element.projectTitle),
+          dataset2: data.map((element: any) => element.taskCompleted),
+          dataset3: data.map((element: any) => element.totalTasks),
+          dataset1: data.map((element: any) => element.progress)
         }
-        console.log(dataSet)
-        // setState(dataSet)
-        storage.add('percent-pm-chart', dataSet)
+        console.log(dataSet, 'data', data)
+        setState(dataSet)
+        storage.add('tp-3-project-chart', dataSet)
         removeLoader()
       })
       .catch(() => {
-        console.log('ERROR while fetching percent chart')
+        console.log('ERROR while fetching project task chart')
         removeLoader()
       })
   }
@@ -140,12 +155,18 @@ const ProjectChart = () => {
   useEffect(fetchData, [])
 
   return (
-    <Charts label="Tasks"
-      chartList={['pie', 'doughnut', 'bar', 'line', 'bubble', 'radar', 'scatter', 'polar-area']}
-      title="Your Tasks" data={state.data}
-      labels={state.labels} defaultChart="doughnut"
-      onReload={fetchData} isLoading={isLoading}
-    />
+    <>
+      <Charts2 label='Project Progress'
+        title="Projects & it's status(TL)" data={state.dataset1}
+        labels={state.labels} defaultChart="bar" chartList={['bar', 'bubble', 'doughnut', 'line', 'pie', 'polar-area']}
+        onReload={fetchData} isLoading={isLoading}
+      />
+      <MultiCharts2 label1="completed Tasks(TL)" label2="Total Tasks"
+        title="Tasks & thier status" dataset1={state.dataset2} dataset2={state.dataset3}
+        labels={state.labels} defaultChart="bar-bar"
+        onReload={fetchData} isLoading={isLoading}
+      />
+    </>
   )
 }
 
@@ -157,8 +178,15 @@ const ProjectPercentageChart = () => {
 
   const empChartTL = storage.get('project-percent-pm-chart')
 
-  const [state, setState] = useState<{ data: (number | string)[], labels: string[] }>(empChartTL ? empChartTL : {
-    data: [],
+  const [state, setState] = useState<{
+    dataset1: (number | string)[],
+    dataset2: (number | string)[],
+    dataset3: (number | string)[],
+    labels: string[]
+  }>(empChartTL ? empChartTL : {
+    dataset1: [],
+    dataset2: [],
+    dataset3: [],
     labels: []
   })
 
@@ -167,18 +195,19 @@ const ProjectPercentageChart = () => {
     navigator.onLine && axiosConfig()
       .get('/pm/chart/projects/percent')
       .then(({ data }) => {
-        console.log(data, 0)
         const dataSet = {
-          labels: data.map((element: any) => element.label),
-          data: data.map((element: any) => element.data)
+          labels: data.map((element: any) => element.projectTitle),
+          dataset2: data.map((element: any) => element.taskCompleted),
+          dataset3: data.map((element: any) => element.totalTasks),
+          dataset1: data.map((element: any) => element.progress)
         }
-        console.log(dataSet)
-        // setState(dataSet)
+        console.log(dataSet, 'data', data)
+        setState(dataSet)
         storage.add('project-percent-pm-chart', dataSet)
         removeLoader()
       })
       .catch(() => {
-        console.log('ERROR while fetching percent chart')
+        console.log('ERROR while fetching project task chart')
         removeLoader()
       })
   }
@@ -186,12 +215,18 @@ const ProjectPercentageChart = () => {
   useEffect(fetchData, [])
 
   return (
-    <Charts label="Tasks"
-      chartList={['pie', 'doughnut', 'bar', 'line', 'bubble', 'radar', 'scatter', 'polar-area']}
-      title="Your Tasks" data={state.data}
-      labels={state.labels} defaultChart="doughnut"
+    <>
+      <Charts2 label='Project Progress'
+        title="Projects & it's status(PM)" data={state.dataset1}
+        labels={state.labels} defaultChart="bar" chartList={['bar', 'bubble', 'doughnut', 'line', 'pie', 'polar-area']}
       onReload={fetchData} isLoading={isLoading}
     />
+      <MultiCharts2 label1="completed Tasks" label2="Total Tasks"
+        title="Tasks & it's status(PM)" dataset1={state.dataset2} dataset2={state.dataset3}
+        labels={state.labels} defaultChart="bar-bar"
+        onReload={fetchData} isLoading={isLoading}
+      />
+    </>
   )
 }
 

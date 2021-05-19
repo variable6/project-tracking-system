@@ -28,6 +28,7 @@ import { v4 as setKey } from 'uuid'
 
 import Button from '../../../../../components/Button'
 import Card from "../../../../../components/Card"
+import Charts from "../../../../../components/Charts"
 import axiosConfig from '../../../../../config/axiosConfig'
 import { AlertContext } from '../../../../../context/AlertContext'
 import { AuthContext } from '../../../../../context/AuthContext'
@@ -594,6 +595,7 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
         )
       } {
         state.isTaskLoading ? <Loader /> : (
+          <>
           <Card title="Tasks" options={taskCardOptions}>
             <div className={css.taskContainer} >
               {
@@ -742,6 +744,8 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
               }
             </div>
           </Card>
+            <TaskChart projectRef={project_id} />
+          </>
         )
       }
     </>
@@ -749,6 +753,49 @@ const ProjectTeam = ({ project_id }: { project_id: string }) => {
 }
 
 export default ProjectTeam
+
+
+export const TaskChart = ({ projectRef }: { projectRef: string }) => {
+
+  const [isLoading, setIsLoading] = useState(true)
+  const setLoader = () => setIsLoading(true)
+  const removeLoader = () => setIsLoading(false)
+
+  const [state, setState] = useState<{ data: (number | string)[], labels: string[] }>({
+    data: [],
+    labels: []
+  })
+
+  const fetchData = () => {
+    setLoader()
+    navigator.onLine && axiosConfig()
+      .get(`/pm/chart/tasks/percent/${projectRef}`)
+      .then(({ data }) => {
+        console.log(data)
+        const dataSet = {
+          labels: data.map((element: any) => element.label),
+          data: data.map((element: any) => element.data)
+        }
+        setState(dataSet)
+        removeLoader()
+      })
+      .catch(() => {
+        console.log('ERROR while fetching project task chart')
+        removeLoader()
+      })
+  }
+
+  useEffect(fetchData, [])
+
+  return (
+    <Charts label="Tasks"
+      chartList={['pie', 'doughnut', 'bar', 'line', 'bubble', 'radar', 'scatter', 'polar-area']}
+      title="Your Tasks" data={state.data}
+      labels={state.labels} defaultChart="polar-area"
+      onReload={fetchData} isLoading={isLoading}
+    />
+  )
+}
 
 export const useStyles = makeStyles((theme) => ({
   root: {

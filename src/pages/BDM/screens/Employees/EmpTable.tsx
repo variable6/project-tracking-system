@@ -129,7 +129,7 @@ const EmpTable = ({ employees }: PropsType) => {
 
 export default EmpTable;
 
-const useCSS = makeStyles(theme => ({
+export const useCSS = makeStyles(theme => ({
   toolbar: {
     display: 'flex',
     flexDirection: 'column',

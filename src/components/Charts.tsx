@@ -1,4 +1,4 @@
-import { makeStyles, Typography, ButtonGroup, Drawer, IconButton, Menu, MenuItem, withStyles } from '@material-ui/core';
+import { makeStyles, Typography, ButtonGroup, Drawer, IconButton, Menu, MenuItem, withStyles, fade } from '@material-ui/core';
 import { useState } from 'react'
 import { Bar, Bubble, Doughnut, Line, PolarArea, Pie, Radar, Scatter } from 'react-chartjs-2'
 import { FiMinimize, FiRefreshCw, FiMaximize, FiBarChart2 } from 'react-icons/fi';
@@ -18,6 +18,7 @@ interface PropsType {
 
 const options = { plugins: { legend: { position: 'bottom' } }, maintainAspectRatio: false }
 const colors = ['#545454', '#E8EDDF', '#F5CB5C', '#242424', '#CFDBD5']
+const radarColors = [fade('#545454', 0.1), fade('#E8EDDF', 0.1), fade('#F5CB5C', 0.1), fade('#242424', 0.1), fade('#CFDBD5', 0.1)]
 
 const Charts = ({
   data, labels, title, defaultChart, onReload, chartList, isLoading, label
@@ -52,7 +53,8 @@ const Charts = ({
   const closeDrawer = () => setState({ ...state, isDrawerOpen: false })
 
   const labelsList = Array.from({ length: labels.length }, (_, i) => `0${i + 1}`)
-  const colorList = labelsList.map((i, index) => colors[index % 5])
+  const bgColorList = labelsList.map((_, index) => state.chartType === 'radar' ? radarColors[index % 5] : colors[index % 5])
+  const borderColorList = labelsList.map((_, index) => colors[index % 5])
 
   const dataSet = {
     labels: labelsList,
@@ -60,8 +62,8 @@ const Charts = ({
       {
         label: `# of ${label}`,
         data: data,
-        backgroundColor: colorList,
-        borderColor: colorList,
+        backgroundColor: bgColorList,
+        borderColor: borderColorList,
         borderWidth: 1,
         hoverOffset: 1.5
       }
@@ -130,7 +132,7 @@ const Charts = ({
               {
                 labels.map((label, index) => (
                   <div className={css.listItem}>
-                    <div style={{ backgroundColor: colorList[index] }} />
+                    <div style={{ backgroundColor: bgColorList[index] }} />
                     <Typography variant="body2" color="textSecondary">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
                   </div>
                 ))
@@ -217,7 +219,8 @@ export const Charts2 = ({
   const closeDrawer = () => setState({ ...state, isDrawerOpen: false })
 
   const labelsList = Array.from({ length: labels.length }, (_, i) => `0${i + 1}`)
-  const colorList = labelsList.map((i, index) => colors[index % 5])
+  const bgColorList = labelsList.map((_, index) => state.chartType === 'radar' ? radarColors[index % 5] : colors[index % 5])
+  const borderColorList = labelsList.map((_, index) => colors[index % 5])
 
   const dataSet = {
     labels: labelsList,
@@ -225,8 +228,8 @@ export const Charts2 = ({
       {
         label: `# of ${label}`,
         data: data,
-        backgroundColor: colorList,
-        borderColor: colorList,
+        backgroundColor: bgColorList,
+        borderColor: borderColorList,
         borderWidth: 1,
         hoverOffset: 1.5
       }
@@ -489,6 +492,159 @@ export const MultiCharts2 = ({
   )
 }
 
+export const MultiCharts3 = ({
+  dataset1, dataset2, dataset3, labels, title, defaultChart, onReload, isLoading, label1, label2, label3
+}: {
+  label1: string,
+  label2: string,
+  label3: string,
+  dataset1: (number | string)[],
+  dataset2: (number | string)[],
+  dataset3: (number | string)[],
+  labels: string[],
+  defaultChart: 'bar-line-line' | 'bar-bar-bar' | 'line-bar-line' | 'line-line-bar' | 'line-line-line' | 'line-bar-bar' | 'bar-line-bar' | 'bar-bar-line',
+  title: string,
+  onReload: () => void,
+  isLoading: boolean,
+}) => {
+
+  const css = useCSS()
+
+  const [state, setState] = useState({
+    chartType: defaultChart,
+    isDrawerOpen: false
+  })
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleChartType = (type: 'bar-line-line' | 'bar-bar-bar' | 'line-bar-line' | 'line-line-bar' | 'line-line-line' | 'line-bar-bar' | 'bar-line-bar' | 'bar-bar-line') => {
+    setState({
+      ...state,
+      chartType: type
+    })
+    handleClose()
+  }
+
+  const openDrawer = () => setState({ ...state, isDrawerOpen: true })
+  const closeDrawer = () => setState({ ...state, isDrawerOpen: false })
+
+  const labelsList = Array.from({ length: labels.length }, (_, i) => `0${i + 1}`)
+
+  const data = {
+    labels: labelsList,
+    datasets: [
+      {
+        type: state.chartType.split('-')[0],
+        label: label1,
+        borderColor: '#F5CB5C',
+        backgroundColor: '#F5CB5C',
+        borderWidth: 1,
+        data: dataset1,
+      }, {
+        type: state.chartType.split('-')[1],
+        label: label2,
+        backgroundColor: '#545454',
+        data: dataset2,
+        borderColor: '#545454',
+        borderWidth: 1,
+      }, {
+        type: state.chartType.split('-')[2],
+        label: label3,
+        backgroundColor: '#e8eddf',
+        data: dataset3,
+        borderColor: '#e8eddf',
+        borderWidth: 1,
+      }
+    ],
+  };
+  const cardMenu = (
+    <ButtonGroup variant="text" className={css.btnGroup} disableElevation aria-label="card options" >
+      <IconButton
+        aria-label="reload"
+        onClick={onReload}
+        className={css.iconBtn}
+      >
+        <FiRefreshCw className={isLoading ? css.refresh : ''} />
+      </IconButton>
+      <IconButton
+        aria-label="chart-type"
+        onClick={handleClick}
+        className={css.iconBtn}
+      >
+        <FiBarChart2 />
+      </IconButton>
+      <IconButton
+        aria-label={state.isDrawerOpen ? 'minimize' : 'maximize'}
+        onClick={state.isDrawerOpen ? closeDrawer : openDrawer}
+        className={css.iconBtn}
+      >
+        {state.isDrawerOpen ? <FiMinimize /> : <FiMaximize />}
+      </IconButton>
+    </ButtonGroup>
+  )
+
+  const chart = (
+    <Card title={title} menu={cardMenu}>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        style={{ textTransform: 'capitalize' }}
+      >
+        <MenuItem onClick={() => handleChartType('bar-line-line')}>Bar, Line, Line</MenuItem>
+        <MenuItem onClick={() => handleChartType('line-bar-line')}>Line, Bar, Line</MenuItem>
+        <MenuItem onClick={() => handleChartType('line-line-bar')}>Line, Line, Bar</MenuItem>
+        <MenuItem onClick={() => handleChartType('line-bar-bar')}>Line, Bar, Bar</MenuItem>
+        <MenuItem onClick={() => handleChartType('bar-line-bar')}>Bar, Line, Bar</MenuItem>
+        <MenuItem onClick={() => handleChartType('bar-bar-line')}>Bar, Bar, Line</MenuItem>
+        <MenuItem onClick={() => handleChartType('bar-bar-bar')}>Bar, Bar, Bar</MenuItem>
+        <MenuItem onClick={() => handleChartType('line-line-line')}>Line, Line, Line</MenuItem>
+      </Menu>
+      <div className={css.root2}>
+        <section className={css.graph}>
+          <Bar type="bar" data={data} />
+        </section>
+        <section>
+          <div className={css.flexList}>
+            {
+              labels.map((label, index) => (
+                <div>
+                  <Typography variant="body2" component="p">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
+                </div>
+              ))
+            }
+          </div>
+        </section>
+      </div>
+    </Card>
+  )
+
+  return (
+    <>
+      {chart}
+      <Modal
+        variant="temporary"
+        anchor="bottom"
+        open={state.isDrawerOpen}
+        onClose={closeDrawer}
+        className={css.drawerContainer}
+      >
+        {chart}
+      </Modal>
+    </>
+  )
+}
+
 export default Charts
 
 const Modal = withStyles(({ spacing, breakpoints }) => ({
@@ -542,7 +698,10 @@ const useCSS = makeStyles(({ spacing, palette, shape, breakpoints }) => ({
       '& p': {
         paddingLeft: spacing(1),
         fontSize: spacing(1.9),
-        color: palette.text.primary
+        color: palette.text.primary,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
       }
     },
     maxHeight: spacing(45),

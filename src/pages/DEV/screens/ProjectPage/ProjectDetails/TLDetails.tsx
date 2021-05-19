@@ -24,7 +24,7 @@ import axiosConfig from "../../../../../config/axiosConfig";
 
 import { useCSS as useClasses } from './TeamAndTask'
 
-import { status, statusColor, priorityColor, useStyles, getDate, TaskType, Loader } from './TeamAndTask'
+import { status, statusColor, priorityColor, TaskChart, useStyles, getDate, TaskType, Loader } from './TeamAndTask'
 import useFetch from '../../../useFetch';
 import { AlertContext } from '../../../../../context/AlertContext';
 import { DataContext } from '../../../DataContext';
@@ -454,6 +454,7 @@ const TLDetails = ({ project_id, projectTeam }: { project_id: string, projectTea
           </Card>
         )
       }
+      <TaskChart projectRef={project_id} />
       <Drawer
         variant="temporary"
         anchor="bottom"
