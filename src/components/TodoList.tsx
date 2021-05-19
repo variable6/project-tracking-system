@@ -1,5 +1,5 @@
 import { Checkbox, List, ListItem, FormControlLabel, makeStyles, IconButton, fade, TextField, Typography, Paper } from '@material-ui/core'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { FiCoffee, FiTrash2 } from 'react-icons/fi'
 import { v1 as setId } from 'uuid'
 import axiosConfig from '../config/axiosConfig'
@@ -24,6 +24,7 @@ export const TodosCard = () => {
 
   const css = useCSS()
   const todosLS = storage.get('TODOS')
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const [todos, setTodos] = useState<TodoType[]>(todosLS ? todosLS : [])
 
@@ -42,8 +43,11 @@ export const TodosCard = () => {
   }
 
   const addTodo = () => {
-    setTodos([...todos, { note: todoField.value, isDone: false, id: setId() }])
-    todoField.reset()
+
+    if (todoField.value.trim().length) {
+      setTodos([...todos, { note: todoField.value, isDone: false, id: setId() }])
+      todoField.reset()
+    }
   }
 
   const toggleTodoDone = (id: string) => {
@@ -81,6 +85,7 @@ export const TodosCard = () => {
           placeholder="Add todo..."
           value={todoField.value}
           onChange={todoField.onChange}
+          inputRef={inputRef}
         />
         <span />
         <Button.Primary label="add" type="submit" disabled={todoField.value.length === 0} />

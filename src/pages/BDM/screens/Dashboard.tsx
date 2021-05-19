@@ -27,20 +27,20 @@ const Dashboard = () => {
       <Hidden xsDown implementation="js" >
         <div className={css.flexContainer}>
           <TaskChart />
-          <TaskStatusChart />
+          <TaskStatusChart type="line" />
         </div>
         <div className={css.threeLayout}>
           <ProjectsChart />
           <TodosCard />
         </div>
-        <div className={css.flexContainer}>
+        <div className={css.threeLayout2}>
           <EmpChart />
           <EmpStatusChart />
         </div>
       </Hidden>
       <Hidden smUp implementation="js" >
         <TaskChart />
-        <TaskStatusChart />
+        <TaskStatusChart type="line" />
         <ProjectsChart />
         <TodosCard />
         <EmpChart />
@@ -50,7 +50,7 @@ const Dashboard = () => {
   )
 }
 
-const EmpChart = () => {
+export const EmpChart = () => {
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -95,7 +95,7 @@ const EmpChart = () => {
   )
 }
 
-const EmpStatusChart = () => {
+export const EmpStatusChart = () => {
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -115,8 +115,8 @@ const EmpStatusChart = () => {
       .get('/bdm/chart/emp/status')
       .then(({ data }) => {
         const dataSet = {
-          labels: data.map((element: any) => element.label).splice(1, 6),
-          data: data.map((element: any) => element.data).splice(1, 6)
+          labels: data.map((element: any) => element.label),
+          data: data.map((element: any) => element.data)
         }
         setState(dataSet)
         storage.add('emp-status-chart', dataSet)
@@ -133,14 +133,14 @@ const EmpStatusChart = () => {
   return (
     <Charts label="Employees with Status"
       chartList={['pie', 'doughnut', 'bar', 'line']}
-      title="Employees & their status" data={state.data}
+      title="Employee's status" data={state.data}
       labels={state.labels} defaultChart="line"
       onReload={fetchData} isLoading={isLoading}
     />
   )
 }
 
-const ProjectsChart = () => {
+export const ProjectsChart = () => {
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -160,8 +160,8 @@ const ProjectsChart = () => {
       .get('/bdm/chart/projects')
       .then(({ data }) => {
         const dataSet = {
-          labels: data.map((element: any) => element.label).splice(1, 6),
-          data: data.map((element: any) => element.data).splice(1, 6)
+          labels: data.map((element: any) => element.label),
+          data: data.map((element: any) => element.data)
         }
         setState(dataSet)
         storage.add('emp-project-chart', dataSet)
@@ -185,7 +185,7 @@ const ProjectsChart = () => {
   )
 }
 
-const TaskChart = () => {
+export const TaskChart = () => {
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -230,7 +230,7 @@ const TaskChart = () => {
   )
 }
 
-const TaskStatusChart = () => {
+export const TaskStatusChart = ({ type }: { type: 'pie' | 'doughnut' | 'bar' | 'line' | 'bubble' | 'polar-area' | 'radar' | 'scatter' }) => {
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -269,7 +269,7 @@ const TaskStatusChart = () => {
     <Charts label="Tasks with status"
       chartList={['pie', 'doughnut', 'bar', 'line', 'bubble', 'polar-area', 'radar', 'scatter']}
       title="Tasks & its status" data={state.data}
-      labels={state.labels} defaultChart="line"
+      labels={state.labels} defaultChart={type}
       onReload={fetchData} isLoading={isLoading}
     />
   )
@@ -281,7 +281,7 @@ export const useCSS = makeStyles(({ spacing, breakpoints }) => ({
   flexContainer: {
     display: 'grid',
     'grid-template-columns': `repeat(auto-fit, minmax(${spacing(47)}px, 1fr))`,
-    'grid-gap': spacing(2.25)
+    gap: spacing(2.25)
   },
   threeLayout: {
     display: 'grid',
@@ -289,6 +289,23 @@ export const useCSS = makeStyles(({ spacing, breakpoints }) => ({
     'grid-template-columns': '10fr 13fr',
     [breakpoints.only('md')]: {
       'grid-template-columns': '3fr 2fr'
+    },
+    [breakpoints.down(1080)]: {
+      'grid-template-columns': '1fr'
+    },
+    [breakpoints.down('sm')]: {
+      'grid-template-columns': '7fr 5fr'
+    },
+    [breakpoints.down(888)]: {
+      'grid-template-columns': '1fr'
+    }
+  },
+  threeLayout2: {
+    display: 'grid',
+    'grid-gap': spacing(2.25),
+    'grid-template-columns': '13fr 10fr',
+    [breakpoints.only('md')]: {
+      'grid-template-columns': '3fr 3fr'
     },
     [breakpoints.down(1080)]: {
       'grid-template-columns': '1fr'

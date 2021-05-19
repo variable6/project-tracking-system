@@ -51,14 +51,17 @@ const Charts = ({
   const openDrawer = () => setState({ ...state, isDrawerOpen: true })
   const closeDrawer = () => setState({ ...state, isDrawerOpen: false })
 
+  const labelsList = Array.from({ length: labels.length }, (_, i) => `0${i + 1}`)
+  const colorList = labelsList.map((i, index) => colors[index % 5])
+
   const dataSet = {
-    labels: Array.from({ length: labels.length }, (_, i) => `0${i + 1}`),
+    labels: labelsList,
     datasets: [
       {
         label: `# of ${label}`,
         data: data,
-        backgroundColor: colors,
-        borderColor: colors,
+        backgroundColor: colorList,
+        borderColor: colorList,
         borderWidth: 1,
         hoverOffset: 1.5
       }
@@ -127,7 +130,7 @@ const Charts = ({
               {
                 labels.map((label, index) => (
                   <div className={css.listItem}>
-                    <div style={{ backgroundColor: colors[index] }} />
+                    <div style={{ backgroundColor: colorList[index] }} />
                     <Typography variant="body2" color="textSecondary">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
                   </div>
                 ))
@@ -167,7 +170,7 @@ const Charts = ({
                 {
                   labels.map((label, index) => (
                     <div className={css.listItem}>
-                      <div style={{ backgroundColor: colors[index] }} />
+                      <div style={{ backgroundColor: colors[index % 6] }} />
                       <Typography variant="body2" color="textSecondary">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
                     </div>
                   ))
@@ -176,6 +179,311 @@ const Charts = ({
             </div>
           </div>
         </Card>
+      </Modal>
+    </>
+  )
+}
+
+export const Charts2 = ({
+  data, labels, title, defaultChart, onReload, chartList, isLoading, label
+}: PropsType) => {
+
+  const css = useCSS()
+
+  const [state, setState] = useState({
+    chartType: defaultChart,
+    isDrawerOpen: false
+  })
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleChartType = (type: 'bar' | 'bubble' | 'doughnut' | 'line' | 'polar-area' | 'pie' | 'radar' | 'scatter') => {
+    setState({
+      ...state,
+      chartType: type
+    })
+    handleClose()
+  }
+
+  const openDrawer = () => setState({ ...state, isDrawerOpen: true })
+  const closeDrawer = () => setState({ ...state, isDrawerOpen: false })
+
+  const labelsList = Array.from({ length: labels.length }, (_, i) => `0${i + 1}`)
+  const colorList = labelsList.map((i, index) => colors[index % 5])
+
+  const dataSet = {
+    labels: labelsList,
+    datasets: [
+      {
+        label: `# of ${label}`,
+        data: data,
+        backgroundColor: colorList,
+        borderColor: colorList,
+        borderWidth: 1,
+        hoverOffset: 1.5
+      }
+    ]
+  }
+  const cardMenu = (
+    <ButtonGroup variant="text" className={css.btnGroup} disableElevation aria-label="card options" >
+      <IconButton
+        aria-label="reload"
+        onClick={onReload}
+        className={css.iconBtn}
+      >
+        <FiRefreshCw className={isLoading ? css.refresh : ''} />
+      </IconButton>
+      <IconButton
+        aria-label="chart-type"
+        onClick={handleClick}
+        className={css.iconBtn}
+      >
+        <FiBarChart2 />
+      </IconButton>
+      <IconButton
+        aria-label={state.isDrawerOpen ? 'minimize' : 'maximize'}
+        onClick={state.isDrawerOpen ? closeDrawer : openDrawer}
+        className={css.iconBtn}
+      >
+        {state.isDrawerOpen ? <FiMinimize /> : <FiMaximize />}
+      </IconButton>
+    </ButtonGroup>
+  )
+
+  const chart = {
+    'bar': <Bar type="bar" data={dataSet} options={options} />,
+    'bubble': <Bubble type="bubble" data={dataSet} options={options} />,
+    'doughnut': <Doughnut type="doughnut" data={dataSet} options={options} />,
+    'line': <Line type="line" data={dataSet} options={options} />,
+    'polar-area': <PolarArea type="PolarArea" data={dataSet} />,
+    'pie': <Pie type="pie" data={dataSet} options={options} />,
+    'radar': <Radar type="radar" data={dataSet} options={options} />,
+    'scatter': <Scatter type="scatter" data={dataSet} options={options} />
+  }
+
+  return (
+    <>
+      <Card title={title} menu={cardMenu}>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          style={{ textTransform: 'capitalize' }}
+        >
+          {
+            chartList.map((item, index) => (
+              <MenuItem key={`${item}-${index}`} onClick={() => handleChartType(item)}>{item}</MenuItem>
+            ))
+          }
+        </Menu>
+        <div className={css.root2}>
+          <section className={css.graph}>
+            {chart[state.chartType]}
+          </section>
+          <section>
+            <div className={css.flexList}>
+              {
+                labels.map((label, index) => (
+                  <div>
+                    <Typography variant="body2" component="p">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
+                  </div>
+                ))
+              }
+            </div>
+          </section>
+        </div>
+      </Card>
+      <Modal
+        variant="temporary"
+        anchor="bottom"
+        open={state.isDrawerOpen}
+        onClose={closeDrawer}
+        className={css.drawerContainer}
+      >
+        <Card title={title} menu={cardMenu}>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            style={{ textTransform: 'capitalize' }}
+          >
+            {
+              chartList.map((item, index) => (
+                <MenuItem key={`drawer-${item}-${index}`} onClick={() => handleChartType(item)}>{item}</MenuItem>
+              ))
+            }
+          </Menu>
+          <div className={css.root2}>
+            <section className={css.graph}>
+              {chart[state.chartType]}
+            </section>
+            <section>
+              <div className={css.flexList}>
+                {
+                  labels.map((label, index) => (
+                    <div>
+                      <Typography variant="body2" component="p">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
+                    </div>
+                  ))
+                }
+              </div>
+            </section>
+          </div>
+        </Card>
+      </Modal>
+    </>
+  )
+}
+
+
+export const MultiCharts2 = ({
+  dataset1, dataset2, labels, title, defaultChart, onReload, isLoading, label1, label2
+}: {
+  label1: string,
+  label2: string,
+  dataset1: (number | string)[],
+  dataset2: (number | string)[],
+  labels: string[],
+  defaultChart: 'bar-line' | 'bar-bar' | 'line-bar' | 'line-line',
+  title: string,
+  onReload: () => void,
+  isLoading: boolean,
+}) => {
+
+  const css = useCSS()
+
+  const [state, setState] = useState({
+    chartType: defaultChart,
+    isDrawerOpen: false
+  })
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleChartType = (type: 'bar-line' | 'bar-bar' | 'line-bar' | 'line-line') => {
+    setState({
+      ...state,
+      chartType: type
+    })
+    handleClose()
+  }
+
+  const openDrawer = () => setState({ ...state, isDrawerOpen: true })
+  const closeDrawer = () => setState({ ...state, isDrawerOpen: false })
+
+  const labelsList = Array.from({ length: labels.length }, (_, i) => `0${i + 1}`)
+
+  const data = {
+    labels: labelsList,
+    datasets: [
+      {
+        type: state.chartType.split('-')[0],
+        label: label1,
+        borderColor: '#F5CB5C',
+        backgroundColor: '#F5CB5C',
+        borderWidth: 1,
+        data: dataset1,
+      },
+      {
+        type: state.chartType.split('-')[1],
+        label: label2,
+        backgroundColor: '#545454',
+        data: dataset2,
+        borderColor: '#545454',
+        borderWidth: 1,
+      }
+    ],
+  };
+  const cardMenu = (
+    <ButtonGroup variant="text" className={css.btnGroup} disableElevation aria-label="card options" >
+      <IconButton
+        aria-label="reload"
+        onClick={onReload}
+        className={css.iconBtn}
+      >
+        <FiRefreshCw className={isLoading ? css.refresh : ''} />
+      </IconButton>
+      <IconButton
+        aria-label="chart-type"
+        onClick={handleClick}
+        className={css.iconBtn}
+      >
+        <FiBarChart2 />
+      </IconButton>
+      <IconButton
+        aria-label={state.isDrawerOpen ? 'minimize' : 'maximize'}
+        onClick={state.isDrawerOpen ? closeDrawer : openDrawer}
+        className={css.iconBtn}
+      >
+        {state.isDrawerOpen ? <FiMinimize /> : <FiMaximize />}
+      </IconButton>
+    </ButtonGroup>
+  )
+
+  const chart = (
+    <Card title={title} menu={cardMenu}>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        style={{ textTransform: 'capitalize' }}
+      >
+        <MenuItem onClick={() => handleChartType('bar-line')}>Bar & Line</MenuItem>
+        <MenuItem onClick={() => handleChartType('line-bar')}>Line & Bar</MenuItem>
+        <MenuItem onClick={() => handleChartType('bar-bar')}>Bar & Bar</MenuItem>
+        <MenuItem onClick={() => handleChartType('line-line')}>Line & Line</MenuItem>
+      </Menu>
+      <div className={css.root2}>
+        <section className={css.graph}>
+          <Bar type="bar" data={data} />
+        </section>
+        <section>
+          <div className={css.flexList}>
+            {
+              labels.map((label, index) => (
+                <div>
+                  <Typography variant="body2" component="p">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
+                </div>
+              ))
+            }
+          </div>
+        </section>
+      </div>
+    </Card>
+  )
+
+  return (
+    <>
+      {chart}
+      <Modal
+        variant="temporary"
+        anchor="bottom"
+        open={state.isDrawerOpen}
+        onClose={closeDrawer}
+        className={css.drawerContainer}
+      >
+        {chart}
       </Modal>
     </>
   )
@@ -200,9 +508,48 @@ const Modal = withStyles(({ spacing, breakpoints }) => ({
   }
 }))(Drawer)
 
-const useCSS = makeStyles(({ spacing, shape, breakpoints }) => ({
+const useCSS = makeStyles(({ spacing, palette, shape, breakpoints }) => ({
+  root2: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  graph: {
+    '& canvas': {
+      minHeight: spacing(40),
+      maxHeight: spacing(50),
+      [breakpoints.only('md')]: {
+        minHeight: spacing(35),
+        maxHeight: spacing(45),
+      },
+      [breakpoints.only('sm')]: {
+        minHeight: spacing(30),
+        maxHeight: spacing(40),
+      },
+      [breakpoints.down('sm')]: {
+        minHeight: spacing(15),
+        maxHeight: spacing(35),
+      }
+    }
+  },
+  flexList: {
+    display: 'grid',
+    'grid-template-columns': `repeat(auto-fit, minmax(${spacing(37)}px, 1fr))`,
+    '& > div': {
+      backgroundColor: palette.background.default,
+      margin: spacing(0.35),
+      padding: spacing(0.75),
+      borderRadius: shape.borderRadius,
+      '& p': {
+        paddingLeft: spacing(1),
+        fontSize: spacing(1.9),
+        color: palette.text.primary
+      }
+    },
+    maxHeight: spacing(45),
+    overflow: 'auto'
+  },
   refresh: {
-    animation: '$spin 1s linear infinite'
+    animation: '$spin 945ms linear infinite'
   },
   '@keyframes spin': {
     '100%': {

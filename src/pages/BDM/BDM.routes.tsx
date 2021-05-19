@@ -5,11 +5,13 @@ import {
   FiGrid as DashboardIcon,
   FiUsers as EmployeesIcon,
   FiServer as ProjectIcon,
-  FiCode as TodoIcon
+  FiCode as TodoIcon,
+  FiPieChart as ChartIcon
 } from 'react-icons/fi'
 
 // import screens
 import Dashboard from "./screens/Dashboard";
+import Charts from "./screens/ChartsPage";
 import Employees from "./screens/Employees";
 import Project from './screens/Project'
 import PageNotFound from "../PageNotFound";
@@ -20,6 +22,10 @@ const routeList: { path: string, component: ReactNode, icon: ReactNode }[] = [
     path: '/',
     component: <Dashboard />,
     icon: <DashboardIcon />
+  }, {
+    path: '/analytics',
+    component: <Charts />,
+    icon: <ChartIcon />
   }, {
     path: '/employees',
     component: <Employees />,

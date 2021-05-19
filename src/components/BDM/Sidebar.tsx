@@ -7,7 +7,8 @@ import {
   FiGrid as DashboardIcon,
   FiUsers as EmployeesIcon,
   FiServer as ProjectIcon,
-  FiCode as TaskIcon
+  FiCode as TaskIcon,
+  FiPieChart as ChartIcon
 } from 'react-icons/fi'
 import { v4 as key } from 'uuid'
 
@@ -17,6 +18,10 @@ const navLinks: { label: string, path: string, icon: ReactNode }[] = [
     label: 'Dashboard',
     path: '/',
     icon: <DashboardIcon />
+  }, {
+    path: '/analytics',
+    label: 'Analytics',
+    icon: <ChartIcon />
   }, {
     label: 'Projects',
     path: '/projects',

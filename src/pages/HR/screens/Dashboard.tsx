@@ -60,7 +60,7 @@ const ProjectChart = () => {
   const fetchData = () => {
     setLoader()
     navigator.onLine && axiosConfig()
-      .get('/hr/chart/emp')
+      .get('/hr/chart/projects')
       .then(({ data }) => {
         const dataSet = {
           labels: data.map((element: any) => element.label).splice(1, 6),
