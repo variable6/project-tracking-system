@@ -76,6 +76,33 @@
        text-align: justify; 
        text-justify: inter-word
       }
+
+      .splash-container {
+        width: 100vw;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+        background-color: #FFF
+      }
+
+      .splash-container .loader-container {
+        width: 75vw;
+        max-width: 660px;
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .splash-container .loader-container .loader {
+        height: 6px;
+        border-radius: 6px;
+      }
+      .splash-container .loader-container .loader > * {
+        border-radius: 6px;
+      }
+
     
       @keyframes load {
         0% {

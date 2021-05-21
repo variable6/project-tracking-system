@@ -12,8 +12,7 @@ import fetchMethod from './config/axiosConfig'
 import {
   Dialog, Button, DialogActions, DialogContent, withStyles, fade, DialogTitle, Typography
 } from '@material-ui/core'
-import Loader from "./components/Loader";
-
+import SplashLoader from "./components/SplashLoader";
 
 const Popup = withStyles(theme => ({
   scrollPaper: {
@@ -37,9 +36,9 @@ const dashboard = {
   DEV: <DEV />
 }
 
-const App = () => {
+const cls = { width: '100vw', height: '100vh', display: 'grid', placeItems: 'center', backgroundColor: '#FFF' }
 
-  const cls = { width: '100vw', height: '100vh', display: 'grid', placeItems: 'center', backgroundColor: '#FFF' }
+const App = () => {
 
   const { user, clearUser, openPopup, quitLogout, addUser } = useContext(AuthContext)
 
@@ -100,7 +99,7 @@ const App = () => {
           </DialogActions>
         </Popup>
         {
-          state.isLoading ? <div style={cls}><Loader /></div> : (
+          state.isLoading ? <SplashLoader /> : (
             user.employeeId ? dashboard[user.designation] : <LandingPage />
           )
         }
