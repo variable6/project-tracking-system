@@ -16,9 +16,19 @@ interface PropsType {
   label: string
 }
 
-const options = { plugins: { legend: { position: 'bottom' } }, maintainAspectRatio: false }
-const colors = ['#545454', '#E8EDDF', '#F5CB5C', '#242424', '#CFDBD5']
-const radarColors = [fade('#545454', 0.1), fade('#E8EDDF', 0.1), fade('#F5CB5C', 0.1), fade('#242424', 0.1), fade('#CFDBD5', 0.1)]
+const options = {
+  plugins: {
+    legend: { position: 'bottom' }
+  },
+  maintainAspectRatio: false,
+  scales: {
+    y: {
+      beginAtZero: true
+    }
+  }
+}
+const colors = ['#545454', '#CFDBD5', '#F5CB5C', '#242424', '#E8EDDF']
+const radarColors = [fade('#545454', 0.1), fade('#CFDBD5', 0.1), fade('#F5CB5C', 0.1), fade('#242424', 0.1), fade('#E8EDDF', 0.1)]
 
 const Charts = ({
   data, labels, title, defaultChart, onReload, chartList, isLoading, label

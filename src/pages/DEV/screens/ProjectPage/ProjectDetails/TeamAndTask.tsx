@@ -6,7 +6,7 @@ import {
   TextField, Chip, Radio,
   RadioGroup, FormControlLabel,
   FormGroup, Checkbox, Typography, Divider,
-  Accordion, AccordionSummary, AccordionDetails, AccordionActions, Select, MenuItem
+  Accordion, AccordionSummary, AccordionDetails, AccordionActions, Select, MenuItem, LinearProgress
 } from '@material-ui/core'
 
 import {
@@ -761,9 +761,12 @@ export const TaskChart = ({ projectRef }: { projectRef: string }) => {
   const setLoader = () => setIsLoading(true)
   const removeLoader = () => setIsLoading(false)
 
-  const [state, setState] = useState<{ data: (number | string)[], labels: string[] }>({
+  const css = useStyles()
+
+  const [state, setState] = useState<{ data: (number | string)[], labels: string[], progress: number }>({
     data: [],
-    labels: []
+    labels: [],
+    progress: 0
   })
 
   const fetchData = () => {
@@ -771,10 +774,12 @@ export const TaskChart = ({ projectRef }: { projectRef: string }) => {
     navigator.onLine && axiosConfig()
       .get(`/pm/chart/tasks/percent/${projectRef}`)
       .then(({ data }) => {
-        console.log(data)
+        const progress = data.pop()
+        console.log(progress)
         const dataSet = {
           labels: data.map((element: any) => element.label),
-          data: data.map((element: any) => element.data)
+          data: data.map((element: any) => element.data),
+          progress: progress.data
         }
         setState(dataSet)
         removeLoader()
@@ -788,16 +793,32 @@ export const TaskChart = ({ projectRef }: { projectRef: string }) => {
   useEffect(fetchData, [])
 
   return (
-    <Charts label="Tasks"
-      chartList={['pie', 'doughnut', 'bar', 'line', 'bubble', 'radar', 'scatter', 'polar-area']}
-      title="Your Tasks" data={state.data}
-      labels={state.labels} defaultChart="polar-area"
-      onReload={fetchData} isLoading={isLoading}
-    />
+    <>
+      <Card title="Project Progress">
+        <Typography variant="h6" color="textPrimary">
+          <Typography variant="body1" component="span" color="textSecondary">Total progress: </Typography>
+          {state.progress}%
+        </Typography>
+        <LinearProgress variant="determinate" value={state.progress} className={css.progress} />
+      </Card>
+      <Charts label="Tasks"
+        chartList={['pie', 'doughnut', 'bar', 'line', 'bubble', 'polar-area']}
+        title="Tasks & their progress" data={state.data}
+        labels={state.labels} defaultChart="doughnut"
+        onReload={fetchData} isLoading={isLoading}
+      />
+    </>
   )
 }
 
 export const useStyles = makeStyles((theme) => ({
+  progress: {
+    height: 10,
+    borderRadius: 6,
+    '& *': {
+      borderRadius: 6
+    }
+  },
   root: {
     width: '100%',
   },

@@ -7,7 +7,6 @@ import { DataContext } from '../../../DataContext'
 import { makeStyles, Typography, fade, IconButton, AppBar, Toolbar } from "@material-ui/core";
 import images from "../../../../../assets/images";
 
-import { ProjectPMType } from '../../../../../types'
 import PageContainer from '../../../layouts/PageContainer';
 import drawerWidth from '../../../../../constants/sibebarWidth';
 import Card from '../../../../../components/Card';
