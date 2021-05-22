@@ -62,7 +62,7 @@ const Charts = ({
   const openDrawer = () => setState({ ...state, isDrawerOpen: true })
   const closeDrawer = () => setState({ ...state, isDrawerOpen: false })
 
-  const labelsList = Array.from({ length: labels.length }, (_, i) => `0${i + 1}`)
+  const labelsList = Array.from({ length: labels.length }, (_, i) => `${i < 9 ? 0 : ''}${i + 1}`)
   const bgColorList = labelsList.map((_, index) => state.chartType === 'radar' ? radarColors[index % 5] : colors[index % 5])
   const borderColorList = labelsList.map((_, index) => colors[index % 5])
 
@@ -143,7 +143,7 @@ const Charts = ({
                 labels.map((label, index) => (
                   <div className={css.listItem}>
                     <div style={{ backgroundColor: bgColorList[index] }} />
-                    <Typography variant="body2" color="textSecondary">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
+                    <Typography variant="body2" component="p">&nbsp;&nbsp;{index < 9 ? '0' : ''}{index + 1} - {label}</Typography>
                   </div>
                 ))
               }
@@ -183,7 +183,7 @@ const Charts = ({
                   labels.map((label, index) => (
                     <div className={css.listItem}>
                       <div style={{ backgroundColor: colors[index % 6] }} />
-                      <Typography variant="body2" color="textSecondary">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
+                      <Typography variant="body2" component="p">&nbsp;&nbsp;{index < 9 ? '0' : ''}{index + 1} - {label}</Typography>
                     </div>
                   ))
                 }
@@ -228,7 +228,7 @@ export const Charts2 = ({
   const openDrawer = () => setState({ ...state, isDrawerOpen: true })
   const closeDrawer = () => setState({ ...state, isDrawerOpen: false })
 
-  const labelsList = Array.from({ length: labels.length }, (_, i) => `0${i + 1}`)
+  const labelsList = Array.from({ length: labels.length }, (_, i) => `${i < 9 ? 0 : ''}${i + 1}`)
   const bgColorList = labelsList.map((_, index) => state.chartType === 'radar' ? radarColors[index % 5] : colors[index % 5])
   const borderColorList = labelsList.map((_, index) => colors[index % 5])
 
@@ -308,7 +308,7 @@ export const Charts2 = ({
               {
                 labels.map((label, index) => (
                   <div>
-                    <Typography variant="body2" component="p">&nbsp;&nbsp;{index > 9 ? '0' : ''}{index + 1} - {label}</Typography>
+                    <Typography variant="body2" component="p">&nbsp;&nbsp;{index < 9 ? '0' : ''}{index + 1} - {label}</Typography>
                   </div>
                 ))
               }
@@ -347,7 +347,7 @@ export const Charts2 = ({
                 {
                   labels.map((label, index) => (
                     <div>
-                      <Typography variant="body2" component="p">&nbsp;&nbsp;{index > 9 ? '0' : ''}{index + 1} - {label}</Typography>
+                      <Typography variant="body2" component="p">&nbsp;&nbsp;{index < 9 ? '0' : ''}{index + 1} - {label}</Typography>
                     </div>
                   ))
                 }
@@ -403,7 +403,7 @@ export const MultiCharts2 = ({
   const openDrawer = () => setState({ ...state, isDrawerOpen: true })
   const closeDrawer = () => setState({ ...state, isDrawerOpen: false })
 
-  const labelsList = Array.from({ length: labels.length }, (_, i) => `0${i + 1}`)
+  const labelsList = Array.from({ length: labels.length }, (_, i) => `${i < 9 ? 0 : ''}${i + 1}`)
 
   const data = {
     labels: labelsList,
@@ -476,7 +476,7 @@ export const MultiCharts2 = ({
             {
               labels.map((label, index) => (
                 <div>
-                  <Typography variant="body2" component="p">&nbsp;&nbsp;{index > 9 ? '0' : ''}{index + 1} - {label}</Typography>
+                  <Typography variant="body2" component="p">&nbsp;&nbsp;{index < 9 ? '0' : ''}{index + 1} - {label}</Typography>
                 </div>
               ))
             }
@@ -546,7 +546,7 @@ export const MultiCharts3 = ({
   const openDrawer = () => setState({ ...state, isDrawerOpen: true })
   const closeDrawer = () => setState({ ...state, isDrawerOpen: false })
 
-  const labelsList = Array.from({ length: labels.length }, (_, i) => `0${i + 1}`)
+  const labelsList = Array.from({ length: labels.length }, (_, i) => `${i < 9 ? 0 : ''}${i + 1}`)
 
   const data = {
     labels: labelsList,
@@ -629,7 +629,7 @@ export const MultiCharts3 = ({
             {
               labels.map((label, index) => (
                 <div>
-                  <Typography variant="body2" component="p">&nbsp;&nbsp;{index > 9 ? '0' : ''}{index + 1} - {label}</Typography>
+                  <Typography variant="body2" component="p">&nbsp;&nbsp;{index < 9 ? '0' : ''}{index + 1} - {label}</Typography>
                 </div>
               ))
             }
