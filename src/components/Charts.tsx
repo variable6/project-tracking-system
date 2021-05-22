@@ -308,7 +308,7 @@ export const Charts2 = ({
               {
                 labels.map((label, index) => (
                   <div>
-                    <Typography variant="body2" component="p">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
+                    <Typography variant="body2" component="p">&nbsp;&nbsp;{index > 9 ? '0' : ''}{index + 1} - {label}</Typography>
                   </div>
                 ))
               }
@@ -347,7 +347,7 @@ export const Charts2 = ({
                 {
                   labels.map((label, index) => (
                     <div>
-                      <Typography variant="body2" component="p">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
+                      <Typography variant="body2" component="p">&nbsp;&nbsp;{index > 9 ? '0' : ''}{index + 1} - {label}</Typography>
                     </div>
                   ))
                 }
@@ -476,7 +476,7 @@ export const MultiCharts2 = ({
             {
               labels.map((label, index) => (
                 <div>
-                  <Typography variant="body2" component="p">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
+                  <Typography variant="body2" component="p">&nbsp;&nbsp;{index > 9 ? '0' : ''}{index + 1} - {label}</Typography>
                 </div>
               ))
             }
@@ -629,7 +629,7 @@ export const MultiCharts3 = ({
             {
               labels.map((label, index) => (
                 <div>
-                  <Typography variant="body2" component="p">&nbsp;&nbsp;0{index + 1} - {label}</Typography>
+                  <Typography variant="body2" component="p">&nbsp;&nbsp;{index > 9 ? '0' : ''}{index + 1} - {label}</Typography>
                 </div>
               ))
             }
