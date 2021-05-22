@@ -275,7 +275,7 @@ const DataTable = () => {
   )
 
   const TableCard = (
-    <Card title="Employees" menu={cardMenu} >
+    <Card title="Projects & their details" menu={cardMenu} >
       <div className={css.toolbar}>
         <div className={css.subFlex} style={{ marginTop: 10 }}>
           <Typography

@@ -56,17 +56,6 @@ export const status = {
   COMPLETED: 'Completed',
 }
 
-interface TeamLeader {
-  date: Date
-  designation: string
-  email: string
-  employeeId: string
-  name: string
-  status: string
-  __v: number
-  _id: string
-}
-
 interface FormType {
   teamLeader: string
   team: string[]
