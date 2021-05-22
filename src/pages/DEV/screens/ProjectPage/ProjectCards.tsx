@@ -21,8 +21,7 @@ const ProjectCard = ({ project }: { project: ProjectPMType }) => {
 
   const trimDesc = (desc: string) => desc.length > 150 ? `${desc.substr(0, 150)}....` : desc
 
-  const imageImage = eval(project.projectId[project.projectId.length - 1].charCodeAt(0).toString().split('').join('+')) % 16
-
+  const imageImage = eval(project.projectId[project.projectId.length - 1].charCodeAt(0).toString().split('').join('+')) % 15
 
   return (
     <Card className={css.root}>
