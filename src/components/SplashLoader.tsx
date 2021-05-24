@@ -6,7 +6,7 @@ const SplashLoader = () => {
   return (
     <div className="splash-container">
       <div className="loader-container">
-        <div style={{ maxWidth: 150, width: '28vw', marginBottom: '15vh' }}>
+        <div style={{ maxWidth: 150, width: '28vw', marginBottom: '15vh', marginTop: '15.5vh' }}>
           <Logo />
         </div>
         <div style={{ width: '100%' }}>
