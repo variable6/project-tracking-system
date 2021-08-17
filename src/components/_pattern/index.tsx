@@ -127,7 +127,6 @@ const Pattern = () => {
         <rect id="Rectangle_122" data-name="Rectangle 122" className="cls-28" width="117.086" height="117.086" transform="translate(1917.279 746.421)" />
       </g>
     </svg>
-
   );
 }
 
