@@ -49,18 +49,18 @@ const App = () => {
   useEffect(() => {
     if (navigator.onLine) {
       fetchMethod()
-      .get('')
+        .get('')
         .then(({ data }) => {
-        if (data.isLogin)
-          addUser(data.user)
-        else
-          removeUser()
-        setState({ isLoading: false })
-      })
-      .catch(e => {
-        console.log('Something went wrong')
-        setState({ isLoading: false })
-      })
+          if (data.isLogin)
+            addUser(data.user)
+          else
+            removeUser()
+          setState({ isLoading: false })
+        })
+        .catch(e => {
+          console.log('Something went wrong')
+          setState({ isLoading: false })
+        })
     } else {
       setState({ isLoading: false })
     }
@@ -82,20 +82,20 @@ const App = () => {
           <DialogTitle id="logout">
             <Typography variant="h5" color="secondary">
               Are you sure?
-              </Typography>
+            </Typography>
           </DialogTitle>
           <DialogContent dividers>
             <Typography variant="body1" color="secondary">
               Do you really what to <strong>logout</strong> now.
-              </Typography>
+            </Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={quitLogout} color="default">
               No
-              </Button>
+            </Button>
             <Button disableElevation color="primary" variant="contained" onClick={removeUser}>
               Yes, I'm
-              </Button>
+            </Button>
           </DialogActions>
         </Popup>
         {

@@ -1,3 +1,3 @@
-const url = 'https://pts-001.herokuapp.com/api/'
+const url = 'http://localhost:5040/api/'
 
 export default url

@@ -16,7 +16,7 @@ interface PropsType {
   label: string
 }
 
-const options = {
+const options: any = {
   plugins: {
     legend: { position: 'bottom' }
   },
@@ -106,14 +106,14 @@ const Charts = ({
   )
 
   const chart = {
-    'bar': <Bar type="bar" data={dataSet} options={options} />,
-    'bubble': <Bubble type="bubble" data={dataSet} options={options} />,
-    'doughnut': <Doughnut type="doughnut" data={dataSet} options={options} />,
-    'line': <Line type="line" data={dataSet} options={options} />,
-    'polar-area': <PolarArea type="PolarArea" data={dataSet} />,
-    'pie': <Pie type="pie" data={dataSet} options={options} />,
-    'radar': <Radar type="radar" data={dataSet} options={options} />,
-    'scatter': <Scatter type="scatter" data={dataSet} options={options} />
+    'bar': <Bar data={dataSet} options={options} />,
+    'bubble': <Bubble data={dataSet} options={options} />,
+    'doughnut': <Doughnut data={dataSet} options={options} />,
+    'line': <Line data={dataSet} options={options} />,
+    'polar-area': <PolarArea data={dataSet} />,
+    'pie': <Pie data={dataSet} options={options} />,
+    'radar': <Radar data={dataSet} options={options} />,
+    'scatter': <Scatter data={dataSet} options={options} />
   }
 
   return (
@@ -272,14 +272,14 @@ export const Charts2 = ({
   )
 
   const chart = {
-    'bar': <Bar type="bar" data={dataSet} options={options} />,
-    'bubble': <Bubble type="bubble" data={dataSet} options={options} />,
-    'doughnut': <Doughnut type="doughnut" data={dataSet} options={options} />,
-    'line': <Line type="line" data={dataSet} options={options} />,
-    'polar-area': <PolarArea type="PolarArea" data={dataSet} />,
-    'pie': <Pie type="pie" data={dataSet} options={options} />,
-    'radar': <Radar type="radar" data={dataSet} options={options} />,
-    'scatter': <Scatter type="scatter" data={dataSet} options={options} />
+    'bar': <Bar data={dataSet} options={options} />,
+    'bubble': <Bubble data={dataSet} options={options} />,
+    'doughnut': <Doughnut data={dataSet} options={options} />,
+    'line': <Line data={dataSet} options={options} />,
+    'polar-area': <PolarArea data={dataSet} />,
+    'pie': <Pie data={dataSet} options={options} />,
+    'radar': <Radar data={dataSet} options={options} />,
+    'scatter': <Scatter data={dataSet} options={options} />
   }
 
   return (
@@ -469,7 +469,7 @@ export const MultiCharts2 = ({
       </Menu>
       <div className={css.root2}>
         <section className={css.graph}>
-          <Bar type="bar" data={data} />
+          <Bar data={data as any} />
         </section>
         <section>
           <div className={css.flexList}>
@@ -622,7 +622,7 @@ export const MultiCharts3 = ({
       </Menu>
       <div className={css.root2}>
         <section className={css.graph}>
-          <Bar type="bar" data={data} />
+          <Bar data={data as any} />
         </section>
         <section>
           <div className={css.flexList}>
